@@ -5,7 +5,7 @@
 **👋 Welcome to your new Foam Knowledge Base!**
 
 ## Getting started
-
+ 
 This documentation assumes that you have a GitHub account and have [Visual Studio Code](https://code.visualstudio.com/) installed on your Linux/macOS/Windows machine.
 
 1. If you haven't yet, browse over to the main [Foam documentation](https://foambubble.github.io/foam) to get an idea of what Foam is and how to use it.
