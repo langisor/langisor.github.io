@@ -1,4 +1,75 @@
-.foam-tag{
-  color:#ffffff;
+.foam-tag {
+  color: #ffffff;
   background-color: #000000;
+}
+
+/* my styles */
+
+body {
+  margin: 0.5rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+h2 {
+  background-color: gray;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  margin: 0.5rem 0;
+}
+h3 {
+  font-size: 1.1rem;
+  border-left: 6px solid blue;
+  padding-left: 0.3rem;
+  line-height: 1.5;
+  margin: 10px 0;
+  background-color: #f0f0f0;
+}
+h4 {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  background-color: #f0f0f0;
+  font-style: italic;
+}
+pre {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  border: 2px dashed blue;
+  white-space: pre-wrap;
+  padding: 0.3rem;
+}
+p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  margin: 0.5rem 0;
+  padding-left: 10px;
+  text-indent: 30px;
+}
+p::first-line {
+  text-indent: 2em;
+}
+code {
+  color: red;
+  font-style: italic;
+}
+.hljs-comment,
+.hljs-string {
+  color: green;
+}
+.hljs-keyword {
+  color: rgb(16, 32, 172);
+}
+.hljs-tag {
+  color: rgb(115, 19, 139);
+}
+.hljs-template-variable {
+  color: blue;
+}
+.hljs-attr,
+.hljs-number {
+  color: rgb(47, 68, 8);
+}
+ul > li {
+  list-style-type: none;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
 }
