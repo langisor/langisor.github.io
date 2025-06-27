@@ -33,7 +33,7 @@ yarn add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 Let's create a basic example where you can drag a box and drop it into a designated area.
 
-```typescript jsx
+```tsx
 import React, { useState } from 'react';
 import {
   DndContext,
@@ -157,7 +157,7 @@ export default App;
 
 For sortable lists, `dnd-kit` provides specific hooks and utilities in `@dnd-kit/sortable`.
 
-```typescript jsx
+```tsx
 import React, { useState } from 'react';
 import {
   DndContext,
