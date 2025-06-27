@@ -1,0 +1,53 @@
+@import "normalize.css";
+@import "skeleton.css";
+
+$theme-color: #4285f4;
+$theme-background-color: #fff;
+
+body {
+  background-color: $theme-background-color;
+  color: $theme-color;
+}
+
+a {
+  color: $theme-color;
+}
+
+.markdown-body {
+  color: $theme-color;
+}
+
+.markdown-body a {
+  color: $theme-color;
+}
+
+.markdown-body blockquote {
+  border-left: 0.5rem solid $theme-color;
+}
+
+.markdown-body code,
+.markdown-body pre {
+  background-color: rgba($theme-color, 0.1);
+  border: 0.1rem solid rgba($theme-color, 0.2);
+}
+
+.markdown-body code {
+  color: $theme-color;
+}
+
+.markdown-body hr {
+  border-color: $theme-color;
+}
+
+.markdown-body table {
+  border: 0.1rem solid $theme-color;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 0.1rem solid $theme-color;
+}
+
+.markdown-body tr:nth-child(2n) {
+  background-color: rgba($theme-color, 0.05);
+}
