@@ -1,5 +1,27 @@
 # Booklet TypeScript in React: A Quick Reference
 
+<!-- toc -->
+
+- [Booklet TypeScript in React: A Quick Reference](#booklet-typescript-in-react-a-quick-reference)
+  - [Introduction: Why TypeScript in React?](#introduction-why-typescript-in-react)
+  - [Essential Aspects of Using TypeScript in React](#essential-aspects-of-using-typescript-in-react)
+    - [1. Project Setup](#1-project-setup)
+    - [2. Typing Component Props](#2-typing-component-props)
+    - [3. Typing State with `useState`](#3-typing-state-with-usestate)
+    - [4. Typing Event Handlers](#4-typing-event-handlers)
+    - [5. Typing Children (`React.ReactNode`)](#5-typing-children-reactreactnode)
+    - [6. Strict Mode in `tsconfig.json`](#6-strict-mode-in-tsconfigjson)
+  - [Advanced Patterns with TypeScript in React](#advanced-patterns-with-typescript-in-react)
+    - [1. Custom Hooks](#1-custom-hooks)
+    - [2. Context API](#2-context-api)
+    - [3. Higher-Order Components (HOCs)](#3-higher-order-components-hocs)
+    - [4. Render Props](#4-render-props)
+    - [5. Utility Types for Components](#5-utility-types-for-components)
+    - [6. Polymorphic Components (The `as` Prop)](#6-polymorphic-components-the-as-prop)
+  - [Best Practices and Tips](#best-practices-and-tips)
+
+<!-- tocstop -->
+
 > This booklet will guide you through using TypeScript in React, starting with the essentials and moving into more advanced patterns. By the end, you'll have a solid reference for building robust and type-safe React applications.
 
 ## Introduction: Why TypeScript in React?

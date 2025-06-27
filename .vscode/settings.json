@@ -1,5 +1,5 @@
 {
-  "files.autoSave": "onFocusChange",
+  "files.autoSave": "off",
   "editor.minimap.enabled": false,
   "editor.wrappingIndent": "indent",
   "editor.overviewRulerBorder": false,
@@ -13,6 +13,7 @@
     }
   },
   "git.enableSmartCommit": true,
+  "css.styleSheets": ["./assets/css/style.scss", "./custom-tag-style.css"],
   "git.postCommitCommand": "sync",
   "files.exclude": {
     "**/.git": true,
@@ -24,5 +25,5 @@
     ".mdnotes": true
   },
   "files.insertFinalNewline": true,
-  "markdown.styles": [".vscode/custom-tag-style.css"]
+  "markdown.styles": ["./custom-tag-style.css"]
 }
