@@ -15,7 +15,13 @@
   "git.enableSmartCommit": true,
   "git.postCommitCommand": "sync",
   "files.exclude": {
-    "_site/**": true
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "_site/**": true,
+    ".mdnotes": true
   },
   "files.insertFinalNewline": true,
   "markdown.styles": [".vscode/custom-tag-style.css"]
