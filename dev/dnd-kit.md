@@ -483,7 +483,7 @@ export default MultiContainerApp;
   * `getActiveItem()`: A helper to render the item that should appear in the `DragOverlay`.
 
 -----
- 
+
 ### 7\. Further Exploration
 
 * **Sensors**: Dive deeper into different `sensors` (`PointerSensor`, `KeyboardSensor`, `MouseSensor`, `TouchSensor`, `Activator`). They control how drag operations are initiated and are crucial for specific interaction patterns.

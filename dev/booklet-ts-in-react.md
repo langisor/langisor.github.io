@@ -6,10 +6,10 @@
 
 TypeScript is a superset of JavaScript that adds static typing to the language. When integrated with React, it provides numerous benefits:
 
-* **Type Safety:** Catch type-related errors at compile time rather than at runtime, leading to fewer bugs in production.
-* **Improved Code Readability and Maintainability:** Explicit types make it easier to understand the shape of data and function signatures, especially in large codebases and team environments.
-* **Enhanced Developer Experience:** Better IDE support (autocompletion, refactoring, immediate error feedback) significantly boosts productivity.
-* **Easier Refactoring:** The compiler can immediately identify parts of your application that might break after a change, making refactoring safer and more efficient.
+- **Type Safety:** Catch type-related errors at compile time rather than at runtime, leading to fewer bugs in production.
+- **Improved Code Readability and Maintainability:** Explicit types make it easier to understand the shape of data and function signatures, especially in large codebases and team environments.
+- **Enhanced Developer Experience:** Better IDE support (autocompletion, refactoring, immediate error feedback) significantly boosts productivity.
+- **Easier Refactoring:** The compiler can immediately identify parts of your application that might break after a change, making refactoring safer and more efficient.
 
 ## Essential Aspects of Using TypeScript in React
 
@@ -36,11 +36,7 @@ You'll also need a `tsconfig.json` file to configure TypeScript. Create React Ap
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -54,9 +50,7 @@ You'll also need a `tsconfig.json` file to configure TypeScript. Create React Ap
     "moduleResolution": "node",
     "baseUrl": "src" // Example: allows absolute imports from 'src'
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
 ```
 
@@ -64,10 +58,10 @@ You'll also need a `tsconfig.json` file to configure TypeScript. Create React Ap
 
 This is the most fundamental aspect of using TypeScript in React. You define an interface or type alias to describe the shape of your component's props.
 
-```ts
+```tsx
 // src/components/Greeting.tsx
 
-import React from 'react';
+import React from "react";
 
 // Define an interface for the component's props
 interface GreetingProps {
@@ -82,7 +76,7 @@ const Greeting: React.FC<GreetingProps> = ({ name, age, isActive }) => {
     <div>
       <h1>Hello, {name}!</h1>
       {age && <p>You are {age} years old.</p>}
-      <p>Status: {isActive ? 'Active' : 'Inactive'}</p>
+      <p>Status: {isActive ? "Active" : "Inactive"}</p>
     </div>
   );
 };
@@ -97,27 +91,27 @@ export default Greeting;
 
 **Key Points:**
 
-* **`interface` vs. `type`:** Both can be used for defining prop types. `interface` is generally preferred for object shapes as it can be extended and implemented, while `type` aliases are more versatile for unions, intersections, and primitive types. For consistency, many prefer `type` for component props.
+- **`interface` vs. `type`:** Both can be used for defining prop types. `interface` is generally preferred for object shapes as it can be extended and implemented, while `type` aliases are more versatile for unions, intersections, and primitive types. For consistency, many prefer `type` for component props.
 
-* **`React.FC` (Functional Component):** While widely used, `React.FC` implicitly provides `children` prop and `displayName`. For more explicit control and to avoid some issues with default props or generics, some prefer typing props directly on the function:
+- **`React.FC` (Functional Component):** While widely used, `React.FC` implicitly provides `children` prop and `displayName`. For more explicit control and to avoid some issues with default props or generics, some prefer typing props directly on the function:
 
-    ```ts
-    // Alternative for functional component typing
-    const Greeting = ({ name, age, isActive }: GreetingProps) => {
-      // ...
-    };
-    ```
+  ```tsx
+  // Alternative for functional component typing
+  const Greeting = ({ name, age, isActive }: GreetingProps) => {
+    // ...
+  };
+  ```
 
-    Both approaches are valid; choose what feels more comfortable for your team.
+  Both approaches are valid; choose what feels more comfortable for your team.
 
 ### 3\. Typing State with `useState`
 
 `useState` can often infer the type of your state based on the initial value. However, for more complex types, especially when the initial state is `null` or an empty object that will later contain data, explicit typing is crucial.
 
-```ts
+```tsx
 // src/components/Counter.tsx
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface User {
   id: number;
@@ -135,11 +129,11 @@ const Counter: React.FC = () => {
   // Explicit type for an array of objects
   const [items, setItems] = useState<string[]>([]);
 
-  const increment = () => setCount(prevCount => prevCount + 1);
+  const increment = () => setCount((prevCount) => prevCount + 1);
   const loadUser = () => {
     // Simulate fetching user data
     setTimeout(() => {
-      setUser({ id: 1, name: 'John Doe', email: 'john.doe@example.com' });
+      setUser({ id: 1, name: "John Doe", email: "john.doe@example.com" });
     }, 1000);
   };
 
@@ -150,7 +144,9 @@ const Counter: React.FC = () => {
 
       {user ? (
         <div>
-          <p>User: {user.name} ({user.email})</p>
+          <p>
+            User: {user.name} ({user.email})
+          </p>
         </div>
       ) : (
         <button onClick={loadUser}>Load User</button>
@@ -168,13 +164,13 @@ export default Counter;
 
 React's synthetic event types are available in `@types/react`. You'll typically use `React.MouseEvent`, `React.ChangeEvent`, `React.FormEvent`, etc., and specify the HTML element type they originate from.
 
-```ts
+```tsx
 // src/components/Form.tsx
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const Form: React.FC = () => {
-  const [inputValue, setInputValue] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>("");
 
   // Typing for an input change event
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -183,19 +179,26 @@ const Form: React.FC = () => {
 
   // Typing for a button click event
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('Button clicked!', event.currentTarget.tagName);
+    console.log("Button clicked!", event.currentTarget.tagName);
   };
 
   // Typing for a form submission event
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission behavior
-    console.log('Form submitted with value:', inputValue);
+    console.log("Form submitted with value:", inputValue);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" value={inputValue} onChange={handleChange} placeholder="Type something..." />
-      <button type="submit" onClick={handleClick}>Submit</button>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        placeholder="Type something..."
+      />
+      <button type="submit" onClick={handleClick}>
+        Submit
+      </button>
     </form>
   );
 };
@@ -207,10 +210,10 @@ export default Form;
 
 When a component accepts children, you typically type the `children` prop as `React.ReactNode`. This type is a union of all possible things React can render (JSX elements, strings, numbers, booleans, null, undefined).
 
-```ts
+```tsx
 // src/components/Card.tsx
 
-import React from 'react';
+import React from "react";
 
 interface CardProps {
   title: string;
@@ -220,10 +223,20 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, children, footer }) => {
   return (
-    <div style={{ border: '1px solid #ccc', padding: '16px', margin: '16px' }}>
+    <div style={{ border: "1px solid #ccc", padding: "16px", margin: "16px" }}>
       <h2>{title}</h2>
       <div>{children}</div>
-      {footer && <div style={{ marginTop: '10px', borderTop: '1px dashed #eee', paddingTop: '10px' }}>{footer}</div>}
+      {footer && (
+        <div
+          style={{
+            marginTop: "10px",
+            borderTop: "1px dashed #eee",
+            paddingTop: "10px",
+          }}
+        >
+          {footer}
+        </div>
+      )}
     </div>
   );
 };
@@ -254,10 +267,10 @@ Enabling `strict: true` in your `tsconfig.json` is highly recommended. It turns 
 
 Custom hooks are functions that allow you to reuse stateful logic across components. Typing them involves specifying the types of their arguments and return values.
 
-```ts
+```tsx
 // src/hooks/useFetch.ts
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface FetchResult<T> {
   data: T | null;
@@ -280,7 +293,8 @@ function useFetch<T>(url: string): FetchResult<T> {
         }
         const result: T = await response.json();
         setData(result);
-      } catch (err: any) { // Type 'any' can be narrowed down if error structure is known
+      } catch (err: any) {
+        // Type 'any' can be narrowed down if error structure is known
         setError(err.message);
       } finally {
         setLoading(false);
@@ -298,22 +312,26 @@ export default useFetch;
 
 **Usage example in a component:**
 
-```ts
-import useFetch from '../hooks/useFetch';
+```tsx
+import useFetch from "../hooks/useFetch";
 interface Post {
   id: number;
   title: string;
   body: string;
 }
 const PostsList: React.FC = () => {
-  const { data: posts, loading, error } = useFetch<Post[]>('https://jsonplaceholder.typicode.com/posts');
+  const {
+    data: posts,
+    loading,
+    error,
+  } = useFetch<Post[]>("https://jsonplaceholder.typicode.com/posts");
   if (loading) return <div>Loading posts...</div>;
   if (error) return <div>Error: {error}</div>;
   return (
     <div>
       <h1>Posts</h1>
       <ul>
-        {posts?.map(post => (
+        {posts?.map((post) => (
           <li key={post.id}>
             <h3>{post.title}</h3>
             <p>{post.body}</p>
@@ -329,16 +347,16 @@ const PostsList: React.FC = () => {
 
 When a custom hook returns an array, TypeScript might infer a union type (`(boolean | typeof load)[]`) instead of a tuple (`[boolean, typeof load]`). `as const` can fix this.
 
-```ts
+```tsx
 // src/hooks/useToggle.ts
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 // Using `as const` to ensure a tuple type is inferred
 function useToggle(initialState: boolean = false) {
   const [state, setState] = useState(initialState);
 
-  const toggle = useCallback(() => setState(prev => !prev), []);
+  const toggle = useCallback(() => setState((prev) => !prev), []);
 
   return [state, toggle] as const;
 }
@@ -348,11 +366,11 @@ export default useToggle;
 
 **Usage:**
 
-```ts
-import useToggle from './hooks/useToggle';
+```tsx
+import useToggle from "./hooks/useToggle";
 const MyComponent: React.FC = () => {
   const [isOn, toggle] = useToggle(false); // isOn is boolean, toggle is () => void
-  return <button onClick={toggle}>{isOn ? 'On' : 'Off'}</button>;
+  return <button onClick={toggle}>{isOn ? "On" : "Off"}</button>;
 };
 ```
 
@@ -360,14 +378,14 @@ const MyComponent: React.FC = () => {
 
 Typing React Context involves creating an interface for your context value and providing an initial value that matches that type (often `null` with a runtime check).
 
-```ts
+```tsx
 // src/context/ThemeContext.tsx
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
 // 1. Define the shape of your context value
 interface ThemeContextType {
-  theme: 'light' | 'dark';
+  theme: "light" | "dark";
   toggleTheme: () => void;
 }
 
@@ -380,10 +398,10 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   const toggleTheme = () => {
-    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   const contextValue: ThemeContextType = {
@@ -402,7 +420,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context;
 };
@@ -437,10 +455,10 @@ export const useTheme = () => {
 
 HOCs are functions that take a component and return a new component with enhanced props or behavior. Typing HOCs can be a bit tricky due to generics and prop manipulation.
 
-```ts
+```tsx
 // src/hocs/withLoading.tsx
 
-import React, { ComponentType } from 'react';
+import React, { ComponentType } from "react";
 
 // Define the props that the HOC will inject
 interface WithLoadingProps {
@@ -452,7 +470,8 @@ function withLoading<P extends object>(
   WrappedComponent: ComponentType<P & WithLoadingProps>
 ) {
   // Create a display name for better debugging in React Dev Tools
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || 'Component';
+  const displayName =
+    WrappedComponent.displayName || WrappedComponent.name || "Component";
 
   // Return a new functional component that wraps the original
   const ComponentWithLoading: React.FC<P> = (props) => {
@@ -499,18 +518,18 @@ export default withLoading;
 
 **Explanation of HOC Typing:**
 
-* `P extends object`: This is a generic type parameter representing the original props of the `WrappedComponent`. We use `object` as a general constraint.
-* `ComponentType<P & WithLoadingProps>`: The `WrappedComponent` expects its original props (`P`) combined with the props injected by the HOC (`WithLoadingProps`). The `&` (intersection type) merges these two types.
-* `React.FC<P>`: The returned component `ComponentWithLoading` only accepts the `P` (original) props from its consumer, as `WithLoadingProps` are handled internally by the HOC.
+- `P extends object`: This is a generic type parameter representing the original props of the `WrappedComponent`. We use `object` as a general constraint.
+- `ComponentType<P & WithLoadingProps>`: The `WrappedComponent` expects its original props (`P`) combined with the props injected by the HOC (`WithLoadingProps`). The `&` (intersection type) merges these two types.
+- `React.FC<P>`: The returned component `ComponentWithLoading` only accepts the `P` (original) props from its consumer, as `WithLoadingProps` are handled internally by the HOC.
 
 ### 4\. Render Props
 
 Render props is a pattern where a component takes a function as a prop, and that function returns a React element to be rendered. This allows the consumer to control the rendering logic.
 
-```ts
+```tsx
 // src/components/DataFetcher.tsx
 
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, useEffect, ReactNode } from "react";
 
 // Define the interface for the data that will be fetched
 interface UserData {
@@ -587,94 +606,108 @@ export default DataFetcher;
 
 TypeScript provides several built-in utility types that are incredibly useful when working with React components.
 
-* **`Partial<T>`:** Makes all properties in `T` optional. Useful for default props or draft objects.
+- **`Partial<T>`:** Makes all properties in `T` optional. Useful for default props or draft objects.
 
-    ```ts
-    interface UserProfile {
-      name: string;
-      email: string;
-      age?: number;
-    }
+  ```tsx
+  interface UserProfile {
+    name: string;
+    email: string;
+    age?: number;
+  }
 
-    // A component that can take partial user data for editing
-    const UserForm: React.FC<{ initialData: Partial<UserProfile> }> = ({ initialData }) => {
-      const [formData, setFormData] = useState<Partial<UserProfile>>(initialData);
-      // ... form logic
-      return (/* ... */);
-    };
+  // A component that can take partial user data for editing
+  const UserForm: React.FC<{ initialData: Partial<UserProfile> }> = ({ initialData }) => {
+    const [formData, setFormData] = useState<Partial<UserProfile>>(initialData);
+    // ... form logic
+    return (/* ... */);
+  };
 
-    // Usage: <UserForm initialData={{ name: 'Jane' }} />
-    ```
+  // Usage: <UserForm initialData={{ name: 'Jane' }} />
+  ```
 
-* **`Pick<T, K>`:** Constructs a type by picking the set of properties `K` from `T`.
+- **`Pick<T, K>`:** Constructs a type by picking the set of properties `K` from `T`.
 
-    ```ts
-    interface Product {
-      id: string;
-      name: string;
-      price: number;
-      description: string;
-      imageUrl: string;
-    }
+  ```tsx
+  interface Product {
+    id: string;
+    name: string;
+    price: number;
+    description: string;
+    imageUrl: string;
+  }
 
-    // Component only needs name and price
-    type ProductCardProps = Pick<Product, 'name' | 'price'>;
+  // Component only needs name and price
+  type ProductCardProps = Pick<Product, "name" | "price">;
 
-    const ProductCard: React.FC<ProductCardProps> = ({ name, price }) => {
-      return (
-        <div>
-          <h3>{name}</h3>
-          <p>${price.toFixed(2)}</p>
-        </div>
-      );
-    };
-    ```
+  const ProductCard: React.FC<ProductCardProps> = ({ name, price }) => {
+    return (
+      <div>
+        <h3>{name}</h3>
+        <p>${price.toFixed(2)}</p>
+      </div>
+    );
+  };
+  ```
 
-* **`Omit<T, K>`:** Constructs a type by omitting the set of properties `K` from `T`. Useful when extending a type but excluding certain properties.
+- **`Omit<T, K>`:** Constructs a type by omitting the set of properties `K` from `T`. Useful when extending a type but excluding certain properties.
 
-    ```ts
-    // Assuming ButtonHTMLAttributes provides all standard button props
-    type CustomButtonProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className' | 'children'> & {
-      variant: 'primary' | 'secondary';
-      label: string;
-      // Add any other custom props here
-    };
+  ```ts
+  // Assuming ButtonHTMLAttributes provides all standard button props
+  type CustomButtonProps = Omit<
+    React.ComponentPropsWithoutRef<"button">,
+    "className" | "children"
+  > & {
+    variant: "primary" | "secondary";
+    label: string;
+    // Add any other custom props here
+  };
 
-    const CustomButton: React.FC<CustomButtonProps> = ({ variant, label, ...rest }) => {
-      const className = variant === 'primary' ? 'btn-primary' : 'btn-secondary';
-      return <button className={className} {...rest}>{label}</button>;
-    };
-    ```
+  const CustomButton: React.FC<CustomButtonProps> = ({
+    variant,
+    label,
+    ...rest
+  }) => {
+    const className = variant === "primary" ? "btn-primary" : "btn-secondary";
+    return (
+      <button className={className} {...rest}>
+        {label}
+      </button>
+    );
+  };
+  ```
 
-* **`Required<T>`:** Makes all properties in `T` required.
+- **`Required<T>`:** Makes all properties in `T` required.
 
-    ```ts
-    interface Config {
-      apiKey?: string;
-      endpoint?: string;
-    }
+  ```tsx
+  interface Config {
+    apiKey?: string;
+    endpoint?: string;
+  }
 
-    // Function that requires all config properties to be present
-    function initializeApp(config: Required<Config>) {
-      console.log(config.apiKey, config.endpoint); // Guaranteed to be present
-    }
-    ```
+  // Function that requires all config properties to be present
+  function initializeApp(config: Required<Config>) {
+    console.log(config.apiKey, config.endpoint); // Guaranteed to be present
+  }
+  ```
 
-* **`React.ComponentProps<T>` / `React.ComponentPropsWithoutRef<T>` / `React.ComponentPropsWithRef<T>`:** These are powerful for "mirroring" props of existing HTML elements or React components.
+- **`React.ComponentProps<T>` / `React.ComponentPropsWithoutRef<T>` / `React.ComponentPropsWithRef<T>`:** These are powerful for "mirroring" props of existing HTML elements or React components.
 
-  * `React.ComponentProps<'div'>` would give you all props for a `<div>` element.
-  * `React.ComponentProps<typeof MyCustomComponent>` would give you the props for `MyCustomComponent`.
-  * `ComponentPropsWithoutRef` and `ComponentPropsWithRef` are more explicit about whether the `ref` prop is included.
+  - `React.ComponentProps<'div'>` would give you all props for a `<div>` element.
+  - `React.ComponentProps<typeof MyCustomComponent>` would give you the props for `MyCustomComponent`.
+  - `ComponentPropsWithoutRef` and `ComponentPropsWithRef` are more explicit about whether the `ref` prop is included.
 
     <!-- end list -->
 
-    ```ts
+    ```tsx
     // Example: A wrapper around an HTML button
-    type ButtonWrapperProps = React.ComponentPropsWithoutRef<'button'> & {
+    type ButtonWrapperProps = React.ComponentPropsWithoutRef<"button"> & {
       customLabel: string;
     };
 
-    const ButtonWrapper: React.FC<ButtonWrapperProps> = ({ customLabel, ...rest }) => {
+    const ButtonWrapper: React.FC<ButtonWrapperProps> = ({
+      customLabel,
+      ...rest
+    }) => {
       return <button {...rest}>{customLabel}</button>;
     };
 
@@ -685,10 +718,10 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
 Polymorphic components are components that can render as different HTML elements or React components based on a prop (commonly named `as` or `component`). Typing these requires a good understanding of generics and utility types.
 
-```ts
+```tsx
 // src/components/PolymorphicButton.tsx
 
-import React from 'react';
+import React from "react";
 
 // 1. Define the base props that are always present
 type BaseProps = {
@@ -696,26 +729,21 @@ type BaseProps = {
 };
 
 // 2. Define a default element type
-type PolymorphicButtonProps<E extends React.ElementType = 'button'> =
+type PolymorphicButtonProps<E extends React.ElementType = "button"> =
   BaseProps &
-  // Merge the intrinsic element props, omitting base props
-  Omit<React.ComponentPropsWithoutRef<E>, keyof BaseProps> &
-  {
-    as?: E; // The 'as' prop itself
-  };
+    // Merge the intrinsic element props, omitting base props
+    Omit<React.ComponentPropsWithoutRef<E>, keyof BaseProps> & {
+      as?: E; // The 'as' prop itself
+    };
 
 // 3. Implement the polymorphic component
-function PolymorphicButton<E extends React.ElementType = 'button'>({
+function PolymorphicButton<E extends React.ElementType = "button">({
   as,
   children,
   ...rest
 }: PolymorphicButtonProps<E>) {
-  const Component = as || 'button';
-  return (
-    <Component {...rest}>
-      {children}
-    </Component>
-  );
+  const Component = as || "button";
+  return <Component {...rest}>{children}</Component>;
 }
 
 export default PolymorphicButton;
@@ -749,23 +777,23 @@ export default PolymorphicButton;
 
 **Explanation of Polymorphic Component Typing:**
 
-* `E extends React.ElementType = 'button'`: This generic type parameter captures the element type (e.g., `'a'`, `'div'`, `typeof MyCustomComponent`). It defaults to `'button'`.
-* `Omit<React.ComponentPropsWithoutRef<E>, keyof BaseProps>`: This is the core. It takes all the props of the selected element `E` (e.g., `<a>` props if `E` is `'a'`) and then removes any properties that are already defined in our `BaseProps` to prevent conflicts.
-* The `as` prop itself is added as `as?: E;`.
+- `E extends React.ElementType = 'button'`: This generic type parameter captures the element type (e.g., `'a'`, `'div'`, `typeof MyCustomComponent`). It defaults to `'button'`.
+- `Omit<React.ComponentPropsWithoutRef<E>, keyof BaseProps>`: This is the core. It takes all the props of the selected element `E` (e.g., `<a>` props if `E` is `'a'`) and then removes any properties that are already defined in our `BaseProps` to prevent conflicts.
+- The `as` prop itself is added as `as?: E;`.
 
------
+---
 
 ## Best Practices and Tips
 
-* **Enable Strict Mode:** Always start with `strict: true` in your `tsconfig.json`. It catches many common errors.
-* **Avoid `any`:** While convenient, `any` defeats the purpose of TypeScript. Try to be as specific as possible. If you truly don't know the type, consider `unknown` and then narrow it down with type guards.
-* **Organize Your Types:** For larger projects, consider a `types` directory or separate type definition files (e.g., `your-component.d.ts` or `types.ts`).
-* **Leverage Type Inference:** Let TypeScript infer types when it can, especially for simple `useState` calls or function return types. Don't over-annotate.
-* **Use Interfaces for Objects, Types for Unions/Intersections:** This is a common convention, though both can often achieve similar results.
-* **Read React TypeScript Cheatsheets:** This is an invaluable resource for various React-TypeScript patterns and common questions.
-* **ESLint with TypeScript:** Integrate ESLint with TypeScript support to enforce consistent coding styles and catch potential issues early.
-* **Keep `@types/*` packages updated:** Ensure your `@types/react` and `@types/react-dom` packages match your React version.
+- **Enable Strict Mode:** Always start with `strict: true` in your `tsconfig.json`. It catches many common errors.
+- **Avoid `any`:** While convenient, `any` defeats the purpose of TypeScript. Try to be as specific as possible. If you truly don't know the type, consider `unknown` and then narrow it down with type guards.
+- **Organize Your Types:** For larger projects, consider a `types` directory or separate type definition files (e.g., `your-component.d.ts` or `types.ts`).
+- **Leverage Type Inference:** Let TypeScript infer types when it can, especially for simple `useState` calls or function return types. Don't over-annotate.
+- **Use Interfaces for Objects, Types for Unions/Intersections:** This is a common convention, though both can often achieve similar results.
+- **Read React TypeScript Cheatsheets:** This is an invaluable resource for various React-TypeScript patterns and common questions.
+- **ESLint with TypeScript:** Integrate ESLint with TypeScript support to enforce consistent coding styles and catch potential issues early.
+- **Keep `@types/*` packages updated:** Ensure your `@types/react` and `@types/react-dom` packages match your React version.
 
------
+---
 
 This booklet should serve as a solid foundation and quick reference for effectively using TypeScript in your React projects. Remember that consistent application of these patterns will lead to more robust, maintainable, and enjoyable code. Happy coding\!
