@@ -5,7 +5,7 @@ a {
 }
 
 .markdown-body {
-  width:100%;
+  width: 100%;
   margin: 0.5rem 0.5rem;
   font-size: 16px;
 }
@@ -46,10 +46,15 @@ h3,
 h4,
 h5,
 blockquote {
-  font-family: Constantia, "Lucida Bright", Lucidabright, "Lucida Serif", Lucida,
-    "DejaVu Serif", "Bitstream Vera Serif", "Liberation Serif", Georgia, serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
+pre {
+  font-size: 1.1rem;
+  line-height: 1.5;
+  border: 2px dashed blue;
+  white-space: pre-wrap;
+  padding: 0.3rem;
+}
 .wikilink:before {
   content: "[[";
   opacity: 0.5;
@@ -70,4 +75,3 @@ blockquote {
   color: black;
   border-radius: 4px;
 }
-
