@@ -1,5 +1,19 @@
 # Dnd-kit
 
+<!-- toc -->
+
+- [Dnd-kit](#dnd-kit)
+  - [Quick Guide: Drag and Drop in React with `dnd-kit` (TypeScript Edition)](#quick-guide-drag-and-drop-in-react-with-dnd-kit-typescript-edition)
+    - [1. Installation](#1-installation)
+    - [2. Basic Concepts](#2-basic-concepts)
+    - [3. Simple Drag and Drop Example (Non-Sortable)](#3-simple-drag-and-drop-example-non-sortable)
+    - [4. Sortable List Example](#4-sortable-list-example)
+    - [5. Dragging Between Multiple Containers](#5-dragging-between-multiple-containers)
+    - [7. Further Exploration](#7-further-exploration)
+  - [**Example**: English Sentence Reorder Game with dnd](#example-english-sentence-reorder-game-with-dnd)
+
+<!-- tocstop -->
+
 ## Quick Guide: Drag and Drop in React with `dnd-kit` (TypeScript Edition)
 
 `dnd-kit` is a modern, lightweight, and highly customizable drag and drop toolkit for React. It prioritizes performance, accessibility, and extensibility, making it an excellent choice for a wide range of drag-and-drop functionalities.

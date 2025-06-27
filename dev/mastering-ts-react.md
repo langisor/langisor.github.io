@@ -1,5 +1,62 @@
 # Mastering TypeScript in React: A Comprehensive Reference Guide
 
+<!-- toc -->
+
+- [Mastering TypeScript in React: A Comprehensive Reference Guide](#mastering-typescript-in-react-a-comprehensive-reference-guide)
+  - [I. Introduction to TypeScript in React](#i-introduction-to-typescript-in-react)
+    - [A. Why Use TypeScript in React?](#a-why-use-typescript-in-react)
+    - [B. Setting Up Your React TypeScript Project](#b-setting-up-your-react-typescript-project)
+      - [1. Starting a New Project with Create React App](#1-starting-a-new-project-with-create-react-app)
+      - [2. Migrating an Existing JavaScript Project to TypeScript](#2-migrating-an-existing-javascript-project-to-typescript)
+      - [3. Essential `tsconfig.json` Configuration for React](#3-essential-tsconfigjson-configuration-for-react)
+  - [II. Essential Aspects: Typing React Components \& Hooks](#ii-essential-aspects-typing-react-components--hooks)
+    - [A. Typing Component Props](#a-typing-component-props)
+      - [1. Defining Props with Interfaces](#1-defining-props-with-interfaces)
+      - [2. Understanding `React.FC` (FunctionComponent) and its Evolution](#2-understanding-reactfc-functioncomponent-and-its-evolution)
+      - [3. Handling the `children` Prop (`React.ReactNode`, `PropsWithChildren`)](#3-handling-the-children-prop-reactreactnode-propswithchildren)
+    - [B. Typing Component State with `useState`](#b-typing-component-state-with-usestate)
+      - [1. Basic State Types (Primitives, Arrays, Objects)](#1-basic-state-types-primitives-arrays-objects)
+      - [2. Union Types and Nullable States](#2-union-types-and-nullable-states)
+      - [3. Initializer Functions for State](#3-initializer-functions-for-state)
+    - [C. Typing Event Handlers](#c-typing-event-handlers)
+      - [1. Common DOM Event Types (`ChangeEvent`, `MouseEvent`, `FormEvent`)](#1-common-dom-event-types-changeevent-mouseevent-formevent)
+      - [2. Using `React.SyntheticEvent` for Generic Events](#2-using-reactsyntheticevent-for-generic-events)
+  - [III. Advanced Patterns: Deep Dive into React Hooks \& Concepts](#iii-advanced-patterns-deep-dive-into-react-hooks--concepts)
+    - [A. Typing `useEffect` for Side Effects](#a-typing-useeffect-for-side-effects)
+      - [1. Basic Effect Typing with Dependencies](#1-basic-effect-typing-with-dependencies)
+      - [2. Implementing Cleanup Functions](#2-implementing-cleanup-functions)
+      - [3. Data Fetching with `useEffect`](#3-data-fetching-with-useeffect)
+    - [B. Typing `useContext` for Global State](#b-typing-usecontext-for-global-state)
+      - [1. Creating Type-Safe Context](#1-creating-type-safe-context)
+      - [2. Consuming Context and Handling Null Defaults](#2-consuming-context-and-handling-null-defaults)
+      - [3. Best Practices: Custom Hooks for Context Consumption](#3-best-practices-custom-hooks-for-context-consumption)
+    - [C. Typing `useRef` for DOM and Mutable Values](#c-typing-useref-for-dom-and-mutable-values)
+      - [1. Referencing Mutable Values](#1-referencing-mutable-values)
+      - [2. Manipulating DOM Elements (`HTMLInputElement`, etc.)](#2-manipulating-dom-elements-htmlinputelement-etc)
+    - [D. Optimizing with `useCallback` and `useMemo`](#d-optimizing-with-usecallback-and-usememo)
+      - [1. Typing Memoized Functions (`useCallback`)](#1-typing-memoized-functions-usecallback)
+      - [2. Typing Memoized Values (`useMemo`)](#2-typing-memoized-values-usememo)
+      - [3. When and Why to Use Them (Performance Considerations)](#3-when-and-why-to-use-them-performance-considerations)
+    - [E. Creating Type-Safe Custom Hooks with Generics](#e-creating-type-safe-custom-hooks-with-generics)
+      - [1. Example: A Generic `useLocalStorage` Hook](#1-example-a-generic-uselocalstorage-hook)
+      - [2. Example: A Generic `useFetch` Hook](#2-example-a-generic-usefetch-hook)
+  - [IV. Advanced Component Patterns \& TypeScript Features](#iv-advanced-component-patterns--typescript-features)
+    - [A. Typing Higher-Order Components (HOCs) with Generics](#a-typing-higher-order-components-hocs-with-generics)
+    - [B. Typing Render Props with Generics](#b-typing-render-props-with-generics)
+    - [C. Building Type-Safe Polymorphic Components (`as` Prop)](#c-building-type-safe-polymorphic-components-as-prop)
+    - [D. Leveraging TypeScript Utility Types in React](#d-leveraging-typescript-utility-types-in-react)
+      - [1. `Partial`, `Pick`, `Omit` for Props and State](#1-partial-pick-omit-for-props-and-state)
+      - [2. `Exclude`, `Extract`, `NonNullable` for Union Types](#2-exclude-extract-nonnullable-for-union-types)
+      - [3. `ComponentProps`, `ComponentPropsWithRef` for Element Props](#3-componentprops-componentpropswithref-for-element-props)
+      - [**Table: Common TypeScript Utility Types for React**](#table-common-typescript-utility-types-for-react)
+    - [E. Enhancing State Logic with Type Guards and Discriminated Unions](#e-enhancing-state-logic-with-type-guards-and-discriminated-unions)
+    - [F. Integrating Third-Party Libraries](#f-integrating-third-party-libraries)
+      - [1. Utilizing `@types` Packages](#1-utilizing-types-packages)
+      - [2. Declaring Modules Without Official Type Definitions](#2-declaring-modules-without-official-type-definitions)
+  - [V. Conclusion \& Key Takeaways](#v-conclusion--key-takeaways)
+
+<!-- tocstop -->
+
 ## I. Introduction to TypeScript in React
 
 The integration of TypeScript into React development represents a significant advancement in building robust, scalable, and maintainable user interfaces. As a typed superset of JavaScript, TypeScript compiles to plain JavaScript, introducing static type-checking capabilities that fundamentally alter the development process. This paradigm shift allows for the detection of errors during the compilation phase, rather than at runtime, thereby enhancing code reliability and significantly reducing the incidence of bugs.  
@@ -1828,7 +1885,7 @@ These utility types are specifically useful in React for extracting the props of
     type InputWithRefProps = ComponentPropsWithRef<'input'>; // All <input> props, including 'ref'
     ```
 
-**Table: Common TypeScript Utility Types for React**
+#### **Table: Common TypeScript Utility Types for React**
 
 |       Utility Type       |                     Purpose                      |                                                           Example Use Case in React                                                           |
 |--------------------------|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
