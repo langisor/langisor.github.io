@@ -13,6 +13,7 @@
     }
   },
   "git.enableSmartCommit": true,
+  "css.styleSheets": ["./assets/css/style.scss", "./custom-tag-style.css"],
   "git.postCommitCommand": "sync",
   "files.exclude": {
     "**/.git": true,
