@@ -318,7 +318,7 @@ In the above example, the effect runs whenever the `query` prop changes, fetchin
 
 #### Common useEffect Patterns
 
-**1. Data Fetching**
+##### **1. Data Fetching**
 
 ```tsx
 import React, { useState, useEffect } from "react";
@@ -353,7 +353,7 @@ function DataFetcher({ dependencyValue }: { dependencyValue: string }) {
 }
 ```
 
-**2. Subscriptions**
+##### **2. Subscriptions**
 
 ```tsx
 import React, { useEffect, useState } from "react";
@@ -417,7 +417,7 @@ function EventSubscriber({ eventId }: { eventId: string }) {
 }
 ```
 
-**3. DOM Manipulations**
+##### **3. DOM Manipulations**
 
 ```tsx
 import React, { useEffect } from "react";
