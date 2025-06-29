@@ -59,15 +59,15 @@
 
 ## I. Introduction to TypeScript in React
 
-The integration of TypeScript into React development represents a significant advancement in building robust, scalable, and maintainable user interfaces. As a typed superset of JavaScript, TypeScript compiles to plain JavaScript, introducing static type-checking capabilities that fundamentally alter the development process. This paradigm shift allows for the detection of errors during the compilation phase, rather than at runtime, thereby enhancing code reliability and significantly reducing the incidence of bugs.  
+The integration of TypeScript into React development represents a significant advancement in building robust, scalable, and maintainable user interfaces. As a typed superset of JavaScript, TypeScript compiles to plain JavaScript, introducing static type-checking capabilities that fundamentally alter the development process. This paradigm shift allows for the detection of errors during the compilation phase, rather than at runtime, thereby enhancing code reliability and significantly reducing the incidence of bugs.
 
 ### A. Why Use TypeScript in React?
 
-The adoption of TypeScript in React applications yields multiple advantages, primarily centered around an improved developer experience and elevated code quality. The static type-checking provided by TypeScript offers "significantly improved editor support" , encompassing features such as intelligent autocompletion, streamlined refactoring tools, and immediate feedback on type mismatches directly within the integrated development environment (IDE). This immediate feedback loop minimizes the cognitive load on developers, accelerating the development cycle.  
+The adoption of TypeScript in React applications yields multiple advantages, primarily centered around an improved developer experience and elevated code quality. The static type-checking provided by TypeScript offers "significantly improved editor support" , encompassing features such as intelligent autocompletion, streamlined refactoring tools, and immediate feedback on type mismatches directly within the integrated development environment (IDE). This immediate feedback loop minimizes the cognitive load on developers, accelerating the development cycle.
 
 Beyond individual productivity, TypeScript functions as a formal contract between disparate components of a React application, including components, hooks, and services. This contract, rigorously enforced by the compiler, mitigates miscommunication and reduces assumptions among developers collaborating on different modules. For instance, when an interface like `interface Props { name: string; age: number; }` is defined for a component, it effectively publishes a clear API for that component. Any developer consuming this component immediately comprehends the expected inputs and their corresponding types. Should these types undergo modification, the compiler mandates updates across all consuming code, preventing runtime errors that would otherwise only manifest during testing or in production environments. This formalization of communication diminishes the reliance on informal knowledge often prevalent in large JavaScript codebases.
 
-Furthermore, the capacity to identify bugs "early on" embodies a "shift-left" approach to quality assurance. This means that type-related errors are identified and addressed during the development and compilation phases, rather than surfacing during runtime, testing, or even in production. In contrast to traditional JavaScript, where a typographical error in a prop name or the passing of an incorrect data type might only lead to an  
+Furthermore, the capacity to identify bugs "early on" embodies a "shift-left" approach to quality assurance. This means that type-related errors are identified and addressed during the development and compilation phases, rather than surfacing during runtime, testing, or even in production. In contrast to traditional JavaScript, where a typographical error in a prop name or the passing of an incorrect data type might only lead to an
 
 `undefined` error or unexpected behavior at runtime, TypeScript's compiler flags these issues instantaneously upon file save. This proactive error detection allows developers to allocate less time to debugging runtime issues and more time to feature development, contributing to faster development cycles and higher-quality software. It fundamentally transforms the debugging workflow from a reactive process (fixing runtime errors) to a proactive one (preventing compilation errors).
 
@@ -77,65 +77,33 @@ Establishing a React project with TypeScript can be achieved either by initiatin
 
 #### 1\. Starting a New Project with Create React App
 
-The most straightforward and recommended method for commencing a new React project with TypeScript is to leverage Create React App (CRA) and its integrated TypeScript template. The command  
-
-`npx create-react-app my-app --template typescript` efficiently sets up the entire project, including all necessary configurations and packages, and automatically converts `.js` files to `.ts` or `.tsx` as appropriate. It is advisable to use  
-
-`npx` to ensure the utilization of the latest `create-react-app` version, as global installations are no longer officially supported. Any previously installed global versions should be uninstalled using  
-
-`npm uninstall -g create-react-app` or `yarn global remove create-react-app` to prevent the use of cached versions.  
+The most straightforward and recommended method for commencing a new React project with TypeScript is to leverage Create React App (CRA) and its integrated TypeScript template. The command `npx create-react-app my-app --template typescript` efficiently sets up the entire project, including all necessary configurations and packages, and automatically converts `.js` files to `.ts` or `.tsx` as appropriate. It is advisable to use `npx` to ensure the utilization of the latest `create-react-app` version, as global installations are no longer officially supported. Any previously installed global versions should be uninstalled using `npm uninstall -g create-react-app` or `yarn global remove create-react-app` to prevent the use of cached versions.
 
 #### 2\. Migrating an Existing JavaScript Project to TypeScript
 
-The conversion of an existing JavaScript React project to TypeScript involves a structured sequence of steps. Initially, TypeScript and its associated type definitions must be installed as development dependencies. This includes  
-
-`typescript` itself, along with `@types` packages for core React libraries such as `@types/node`, `@types/react`, `@types/react-dom`, and `@types/jest`. Following installation, existing  
-
-`.js` files should be renamed to `.ts` or `.tsx` (for files containing JSX). A  
-
-`tsconfig.json` file must then be created in the project root if it is not automatically generated; this file provides TypeScript with the necessary instructions for compiling the project's code. For larger projects, a gradual, file-by-file migration strategy is recommended to manage complexity and minimize merge conflicts, allowing for an intermediate state where both JavaScript and TypeScript files coexist. Common issues encountered during migration, such as  
-
-`jsx` flag errors, can typically be resolved via VSCode's quick-fix options or by manually setting `"jsx": "react"` in `tsconfig.json`. TypeScript version conflicts can often be addressed by ensuring the workspace version is selected in VSCode.  
+The conversion of an existing JavaScript React project to TypeScript involves a structured sequence of steps. Initially, TypeScript and its associated type definitions must be installed as development dependencies. This includes `typescript` itself, along with `@types` packages for core React libraries such as `@types/node`, `@types/react`, `@types/react-dom`, and `@types/jest`. Following installation, existing `.js` files should be renamed to `.ts` or `.tsx` (for files containing JSX). A `tsconfig.json` file must then be created in the project root if it is not automatically generated; this file provides TypeScript with the necessary instructions for compiling the project's code. For larger projects, a gradual, file-by-file migration strategy is recommended to manage complexity and minimize merge conflicts, allowing for an intermediate state where both JavaScript and TypeScript files coexist. Common issues encountered during migration, such as `jsx` flag errors, can typically be resolved via VSCode's quick-fix options or by manually setting `"jsx": "react"` in `tsconfig.json`. TypeScript version conflicts can often be addressed by ensuring the workspace version is selected in VSCode.
 
 #### 3\. Essential `tsconfig.json` Configuration for React
 
-The `tsconfig.json` file serves as the core configuration for a TypeScript project, specifying root files and compiler options. While CRA's template provides a default  
-
-`tsconfig.json`, it often requires modifications to align with best practices for React development.  
+The `tsconfig.json` file serves as the core configuration for a TypeScript project, specifying root files and compiler options. While CRA's template provides a default `tsconfig.json`, it often requires modifications to align with best practices for React development.
 
 Key compiler options critical for React applications include:
 
-- **`"jsx"`**: This option must be set to a valid value such as `"react"` or `"react-jsx"`. For most applications,  
+- **`"jsx"`**: This option must be set to a valid value such as `"react"` or `"react-jsx"`. For most applications, `"preserve"` is often sufficient.
 
-    `"preserve"` is often sufficient.  
+- **`"lib"`**: The `dom` library should be included, though it is frequently included by default.
 
-- **`"lib"`**: The `dom` library should be included, though it is frequently included by default.  
+- **`"strict"`**: Enabling `strict` mode is highly recommended for enforcing robust type checking. This setting activates a suite of stricter type-checking options, including `noImplicitAny` and `strictNullChecks`, which promote stronger type safety throughout the codebase.
 
-- **`"strict"`**: Enabling `strict` mode is highly recommended for enforcing robust type checking. This setting activates a suite of stricter type-checking options, including  
+- **`"noEmit": true`**: In typical React projects, TypeScript is primarily utilized for type-checking purposes, rather than for emitting JavaScript code. The actual transpilation process is usually handled by a bundler (e.g., Webpack, via `react-scripts`).
 
-    `noImplicitAny` and `strictNullChecks`, which promote stronger type safety throughout the codebase.
+- **`"esModuleInterop": true`**: This setting simplifies the interoperability between ES modules and CommonJS modules.
 
-- **`"noEmit": true`**: In typical React projects, TypeScript is primarily utilized for type-checking purposes, rather than for emitting JavaScript code. The actual transpilation process is usually handled by a bundler (e.g., Webpack, via `react-scripts`).  
-
-- **`"esModuleInterop": true`**: This setting simplifies the interoperability between ES modules and CommonJS modules.  
-
-- **`"include"` and `"exclude"`**: These properties define which files TypeScript should process and which it should ignore, respectively. Common patterns include  
-
-    `"src/**/*"` for source file inclusion and `**/*.spec.ts` for test file exclusion.  
+- **`"include"` and `"exclude"`**: These properties define which files TypeScript should process and which it should ignore, respectively. Common patterns include `"src/**/*"` for source file inclusion and `**/*.spec.ts` for test file exclusion.
 
 The `tsconfig.json` file acts as a foundational blueprint that dictates TypeScript's behavior and, consequently, the developer experience. A meticulously configured `tsconfig.json`, particularly with `strict` mode enabled, directly contributes to a reduction in runtime errors and provides superior IDE support. Conversely, a poorly configured file can lead to developer frustration and a perception that TypeScript impedes progress. The initial investment in correctly setting up `tsconfig.json` yields substantial long-term benefits in maintainability and a smoother development workflow, directly impacting developer productivity and reducing the cost associated with bug resolution.
 
-The seamless integration with Create React App , coupled with the widespread availability of  
-
-`@types` packages , and the existence of  
-
-`tsconfig/bases` , indicates a significant maturation of the TypeScript-React ecosystem. The fact that  
-
-`create-react-app` offers a dedicated `--template typescript` and automates many configurations signifies that TypeScript is no longer an afterthought but a first-class citizen in React development. Similarly, the broad availability of  
-
-`@types` packages for popular libraries means developers rarely need to create type definitions from scratch for commonly used tools. The  
-
-`tsconfig/bases` further streamline this process by offering pre-configured, battle-tested `tsconfig.json` files. This trend demonstrates that community efforts and tooling have evolved to make TypeScript adoption in React considerably easier and more robust, lowering the barrier to entry and augmenting its practical value.  
+The seamless integration with Create React App , coupled with the widespread availability of `@types` packages , and the existence of `tsconfig/bases` , indicates a significant maturation of the TypeScript-React ecosystem. The fact that `create-react-app` offers a dedicated `--template typescript` and automates many configurations signifies that TypeScript is no longer an afterthought but a first-class citizen in React development. Similarly, the broad availability of `@types` packages for popular libraries means developers rarely need to create type definitions from scratch for commonly used tools. The `tsconfig/bases` further streamline this process by offering pre-configured, battle-tested `tsconfig.json` files. This trend demonstrates that community efforts and tooling have evolved to make TypeScript adoption in React considerably easier and more robust, lowering the barrier to entry and augmenting its practical value.
 
 ## II. Essential Aspects: Typing React Components & Hooks
 
@@ -143,20 +111,20 @@ This section outlines the fundamental typing patterns crucial for React componen
 
 ### A. Typing Component Props
 
-Interfaces serve as the primary mechanism for defining the structural shape of component props in TypeScript. They establish clear, explicit contracts for the data a component expects to receive.  
+Interfaces serve as the primary mechanism for defining the structural shape of component props in TypeScript. They establish clear, explicit contracts for the data a component expects to receive.
 
 #### 1\. Defining Props with Interfaces
 
 Interfaces provide a robust way to specify the types of properties (props) that a React component accepts. This ensures that components are used correctly and that data passed between them adheres to predefined structures.
 
-```typescript
+```tsx
 // src/components/Greeting.tsx
-import React from 'react';
+import React from "react";
 
 // Define the shape of the props using an interface
 interface GreetingProps {
-  name: string;      // A required string prop for the person's name
-  age?: number;      // An optional number prop for the person's age
+  name: string; // A required string prop for the person's name
+  age?: number; // An optional number prop for the person's age
   onGreet: (message: string) => void; // A function prop that takes a string and returns void
 }
 
@@ -198,19 +166,19 @@ function App() {
 
 #### 2\. Understanding `React.FC` (FunctionComponent) and its Evolution
 
-`React.FC` (or `React.FunctionComponent`) is a generic type historically used to define function components. Its popularity stemmed from its implicit inclusion of the  
+`React.FC` (or `React.FunctionComponent`) is a generic type historically used to define function components. Its popularity stemmed from its implicit inclusion of the
 
-`children` prop. However, a significant change occurred post-React 18, where the implicit  
+`children` prop. However, a significant change occurred post-React 18, where the implicit
 
-`children` prop was removed from `React.FC`. This modification means that  
+`children` prop was removed from `React.FC`. This modification means that
 
-`React.FC` now offers "no real benefits compared to directly assigning the interface to the props object". Consequently, many developers now favor explicit prop typing for enhanced clarity and to circumvent potential issues associated with implicit  
+`React.FC` now offers "no real benefits compared to directly assigning the interface to the props object". Consequently, many developers now favor explicit prop typing for enhanced clarity and to circumvent potential issues associated with implicit
 
 `children` behavior.
 
-```typescript
+```tsx
 // src/components/UserCard.tsx
-import React from 'react';
+import React from "react";
 
 interface UserCardProps {
   username: string;
@@ -221,7 +189,7 @@ interface UserCardProps {
 // Note: In React 18+, `children` is no longer implicitly included.
 const UserCard: React.FC<UserCardProps> = ({ username, email }) => {
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
+    <div style={{ border: "1px solid #ccc", padding: "10px", margin: "10px" }}>
       <h3>{username}</h3>
       <p>Email: {email}</p>
     </div>
@@ -233,23 +201,23 @@ export default UserCard;
 
 #### 3\. Handling the `children` Prop (`React.ReactNode`, `PropsWithChildren`)
 
-The `children` prop in React is remarkably versatile, capable of accepting a diverse range of content, including strings, numbers, JSX elements, arrays of JSX elements, functions, booleans, `null`, and `undefined`.  
+The `children` prop in React is remarkably versatile, capable of accepting a diverse range of content, including strings, numbers, JSX elements, arrays of JSX elements, functions, booleans, `null`, and `undefined`.
 
-The `React.ReactNode` type is widely recommended as the broadest and most appropriate type for the `children` prop. It represents a union type that encompasses all possible renderable React elements. Alternatively, the  
+The `React.ReactNode` type is widely recommended as the broadest and most appropriate type for the `children` prop. It represents a union type that encompasses all possible renderable React elements. Alternatively, the
 
-`PropsWithChildren<P>` utility type, provided by React, takes a component's prop interface `P` and returns a union type that includes an appropriately typed `children?: React.ReactNode` prop. This utility is frequently recommended due to its reduction in boilerplate code.  
+`PropsWithChildren<P>` utility type, provided by React, takes a component's prop interface `P` and returns a union type that includes an appropriately typed `children?: React.ReactNode` prop. This utility is frequently recommended due to its reduction in boilerplate code.
 
-The evolution of `React.FC`, particularly the removal of implicit `children` in React 18 , signals a broader trend in React and TypeScript toward more explicit and less "magic" typing. While  
+The evolution of `React.FC`, particularly the removal of implicit `children` in React 18 , signals a broader trend in React and TypeScript toward more explicit and less "magic" typing. While
 
 `React.FC` offered convenience, its implicit `children` behavior could obscure the actual prop interface. The shift towards `PropsWithChildren` or direct `React.ReactNode` typing promotes clearer API definitions. This change reflects a design philosophy that prioritizes explicitness over implicit assumptions. Even with `PropsWithChildren`, the inclusion of `children` is achieved by explicitly composing the `P` type with `children?: ReactNode`. This trend simplifies the mental model for developers: if a prop exists, it should be explicitly declared or clearly composed, which reduces potential confusion and makes component APIs more transparent, aligning with TypeScript's core objective of clarity.
 
-The careful selection between `React.ReactNode` and `PropsWithChildren` for the `children` prop illustrates how TypeScript's type system can influence and enforce component design patterns. It encourages developers to precisely consider the type of content their components are designed to encapsulate. The  
+The careful selection between `React.ReactNode` and `PropsWithChildren` for the `children` prop illustrates how TypeScript's type system can influence and enforce component design patterns. It encourages developers to precisely consider the type of content their components are designed to encapsulate. The
 
 `children` prop's flexibility means its type (`React.ReactNode`) is inherently broad. By opting for `React.ReactNode` or `PropsWithChildren`, developers explicitly declare their component as a "container" capable of rendering arbitrary React content. If a component is intended to accept only a string or a specific JSX element as a child, then typing `children` more narrowly (e.g., `children: string` or `children: JSX.Element`) would represent a more precise design choice, which is then enforced by TypeScript. This demonstrates how the type system functions not merely for correctness but also for communicating and enforcing architectural decisions concerning component interaction and composition.
 
-```typescript
+```tsx
 // src/components/Layout.tsx
-import React, { PropsWithChildren, ReactNode } from 'react';
+import React, { PropsWithChildren, ReactNode } from "react";
 
 interface LayoutProps {
   title: string;
@@ -257,9 +225,12 @@ interface LayoutProps {
 
 // Option 1: Using PropsWithChildren (Recommended for most cases)
 // Automatically adds `children?: ReactNode` to LayoutProps
-const LayoutWithPropsWithChildren: React.FC<PropsWithChildren<LayoutProps>> = ({ title, children }) => {
+const LayoutWithPropsWithChildren: React.FC<PropsWithChildren<LayoutProps>> = ({
+  title,
+  children,
+}) => {
   return (
-    <div style={{ border: '2px dashed blue', padding: '20px' }}>
+    <div style={{ border: "2px dashed blue", padding: "20px" }}>
       <h1>{title}</h1>
       {children} {/* children is implicitly typed as ReactNode */}
     </div>
@@ -272,9 +243,12 @@ interface LayoutPropsExplicitChildren {
   children: ReactNode; // Explicitly define children as ReactNode
 }
 
-const LayoutExplicitChildren: React.FC<LayoutPropsExplicitChildren> = ({ title, children }) => {
+const LayoutExplicitChildren: React.FC<LayoutPropsExplicitChildren> = ({
+  title,
+  children,
+}) => {
   return (
-    <div style={{ border: '2px solid green', padding: '20px' }}>
+    <div style={{ border: "2px solid green", padding: "20px" }}>
       <h2>{title}</h2>
       {children}
     </div>
@@ -312,15 +286,15 @@ function App() {
 
 ### B. Typing Component State with `useState`
 
-The `useState` hook enables functional components to manage internal state. TypeScript enhances this capability by providing robust type safety for state variables.  
+The `useState` hook enables functional components to manage internal state. TypeScript enhances this capability by providing robust type safety for state variables.
 
 #### 1\. Basic State Types (Primitives, Arrays, Objects)
 
-TypeScript often infers the state type accurately from the `initialState` provided to `useState`. For primitive types such as boolean, number, and string, type inference is typically sufficient. However, for more complex data structures like arrays and objects, it is considered good practice to define an interface or type alias that explicitly outlines the shape of the state. Explicit typing, achieved by providing a type argument to  
+TypeScript often infers the state type accurately from the `initialState` provided to `useState`. For primitive types such as boolean, number, and string, type inference is typically sufficient. However, for more complex data structures like arrays and objects, it is considered good practice to define an interface or type alias that explicitly outlines the shape of the state. Explicit typing, achieved by providing a type argument to
 
-`useState` using angle brackets (`useState<Type>`), is particularly beneficial when the initial state is `null` or an empty array/object, where inference might be overly broad or inaccurate.  
+`useState` using angle brackets (`useState<Type>`), is particularly beneficial when the initial state is `null` or an empty array/object, where inference might be overly broad or inaccurate.
 
-```typescript
+```tsx
 // src/components/Counter.tsx
 import React, { useState } from 'react';
 
@@ -381,11 +355,11 @@ export default Counter;
 
 #### 2\. Union Types and Nullable States
 
-When a state variable is designed to hold one of several distinct types, a union type (`TypeA | TypeB`) is employed. This is a common scenario for states that might initially be  
+When a state variable is designed to hold one of several distinct types, a union type (`TypeA | TypeB`) is employed. This is a common scenario for states that might initially be
 
-`null` or `undefined` before data is successfully loaded.  
+`null` or `undefined` before data is successfully loaded.
 
-```typescript
+```tsx
 // src/components/DataFetcher.tsx
 import React, { useState, useEffect } from 'react';
 
@@ -445,17 +419,17 @@ export default DataFetcher;
 
 #### 3\. Initializer Functions for State
 
-When the initial state of a component is derived from an expensive computation or requires complex logic based on props, it should be provided as an initializer function to `useState`. This function is executed only once during the component's initial render, thereby preventing redundant re-computations on subsequent renders.  
+When the initial state of a component is derived from an expensive computation or requires complex logic based on props, it should be provided as an initializer function to `useState`. This function is executed only once during the component's initial render, thereby preventing redundant re-computations on subsequent renders.
 
 Explicitly defining types for `useState`, particularly for complex objects, arrays, or union types, directly contributes to more robust and predictable state management. This proactive approach helps prevent subtle bugs that might arise from incorrect initial inference or unexpected state transitions. For example, if `useState()` is used without an explicit type, TypeScript might infer `any` or `never`, which are overly permissive. Explicitly typing `useState<User>()` ensures that only `User` objects can be added to the array. Similarly, for `useState<User | null>(null)`, the union type clearly communicates that the state can be either a `User` object or `null`, compelling developers to handle both possibilities (e.g., using optional chaining `?.`). This upfront typing prevents runtime errors when attempting to access properties on a `null` value, making the code more resilient.
 
-The use of initializer functions for `useState` also serves as a subtle performance optimization. While not a direct TypeScript feature, TypeScript's explicit function typing reinforces this pattern by ensuring the initializer's return type aligns with the state type. The  
+The use of initializer functions for `useState` also serves as a subtle performance optimization. While not a direct TypeScript feature, TypeScript's explicit function typing reinforces this pattern by ensuring the initializer's return type aligns with the state type. The
 
-`useState` documentation explicitly states that an initializer function "will be called when initializing the component, and store its return value as the initial state," emphasizing that it prevents "recreating the initial state". This addresses a critical performance concern in React: if an expensive initial state calculation were to occur on every re-render (which would happen if not wrapped in a function), it could significantly degrade performance. TypeScript, by requiring type consistency for the state, naturally integrates with this optimization. When defining  
+`useState` documentation explicitly states that an initializer function "will be called when initializing the component, and store its return value as the initial state," emphasizing that it prevents "recreating the initial state". This addresses a critical performance concern in React: if an expensive initial state calculation were to occur on every re-render (which would happen if not wrapped in a function), it could significantly degrade performance. TypeScript, by requiring type consistency for the state, naturally integrates with this optimization. When defining
 
 `useState<Todo>(createInitialTodos)`, TypeScript verifies that `createInitialTodos` indeed returns `Todo`, reinforcing the correct application of this performance-oriented pattern.
 
-```typescript
+```tsx
 // src/utils/initializers.ts
 // Simulate an expensive computation to create initial data
 export const createInitialTodos = (): { id: number; text: string; completed: boolean } => {
@@ -512,25 +486,25 @@ export default TodoList;
 
 ### C. Typing Event Handlers
 
-React's event system employs `SyntheticEvent` wrappers around native browser events. TypeScript provides specific types for these synthetic events, ensuring type safety when handling user interactions.  
+React's event system employs `SyntheticEvent` wrappers around native browser events. TypeScript provides specific types for these synthetic events, ensuring type safety when handling user interactions.
 
 #### 1\. Common DOM Event Types (`ChangeEvent`, `MouseEvent`, `FormEvent`)
 
 React offers specialized `SyntheticEvent` types for frequently encountered DOM events, parameterized by the specific HTML element type from which they originate.
 
-- **`React.ChangeEvent<HTMLInputElement>`**: Used for `onChange` events on input, textarea, and select elements, granting access to `event.target.value`.  
+- **`React.ChangeEvent<HTMLInputElement>`**: Used for `onChange` events on input, textarea, and select elements, granting access to `event.target.value`.
 
-- **`React.MouseEvent<HTMLButtonElement>`**: Applied to `onClick` events on buttons.  
+- **`React.MouseEvent<HTMLButtonElement>`**: Applied to `onClick` events on buttons.
 
-- **`React.FormEvent<HTMLFormElement>`**: Employed for `onSubmit` events on forms, allowing access to `event.currentTarget`.  
+- **`React.FormEvent<HTMLFormElement>`**: Employed for `onSubmit` events on forms, allowing access to `event.currentTarget`.
 
-The strong recommendation to use specific event types, such as `ChangeEvent<HTMLInputElement>`, over the more generic `SyntheticEvent` exemplifies a core TypeScript best practice: leveraging the type system to achieve maximum precision. This approach minimizes the need for runtime checks or type assertions. When an event is known to originate from an  
+The strong recommendation to use specific event types, such as `ChangeEvent<HTMLInputElement>`, over the more generic `SyntheticEvent` exemplifies a core TypeScript best practice: leveraging the type system to achieve maximum precision. This approach minimizes the need for runtime checks or type assertions. When an event is known to originate from an
 
 `HTMLInputElement`, typing it as `ChangeEvent<HTMLInputElement>` immediately provides direct access to `event.target.value` without requiring an explicit `as HTMLInputElement` cast. This not only results in cleaner code but also proactively prevents potential runtime errors that could occur if the event handler were inadvertently applied to a non-input element. The burden of ensuring correct element properties is thus shifted from runtime debugging to compile-time validation.
 
 Typing event handlers establishes a critical safety net for interactions with the Document Object Model (DOM). Without this, common errors, such as attempting to access `event.target.value` on an element that is not an input field, could lead to silent failures or `undefined` errors. In JavaScript, attaching any event listener to any DOM element is permissible, and accessing properties like `event.target.value` or `event.currentTarget.name` might fail if the element does not possess them. TypeScript, through its specific event types (e.g., `ChangeEvent<HTMLInputElement>`), directly links the event to the expected DOM element type. This means the compiler will prevent attempts to access `value` on a `HTMLButtonElement`'s `ChangeEvent`. This compile-time feedback is invaluable, as DOM manipulation and event handling are frequent sources of runtime errors in web applications. It serves as a proactive guard against common interaction-related bugs.
 
-```typescript
+```tsx
 // src/components/FormExample.tsx
 import React, { useState } from 'react';
 import type { ChangeEvent, MouseEvent, FormEvent } from 'react'; // Import types directly from 'react'
@@ -590,38 +564,44 @@ export default FormExample;
 
 #### 2\. Using `React.SyntheticEvent` for Generic Events
 
-`React.SyntheticEvent<EventTarget>` provides a more generalized type for events, useful when the specific element type is unknown or when handling a broad spectrum of events. However, employing this generic type necessitates casting  
+`React.SyntheticEvent<EventTarget>` provides a more generalized type for events, useful when the specific element type is unknown or when handling a broad spectrum of events. However, employing this generic type necessitates casting
 
-`event.target` to a more specific HTML element type (e.g., `HTMLInputElement`) to access properties like `value` or `name`. While  
+`event.target` to a more specific HTML element type (e.g., `HTMLInputElement`) to access properties like `value` or `name`. While
 
-`React.SyntheticEvent` offers flexibility, it is generally recommended to opt for more specific event types (e.g., `ChangeEvent`, `MouseEvent`) whenever feasible, as they facilitate superior type inference without the need for manual type casting.  
+`React.SyntheticEvent` offers flexibility, it is generally recommended to opt for more specific event types (e.g., `ChangeEvent`, `MouseEvent`) whenever feasible, as they facilitate superior type inference without the need for manual type casting.
 
-```typescript
+```tsx
 // src/components/GenericEventHandler.tsx
-import React from 'react';
-import type { SyntheticEvent } from 'react';
+import React from "react";
+import type { SyntheticEvent } from "react";
 
 const GenericEventHandler: React.FC = () => {
   // Using a generic SyntheticEvent type
   const handleGenericEvent = (event: SyntheticEvent) => {
-    console.log('Event type:', event.type);
+    console.log("Event type:", event.type);
     // To access element-specific properties, you often need to cast the target
     const target = event.target as HTMLInputElement; // Cast to HTMLInputElement for example
-    if (target && target.value!== undefined) {
-      console.log('Target value (if input):', target.value);
+    if (target && target.value !== undefined) {
+      console.log("Target value (if input):", target.value);
     }
     // For a button, you might cast to HTMLButtonElement
     const buttonTarget = event.target as HTMLButtonElement;
-    if (buttonTarget && buttonTarget.tagName === 'BUTTON') {
-      console.log('Button text:', buttonTarget.textContent);
+    if (buttonTarget && buttonTarget.tagName === "BUTTON") {
+      console.log("Button text:", buttonTarget.textContent);
     }
   };
 
   return (
-    <div style={{ border: '1px solid #ddd', padding: '20px', margin: '20px' }}>
+    <div style={{ border: "1px solid #ddd", padding: "20px", margin: "20px" }}>
       <h3>Generic Event Handling</h3>
-      <input type="text" onChange={handleGenericEvent} placeholder="Generic Input" />
-      <button onClick={handleGenericEvent} style={{ marginLeft: '10px' }}>Generic Button</button>
+      <input
+        type="text"
+        onChange={handleGenericEvent}
+        placeholder="Generic Input"
+      />
+      <button onClick={handleGenericEvent} style={{ marginLeft: "10px" }}>
+        Generic Button
+      </button>
       <p>Check console for event details.</p>
     </div>
   );
@@ -636,25 +616,25 @@ This section explores the application of TypeScript to more complex React Hooks 
 
 ### A. Typing `useEffect` for Side Effects
 
-The `useEffect` hook enables React components to synchronize with external systems or perform side effects, such as data fetching, managing subscriptions, or direct DOM manipulation. TypeScript ensures that these effects and their associated dependencies are type-safe.  
+The `useEffect` hook enables React components to synchronize with external systems or perform side effects, such as data fetching, managing subscriptions, or direct DOM manipulation. TypeScript ensures that these effects and their associated dependencies are type-safe.
 
 #### 1\. Basic Effect Typing with Dependencies
 
-The `useEffect` hook accepts two arguments: a setup function and an optional array of dependencies. TypeScript automatically infers the types within the effect's callback based on its contextual usage. The dependency array is critical for controlling when the effect re-executes; any value from the component that is referenced inside the effect must be included in this array.  
+The `useEffect` hook accepts two arguments: a setup function and an optional array of dependencies. TypeScript automatically infers the types within the effect's callback based on its contextual usage. The dependency array is critical for controlling when the effect re-executes; any value from the component that is referenced inside the effect must be included in this array.
 
-The dependency array in `useEffect` is not merely a list of values; it functions as the explicit control mechanism that governs the lifecycle and re-execution of side effects. Misunderstanding or misapplying this mechanism, for instance, by omitting necessary dependencies or including unstable objects or functions, can directly lead to issues such as infinite loops, stale closures, or superfluous re-renders. Snippets highlight that  
+The dependency array in `useEffect` is not merely a list of values; it functions as the explicit control mechanism that governs the lifecycle and re-execution of side effects. Misunderstanding or misapplying this mechanism, for instance, by omitting necessary dependencies or including unstable objects or functions, can directly lead to issues such as infinite loops, stale closures, or superfluous re-renders. Snippets highlight that
 
-`useEffect` "takes... an array of dependencies that controls when the effect runs" and "includes every value from your component used inside of those functions". If a value utilized within the effect (e.g., a state variable or a prop) is not included in the dependency array, the effect will "close over" an outdated value, resulting in stale data. Conversely, if a dependency is an object or function that is re-created on every render and not memoized, the effect will execute unnecessarily often. This inherent coupling between the effect's logic and its dependencies is fundamental to  
+`useEffect` "takes... an array of dependencies that controls when the effect runs" and "includes every value from your component used inside of those functions". If a value utilized within the effect (e.g., a state variable or a prop) is not included in the dependency array, the effect will "close over" an outdated value, resulting in stale data. Conversely, if a dependency is an object or function that is re-created on every render and not memoized, the effect will execute unnecessarily often. This inherent coupling between the effect's logic and its dependencies is fundamental to
 
 `useEffect`'s behavior and is a common source of React-related issues. While TypeScript does not directly enforce the _correctness_ of the dependency array's content, it aids by ensuring the _types_ of the dependencies are consistent and, with appropriate ESLint rules, can provide warnings about missing dependencies. The underlying principle is that the dependency array represents a contract with React regarding when the side effect should be re-synchronized.
 
-```typescript
+```tsx
 // src/components/TitleUpdater.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 const TitleUpdater: React.FC = () => {
   const [count, setCount] = useState<number>(0);
-  const [message, setMessage] = useState<string>('Hello');
+  const [message, setMessage] = useState<string>("Hello");
 
   // Effect to update document title based on count
   useEffect(() => {
@@ -667,9 +647,15 @@ const TitleUpdater: React.FC = () => {
     <div>
       <h3>Document Title Updater</h3>
       <p>Count: {count}</p>
-      <button onClick={() => setCount(prev => prev + 1)}>Increment Count</button>
+      <button onClick={() => setCount((prev) => prev + 1)}>
+        Increment Count
+      </button>
       <p>Message: {message}</p>
-      <button onClick={() => setMessage(message === 'Hello'? 'World' : 'Hello')}>Toggle Message</button>
+      <button
+        onClick={() => setMessage(message === "Hello" ? "World" : "Hello")}
+      >
+        Toggle Message
+      </button>
       <p>Check browser tab title.</p>
     </div>
   );
@@ -680,11 +666,11 @@ export default TitleUpdater;
 
 #### 2\. Implementing Cleanup Functions
 
-The setup function of `useEffect` can optionally return a cleanup function. This cleanup function is executed when the component unmounts or prior to the effect re-running due to changes in its dependencies. Cleanup operations are vital for preventing memory leaks, such as clearing timers, unsubscribing from events, or closing network connections. In Strict Mode, React performs an additional setup-plus-cleanup cycle during development to stress-test the cleanup logic, ensuring its robustness.  
+The setup function of `useEffect` can optionally return a cleanup function. This cleanup function is executed when the component unmounts or prior to the effect re-running due to changes in its dependencies. Cleanup operations are vital for preventing memory leaks, such as clearing timers, unsubscribing from events, or closing network connections. In Strict Mode, React performs an additional setup-plus-cleanup cycle during development to stress-test the cleanup logic, ensuring its robustness.
 
-The emphasis on cleanup functions extends beyond merely preventing memory leaks; it is fundamental for maintaining application stability and preventing unpredictable behavior, particularly in single-page applications where components are frequently mounted and unmounted. Without proper cleanup, timers might continue to operate after a component is unmounted, potentially attempting to update state on a non-existent component, which can lead to errors or warnings. Event listeners could accumulate, causing performance degradation or unintended multiple executions. Network requests might complete and attempt to update state on a component that no longer exists, resulting in "Can't perform a React state update on an unmounted component" warnings. Strict Mode's deliberate double-invocation of effects serves as a development-time stress test, designed to help developers ensure their cleanup logic is robust and accurately "mirrors" the setup logic. This underscores that cleanup is not an optional amenity but a foundational requirement for constructing stable and performant React applications.  
+The emphasis on cleanup functions extends beyond merely preventing memory leaks; it is fundamental for maintaining application stability and preventing unpredictable behavior, particularly in single-page applications where components are frequently mounted and unmounted. Without proper cleanup, timers might continue to operate after a component is unmounted, potentially attempting to update state on a non-existent component, which can lead to errors or warnings. Event listeners could accumulate, causing performance degradation or unintended multiple executions. Network requests might complete and attempt to update state on a component that no longer exists, resulting in "Can't perform a React state update on an unmounted component" warnings. Strict Mode's deliberate double-invocation of effects serves as a development-time stress test, designed to help developers ensure their cleanup logic is robust and accurately "mirrors" the setup logic. This underscores that cleanup is not an optional amenity but a foundational requirement for constructing stable and performant React applications.
 
-```typescript
+```tsx
 // src/components/Timer.tsx
 import React, { useState, useEffect } from 'react';
 
@@ -719,9 +705,9 @@ export default Timer;
 
 #### 3\. Data Fetching with `useEffect`
 
-`useEffect` is a common choice for handling data fetching operations. In this context, it is crucial to manage loading, success, and error states effectively, and to ensure proper cleanup for asynchronous operations to prevent attempts to set state on components that have already unmounted.  
+`useEffect` is a common choice for handling data fetching operations. In this context, it is crucial to manage loading, success, and error states effectively, and to ensure proper cleanup for asynchronous operations to prevent attempts to set state on components that have already unmounted.
 
-```typescript
+```tsx
 // src/components/PostFetcher.tsx
 import React, { useState, useEffect } from 'react';
 
@@ -794,17 +780,17 @@ export default PostFetcher;
 
 ### B. Typing `useContext` for Global State
 
-The React Context API facilitates data sharing across a component tree without the need for prop drilling. The  
+The React Context API facilitates data sharing across a component tree without the need for prop drilling. The
 
-`useContext` hook is specifically designed for consuming this shared data. TypeScript ensures type safety for the context value, providing a robust mechanism for managing global state.  
+`useContext` hook is specifically designed for consuming this shared data. TypeScript ensures type safety for the context value, providing a robust mechanism for managing global state.
 
 #### 1\. Creating Type-Safe Context
 
-To establish a type-safe context, one must define an interface or type that precisely outlines the structure of the context data. This type is then utilized with  
+To establish a type-safe context, one must define an interface or type that precisely outlines the structure of the context data. This type is then utilized with
 
-`React.createContext`. When a meaningful default value is absent, it is a common practice to initialize the context with `null` and declare its type as a union with `null` (e.g., `ContextType | null`).  
+`React.createContext`. When a meaningful default value is absent, it is a common practice to initialize the context with `null` and declare its type as a union with `null` (e.g., `ContextType | null`).
 
-```typescript
+```tsx
 // src/context/ThemeContext.ts
 import React, { createContext, useState, ReactNode } from 'react';
 
@@ -857,20 +843,20 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
 #### 2\. Consuming Context and Handling Null Defaults
 
-The `useContext(YourContext)` hook is employed to consume the context value. If the context was initialized with  
+The `useContext(YourContext)` hook is employed to consume the context value. If the context was initialized with
 
-`null`, TypeScript will accurately infer the type as `ContextType | null`. In such cases, it becomes necessary to handle the potential  
+`null`, TypeScript will accurately infer the type as `ContextType | null`. In such cases, it becomes necessary to handle the potential
 
-`null` value using either optional chaining (`?.`) or a runtime check.  
+`null` value using either optional chaining (`?.`) or a runtime check.
 
 ```javascript
 // src/components/ThemeSwitcher.tsx
-import React, { useContext } from 'react';
-import { ThemeContext, ThemeContextType, Theme } from '../context/ThemeContext';
+import React, { useContext } from "react";
+import { ThemeContext, ThemeContextType, Theme } from "../context/ThemeContext";
 
 const ThemeSwitcher: React.FC = () => {
   // Consume the context. TypeScript infers `themeContext` as ThemeContextType | null.
-  const themeContext = useContext<ThemeContextType | null>(ThemeContext);
+  const themeContext = (useContext < ThemeContextType) | (null > ThemeContext);
 
   if (!themeContext) {
     // This check is necessary if ThemeContext was created with null as default.
@@ -883,7 +869,13 @@ const ThemeSwitcher: React.FC = () => {
   const { theme, toggleTheme } = themeContext;
 
   return (
-    <div style={{ padding: '10px', background: theme === Theme.Light? '#fff' : '#333', color: theme === Theme.Light? '#000' : '#fff' }}>
+    <div
+      style={{
+        padding: "10px",
+        background: theme === Theme.Light ? "#fff" : "#333",
+        color: theme === Theme.Light ? "#000" : "#fff",
+      }}
+    >
       <p>Current Theme: {theme}</p>
       <button onClick={toggleTheme}>Toggle Theme</button>
     </div>
@@ -895,19 +887,19 @@ export default ThemeSwitcher;
 
 #### 3\. Best Practices: Custom Hooks for Context Consumption
 
-To minimize repetitive `null` checks and provide more informative error messages, a widely adopted best practice involves creating a custom hook that encapsulates `useContext`. This custom hook performs the necessary  
+To minimize repetitive `null` checks and provide more informative error messages, a widely adopted best practice involves creating a custom hook that encapsulates `useContext`. This custom hook performs the necessary
 
-`null` check and, if the provider is absent, throws an error, thereby guaranteeing a non-null type for all consumers.  
+`null` check and, if the provider is absent, throws an error, thereby guaranteeing a non-null type for all consumers.
 
-The pattern of creating a custom hook for `useContext` consumption that incorporates a runtime `null` check and throws an error exemplifies robust defensive programming. This approach transforms error detection from silent  
+The pattern of creating a custom hook for `useContext` consumption that incorporates a runtime `null` check and throws an error exemplifies robust defensive programming. This approach transforms error detection from silent
 
-`null` dereferences into explicit, actionable errors. When `createContext` is initialized with `null` , TypeScript correctly flags that the consumed value might be  
+`null` dereferences into explicit, actionable errors. When `createContext` is initialized with `null` , TypeScript correctly flags that the consumed value might be
 
-`null`. While optional chaining (`?.`) or non-null assertions (`!`) can bypass this at compile time , they do not prevent runtime errors if the provider is genuinely missing. The custom hook approach is superior because it introduces a runtime check (  
+`null`. While optional chaining (`?.`) or non-null assertions (`!`) can bypass this at compile time , they do not prevent runtime errors if the provider is genuinely missing. The custom hook approach is superior because it introduces a runtime check (
 
 `if (!context) { throw new Error(...) }`). This ensures that if a developer neglects to wrap a component with the `Provider`, they receive an immediate, clear error message in the console, precisely indicating the issue and its resolution. This robust error-handling strategy combines TypeScript's compile-time safety with meaningful runtime feedback, leading to a more resilient and easily debugged application.
 
-While context is suitable for "global" data that is not overly complex for dedicated state managers , its typing patterns, particularly with custom hooks, implicitly guide its appropriate usage. The caution against including "frequently changing variables" in context highlights a performance implication often overlooked. Snippets indicate context as appropriate for "user's current language, current theme, or even data from a multi-step form" , and advise against "overusing context" or adding "frequently changing variables". Type-safe context patterns (interfaces, custom hooks) facilitate the correct implementation of context, but they do not inherently resolve the underlying performance characteristic: any component consuming a context will re-render when the context  
+While context is suitable for "global" data that is not overly complex for dedicated state managers , its typing patterns, particularly with custom hooks, implicitly guide its appropriate usage. The caution against including "frequently changing variables" in context highlights a performance implication often overlooked. Snippets indicate context as appropriate for "user's current language, current theme, or even data from a multi-step form" , and advise against "overusing context" or adding "frequently changing variables". Type-safe context patterns (interfaces, custom hooks) facilitate the correct implementation of context, but they do not inherently resolve the underlying performance characteristic: any component consuming a context will re-render when the context
 
 _value_ changes. If a context holds highly volatile data, this can lead to excessive re-renders across the component tree. Typing helps ensure the _shape_ of the data is correct, but developers must still possess a deep understanding of React's rendering behavior to utilize context _efficiently_. This implies that TypeScript enables safer _implementation_ of context, but architectural decisions regarding _what_ data to place in context still depend on a thorough comprehension of React's reconciliation process.
 
@@ -920,21 +912,27 @@ export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (!context) {
     // Runtime check: if context is null, it means the component is not wrapped by ThemeProvider
-    throw new Error('useTheme must be used within a ThemeProvider');
+    throw new Error("useTheme must be used within a ThemeProvider");
   }
   return context; // TypeScript now knows 'context' is ThemeContextType (non-null)
 };
 
 // src/components/ThemeDisplay.tsx
-import React from 'react';
-import { useTheme } from '../context/ThemeContext'; // Import the custom hook
+import React from "react";
+import { useTheme } from "../context/ThemeContext"; // Import the custom hook
 
 const ThemeDisplay: React.FC = () => {
   // Consume context using the custom hook. No null check needed here.
   const { theme } = useTheme();
 
   return (
-    <div style={{ padding: '10px', background: theme === 'light'? '#eee' : '#555', color: theme === 'light'? '#333' : '#eee' }}>
+    <div
+      style={{
+        padding: "10px",
+        background: theme === "light" ? "#eee" : "#555",
+        color: theme === "light" ? "#333" : "#eee",
+      }}
+    >
       <p>Displaying theme: {theme}</p>
     </div>
   );
@@ -961,21 +959,21 @@ function App() {
 
 ### C. Typing `useRef` for DOM and Mutable Values
 
-The `useRef` hook provides a mechanism for creating mutable references that persist across component renders without triggering re-renders. It is commonly employed for direct DOM manipulation or for storing mutable values that do not necessitate a re-render of the component.  
+The `useRef` hook provides a mechanism for creating mutable references that persist across component renders without triggering re-renders. It is commonly employed for direct DOM manipulation or for storing mutable values that do not necessitate a re-render of the component.
 
 #### 1\. Referencing Mutable Values
 
-`useRef` returns an object containing a `current` property, which is initially set to the `initialValue` provided. This  
+`useRef` returns an object containing a `current` property, which is initially set to the `initialValue` provided. This
 
-`current` property is mutable. TypeScript infers the type of  
+`current` property is mutable. TypeScript infers the type of
 
 `current` from the `initialValue`. For mutable values, it may be beneficial to explicitly type it, especially if it can be `null` initially.
 
-The core distinction of `useRef` lies in the fact that modifications to `ref.current` do _not_ trigger re-renders. This characteristic makes it an ideal tool for storing values that must persist across renders but whose changes should not cause UI updates, thereby directly preventing unnecessary re-renders. Snippets explicitly state that "changing a ref does not trigger a re-render" and that refs are "perfect for storing information that doesn't affect the visual output". This is a critical performance consideration. If a value, such as an interval ID or a DOM node reference, were stored in state, every update would inadvertently cause a re-render, which is often undesirable for purely internal, non-visual data.  
+The core distinction of `useRef` lies in the fact that modifications to `ref.current` do _not_ trigger re-renders. This characteristic makes it an ideal tool for storing values that must persist across renders but whose changes should not cause UI updates, thereby directly preventing unnecessary re-renders. Snippets explicitly state that "changing a ref does not trigger a re-render" and that refs are "perfect for storing information that doesn't affect the visual output". This is a critical performance consideration. If a value, such as an interval ID or a DOM node reference, were stored in state, every update would inadvertently cause a re-render, which is often undesirable for purely internal, non-visual data.
 
 `useRef` provides a mutable container that bypasses React's reconciliation process for updates to its `current` property. TypeScript's ability to precisely type `ref.current` (e.g., `NodeJS.Timeout | null` or `HTMLInputElement | null`) ensures that developers correctly interact with these mutable values, preventing common JavaScript errors like `cannot read property 'focus' of null` without sacrificing performance.
 
-```typescript
+```tsx
 // src/components/Stopwatch.tsx
 import React, { useRef, useState, useEffect } from 'react';
 
@@ -1038,54 +1036,54 @@ export default Stopwatch;
 
 #### 2\. Manipulating DOM Elements (`HTMLInputElement`, etc.)
 
-To establish a reference to a DOM element, `useRef` should be initialized with `null` and provided with the specific HTML element type (e.g., `HTMLInputElement`, `HTMLDivElement`) as a generic argument. The ref object is then passed to the  
+To establish a reference to a DOM element, `useRef` should be initialized with `null` and provided with the specific HTML element type (e.g., `HTMLInputElement`, `HTMLDivElement`) as a generic argument. The ref object is then passed to the
 
-`ref` attribute of the corresponding JSX element. React will subsequently set the  
+`ref` attribute of the corresponding JSX element. React will subsequently set the
 
-`current` property of the ref object to the actual DOM node. Developers can then directly interact with the DOM node (e.g.,  
+`current` property of the ref object to the actual DOM node. Developers can then directly interact with the DOM node (e.g.,
 
-`inputRef.current.focus()`). It is advisable to use optional chaining (  
+`inputRef.current.focus()`). It is advisable to use optional chaining (
 
-`?.`) when accessing `current`, as it may be `null` before the component mounts or after it unmounts.  
+`?.`) when accessing `current`, as it may be `null` before the component mounts or after it unmounts.
 
-`useRef` for DOM manipulation highlights a necessary bridge between React's declarative component model and the imperative nature of direct DOM access. React promotes a declarative approach to UI development, where the UI is rendered based on the current state. However, certain operations, such as playing media, programmatically focusing an input field, or measuring element dimensions, necessitate direct interaction with the underlying DOM API, which is inherently imperative.  
+`useRef` for DOM manipulation highlights a necessary bridge between React's declarative component model and the imperative nature of direct DOM access. React promotes a declarative approach to UI development, where the UI is rendered based on the current state. However, certain operations, such as playing media, programmatically focusing an input field, or measuring element dimensions, necessitate direct interaction with the underlying DOM API, which is inherently imperative.
 
-`useRef` provides the sanctioned method to "escape" React's declarative paradigm for these specific use cases. TypeScript's generic typing for `useRef<HTMLDivElement>(null)` ensures that when a developer retrieves  
+`useRef` provides the sanctioned method to "escape" React's declarative paradigm for these specific use cases. TypeScript's generic typing for `useRef<HTMLDivElement>(null)` ensures that when a developer retrieves
 
 `inputRef.current`, they are guaranteed to have an `HTMLInputElement` (or `null`), allowing them to confidently invoke DOM-specific methods like `.focus()` without encountering runtime type errors. This robust typing is essential for safely integrating imperative DOM operations into a declarative React application.
 
 ```javascript
 // src/components/FocusInput.tsx
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 
 const FocusInput: React.FC = () => {
   // useRef to reference an HTML input element
   // Type is HTMLInputElement | null, initialized to null
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef < HTMLInputElement > null;
 
   // Effect to focus the input when the component mounts
   useEffect(() => {
     // Check if current is not null before trying to focus
     inputRef.current?.focus();
-    console.log('Input focused on mount.');
-  },); // Empty dependency array: runs once on mount
+    console.log("Input focused on mount.");
+  }); // Empty dependency array: runs once on mount
 
   const handleFocusButtonClick = () => {
     // Programmatically focus the input field
     inputRef.current?.focus();
-    console.log('Button clicked, input focused.');
+    console.log("Button clicked, input focused.");
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '15px', margin: '20px' }}>
+    <div style={{ border: "1px solid #ccc", padding: "15px", margin: "20px" }}>
       <h3>Focus Input Example</h3>
       <input
         type="text"
         ref={inputRef} // Attach the ref to the input element
         placeholder="I will be focused on load"
-        style={{ padding: '8px', width: '200px' }}
+        style={{ padding: "8px", width: "200px" }}
       />
-      <button onClick={handleFocusButtonClick} style={{ marginLeft: '10px' }}>
+      <button onClick={handleFocusButtonClick} style={{ marginLeft: "10px" }}>
         Focus Input Manually
       </button>
     </div>
@@ -1097,21 +1095,21 @@ export default FocusInput;
 
 ### D. Optimizing with `useCallback` and `useMemo`
 
-`useCallback` and `useMemo` are React Hooks designed for memoization (caching), serving to optimize performance by preventing unnecessary re-renders of child components or avoiding expensive re-computations. TypeScript provides explicit typing for these memoized entities, enhancing their reliability.  
+`useCallback` and `useMemo` are React Hooks designed for memoization (caching), serving to optimize performance by preventing unnecessary re-renders of child components or avoiding expensive re-computations. TypeScript provides explicit typing for these memoized entities, enhancing their reliability.
 
 #### 1\. Typing Memoized Functions (`useCallback`)
 
-`useCallback` caches a function definition across re-renders. It accepts the function and a dependency array. If the dependencies remain unchanged, the same function instance is returned. TypeScript typically infers the type of the memoized function from the provided callback, making explicit typing generally unnecessary unless the function signature is particularly complex or involves generics.  
+`useCallback` caches a function definition across re-renders. It accepts the function and a dependency array. If the dependencies remain unchanged, the same function instance is returned. TypeScript typically infers the type of the memoized function from the provided callback, making explicit typing generally unnecessary unless the function signature is particularly complex or involves generics.
 
-The utility of `useCallback` and `useMemo` is fundamentally linked to JavaScript's concept of reference equality within React's reconciliation process. Without these hooks, functions and objects re-created on every render (even if logically identical) would cause child components to re-render, leading to performance bottlenecks. React's `memo` (and `React.PureComponent` for class components) optimizes rendering by shallowly comparing props. If a prop is a function or an object, and that function or object is re-created on every render of the parent component, its reference will change. Even if the _content_ of the function or object remains the same, React will detect a different reference and re-render the child, thereby negating the memoization.  
+The utility of `useCallback` and `useMemo` is fundamentally linked to JavaScript's concept of reference equality within React's reconciliation process. Without these hooks, functions and objects re-created on every render (even if logically identical) would cause child components to re-render, leading to performance bottlenecks. React's `memo` (and `React.PureComponent` for class components) optimizes rendering by shallowly comparing props. If a prop is a function or an object, and that function or object is re-created on every render of the parent component, its reference will change. Even if the _content_ of the function or object remains the same, React will detect a different reference and re-render the child, thereby negating the memoization.
 
-`useCallback` and  
+`useCallback` and
 
-`useMemo` address this by ensuring that the  
+`useMemo` address this by ensuring that the
 
 _same reference_ to the function or computed value is returned across renders, provided its dependencies have not changed. This preserves reference equality, enabling `memo` to effectively skip re-renders. The underlying principle is that these hooks are concerned with _reference_ equality, not _value_ equality, which is a core mechanism of React's performance optimization.
 
-```typescript
+```tsx
 // src/components/ChildComponent.tsx
 import React, { memo } from 'react';
 
@@ -1171,11 +1169,11 @@ export default ParentWithCallback;
 
 #### 2\. Typing Memoized Values (`useMemo`)
 
-`useMemo` caches the _result_ of a computation. It accepts a calculation function and a dependency array, and the calculation is executed only if its dependencies have changed. TypeScript infers the return type of the memoized value. While explicit typing using  
+`useMemo` caches the _result_ of a computation. It accepts a calculation function and a dependency array, and the calculation is executed only if its dependencies have changed. TypeScript infers the return type of the memoized value. While explicit typing using
 
-`useMemo<Type>(...)` is permissible, it is frequently unnecessary unless dealing with complex union types or for enhanced clarity.  
+`useMemo<Type>(...)` is permissible, it is frequently unnecessary unless dealing with complex union types or for enhanced clarity.
 
-```typescript
+```tsx
 // src/components/ProductList.tsx
 import React, { useState, useMemo } from 'react';
 
@@ -1244,43 +1242,43 @@ export default ProductList;
 
 #### 3\. When and Why to Use Them (Performance Considerations)
 
-Both `useCallback` and `useMemo` are primarily performance optimizations. Their application is not universally necessary and can, at times, introduce unwarranted overhead if the memoized value or function is not genuinely expensive to compute or frequently re-created.  
+Both `useCallback` and `useMemo` are primarily performance optimizations. Their application is not universally necessary and can, at times, introduce unwarranted overhead if the memoized value or function is not genuinely expensive to compute or frequently re-created.
 
 **`useCallback` Use Cases:**
 
-- Passing functions as props to child components wrapped with `memo` to prevent their unnecessary re-renders.  
+- Passing functions as props to child components wrapped with `memo` to prevent their unnecessary re-renders.
 
-- When a function serves as a dependency for another Hook (e.g., `useEffect`, `useLayoutEffect`, or another `useCallback`/`useMemo`) to prevent the dependent hook from re-executing needlessly.  
+- When a function serves as a dependency for another Hook (e.g., `useEffect`, `useLayoutEffect`, or another `useCallback`/`useMemo`) to prevent the dependent hook from re-executing needlessly.
 
 **`useMemo` Use Cases:**
 
-- Caching the result of computationally expensive operations that would otherwise re-run on every render.  
+- Caching the result of computationally expensive operations that would otherwise re-run on every render.
 
-- Preventing unnecessary re-renders of child components when passing complex objects or arrays as props.  
+- Preventing unnecessary re-renders of child components when passing complex objects or arrays as props.
 
-- Optimizing values that are used as dependencies in other Hooks.  
+- Optimizing values that are used as dependencies in other Hooks.
 
-It is important to note that React does not guarantee that memoized values or functions will never be re-created (e.g., in development mode, during Suspense, or due to future optimizations). Therefore, these hooks should be employed as performance  
+It is important to note that React does not guarantee that memoized values or functions will never be re-created (e.g., in development mode, during Suspense, or due to future optimizations). Therefore, these hooks should be employed as performance
 
-_optimizations_, not as guarantees of correctness.  
+_optimizations_, not as guarantees of correctness.
 
-While `useCallback` and `useMemo` are tools for optimization, their improper use can introduce unnecessary overhead. The decision to employ them should be guided by performance profiling rather than being a default assumption. Snippets describe these hooks as "powerful tool\[s\] to optimize performance" but also mention "unnecessary overhead" if not applied judiciously. The act of memoizing itself incurs a cost: React must store the cached value or function and compare dependencies on every render. For simple functions or values, this overhead might outweigh any performance benefits. The discussion on "when and why" to use them implicitly points to this: they are primarily valuable when passing props to  
+While `useCallback` and `useMemo` are tools for optimization, their improper use can introduce unnecessary overhead. The decision to employ them should be guided by performance profiling rather than being a default assumption. Snippets describe these hooks as "powerful tool\[s\] to optimize performance" but also mention "unnecessary overhead" if not applied judiciously. The act of memoizing itself incurs a cost: React must store the cached value or function and compare dependencies on every render. For simple functions or values, this overhead might outweigh any performance benefits. The discussion on "when and why" to use them implicitly points to this: they are primarily valuable when passing props to
 
 `memo`\-wrapped components or as dependencies for other hooks. This implies that developers should not indiscriminately apply memoization everywhere. It is a targeted optimization tool, best utilized after identifying specific performance bottlenecks through profiling, rather than a universal best practice for every function or value. TypeScript ensures the _correctness_ of the types involved in memoization but does not dictate the _strategic decision_ of _when_ to memoize.
 
 ### E. Creating Type-Safe Custom Hooks with Generics
 
-Custom Hooks provide a mechanism for encapsulating reusable, stateful logic within functional components. The application of generics in TypeScript is instrumental in making these hooks flexible and type-safe across a variety of data types.  
+Custom Hooks provide a mechanism for encapsulating reusable, stateful logic within functional components. The application of generics in TypeScript is instrumental in making these hooks flexible and type-safe across a variety of data types.
 
 #### 1\. Example: A Generic `useLocalStorage` Hook
 
-This hook facilitates the reading and writing of data to local storage, thereby enabling state persistence across browser sessions. By making it generic, the hook can store any type of data while maintaining full type safety.  
+This hook facilitates the reading and writing of data to local storage, thereby enabling state persistence across browser sessions. By making it generic, the hook can store any type of data while maintaining full type safety.
 
-The `useLocalStorage` hook must be capable of handling diverse data types, including strings, objects, arrays, and booleans. Without generics, one would be compelled to use the  
+The `useLocalStorage` hook must be capable of handling diverse data types, including strings, objects, arrays, and booleans. Without generics, one would be compelled to use the
 
 `any` type or create distinct hooks for each data type, which is cumbersome and compromises type safety. By introducing a generic type `T`, the hook can infer or be explicitly assigned the type of data it is storing (e.g., `useLocalStorage<Theme>("themeKey", {... })` or `useLocalStorage<string>("localStoragekey", "")`). This demonstrates how generics promote code reusability and type correctness for common patterns that operate on arbitrary data structures.
 
-```typescript
+```tsx
 // src/hooks/useLocalStorage.ts
 import { useState, useEffect } from 'react';
 
@@ -1371,23 +1369,23 @@ export default Settings;
 
 #### 2\. Example: A Generic `useFetch` Hook
 
-This hook encapsulates the logic for data fetching, managing loading, error, and data states. The use of generics enables it to fetch and type any kind of data from an API endpoint with strong type safety.  
+This hook encapsulates the logic for data fetching, managing loading, error, and data states. The use of generics enables it to fetch and type any kind of data from an API endpoint with strong type safety.
 
-A `useFetch` hook is an excellent candidate for generics because it can retrieve data of  
+A `useFetch` hook is an excellent candidate for generics because it can retrieve data of
 
 _any_ structure, such as a list of users, a single post, or a complex object. Without generics, the `data` state would likely default to `any`, thereby sacrificing all type safety. By defining `useFetch<T>`, the hook consumer can specify the expected type `T` (e.g., `useFetch<Post>(...)` or `useFetch<{ name: string }>(...)`), allowing TypeScript to enforce that the `data` returned by the hook conforms to `T`. This is a powerful demonstration of how generics render hooks highly reusable and robust for diverse data models.
 
-Custom hooks, particularly when combined with TypeScript generics, represent a powerful pattern for abstracting complex logic (such as data fetching or local storage interaction) into reusable units. This significantly enhances code maintainability and reduces duplication across an application. The examples of  
+Custom hooks, particularly when combined with TypeScript generics, represent a powerful pattern for abstracting complex logic (such as data fetching or local storage interaction) into reusable units. This significantly enhances code maintainability and reduces duplication across an application. The examples of
 
-`useLocalStorage` and `useFetch` clearly illustrate how generics enable these hooks to operate on  
+`useLocalStorage` and `useFetch` clearly illustrate how generics enable these hooks to operate on
 
 _any_ data type. This is a direct consequence of the "write once, use many times" principle. Instead of developing separate hooks like `useFetchUsers` or `useFetchProducts`, a single `useFetch<T>` can be created. TypeScript's generics ensure that `T` is correctly propagated throughout the hook's internal logic and its return value, providing strong type safety while maximizing reusability. This pattern is a cornerstone of modern, well-architected React applications, facilitating the creation of a library of domain-agnostic utilities.
 
-The type safety afforded by generics in custom hooks instills confidence in developers when abstracting complex logic. Without robust typing, a generic hook might be susceptible to runtime errors when used with unexpected data shapes. When abstracting logic into a custom hook, especially one that handles external data or state, there is an inherent risk that the hook might be used with data types it was not designed for, leading to runtime errors. TypeScript generics mitigate this risk. For instance, in  
+The type safety afforded by generics in custom hooks instills confidence in developers when abstracting complex logic. Without robust typing, a generic hook might be susceptible to runtime errors when used with unexpected data shapes. When abstracting logic into a custom hook, especially one that handles external data or state, there is an inherent risk that the hook might be used with data types it was not designed for, leading to runtime errors. TypeScript generics mitigate this risk. For instance, in
 
 `useFetch<T>`, if the API returns data that does not conform to `T`, TypeScript will flag this at compile time (provided `data` is explicitly typed as `T` within the hook). This compile-time feedback is crucial. It empowers developers to build and utilize these powerful abstractions with confidence, knowing that the type system will detect inconsistencies, rather than discovering them through extensive runtime testing. This fosters a more robust and less error-prone development process.
 
-```typescript
+```tsx
 // src/hooks/useFetch.ts
 import { useState, useEffect, useCallback } from 'react';
 
@@ -1476,23 +1474,15 @@ This section delves into more sophisticated component design patterns and advanc
 
 ### A. Typing Higher-Order Components (HOCs) with Generics
 
-Higher-Order Components (HOCs) are functions that accept a component as an argument and return a new component, typically augmented with enhanced props or altered behavior. Typing HOCs with generics is crucial for enabling them to operate effectively with various component types while preserving comprehensive type safety.  
+Higher-Order Components (HOCs) are functions that accept a component as an argument and return a new component, typically augmented with enhanced props or altered behavior. Typing HOCs with generics is crucial for enabling them to operate effectively with various component types while preserving comprehensive type safety.
 
-HOCs are inherently generic because their fundamental purpose is to operate on _any_ given component. For example, a `withLoading` HOC should be capable of wrapping both a `UserProfile` component and a `ProductList` component. Without generics, the specific types of the wrapped component's props would be lost or would default to `any`. By employing generics, such as `<P extends object>`, the HOC can accurately infer and pass through the original props (`P`) while seamlessly integrating its own additional props. The example of `createWithHOC` for a `Tooltip` illustrates how to add a specific prop (e.g.,  
+HOCs are inherently generic because their fundamental purpose is to operate on _any_ given component. For example, a `withLoading` HOC should be capable of wrapping both a `UserProfile` component and a `ProductList` component. Without generics, the specific types of the wrapped component's props would be lost or would default to `any`. By employing generics, such as `<P extends object>`, the HOC can accurately infer and pass through the original props (`P`) while seamlessly integrating its own additional props. The example of `createWithHOC` for a `Tooltip` illustrates how to add a specific prop (e.g., `tooltip`) to the wrapped component's props, making it optional (`Partial`) and ensuring type safety. This approach guarantees that the HOC remains truly reusable and does not violate the type contract of the components it wraps.
 
-`tooltip`) to the wrapped component's props, making it optional (`Partial`) and ensuring type safety. This approach guarantees that the HOC remains truly reusable and does not violate the type contract of the components it wraps.
+Generic HOC typing facilitates a powerful form of type-safe component composition that promotes decoupling. Components can be enhanced without direct modification, and the type system ensures that the contract between the HOC and the wrapped component is rigorously maintained. The `createWithHOC` pattern explicitly aims for "highly decoupled" composition and "smaller consumer code" by relying on props rather than nested structures. This design allows a `Button` component to be developed independently, while a `withTooltip` HOC can then introduce tooltip functionality without the `Button` needing any direct awareness of the `Tooltip`'s implementation. TypeScript generics (`THOCProps`, `TLOCProps`, `THOCName`) are indispensable in this context because they enable the HOC to correctly merge the types of the original component's props with any new props it introduces. This ensures that when a component like `LoggedButton` is utilized, the IDE provides accurate suggestions for both its original props (e.g., `label`, `onClick`) and the HOC-added props (e.g., `logMessage`). This type-safe decoupling offers a significant architectural advantage, leading to more modular and easily maintainable or extensible codebases.
 
-Generic HOC typing facilitates a powerful form of type-safe component composition that promotes decoupling. Components can be enhanced without direct modification, and the type system ensures that the contract between the HOC and the wrapped component is rigorously maintained. The  
+Without generics, HOCs would frequently lead to "type erosion," a phenomenon where the specific types of the wrapped component's props are lost, compelling developers to resort to `any` or less precise types. Generics directly counteract this by preserving the original type information. If an HOC were typed without generics, for example, `function withLogger(WrappedComponent: React.ComponentType<any>)`, then the resulting `LoggedButton` would also possess `any` props, thereby negating all the type safety initially defined for `MyButtonProps`. This constitutes "type erosion." The use of `P extends object` for the `WrappedComponent`'s props and the intersection type `P & WithLoggerProps` for the returned component's props (as demonstrated in the example and described in ) is precisely how generics prevent this. They act as placeholders that carry the specific type information of the wrapped component through the HOC transformation, ensuring that the final component's props are a correctly merged and type-checked union of the original and newly added props. This is a fundamental reason why generics are indispensable for achieving type-safe HOCs.
 
-`createWithHOC` pattern explicitly aims for "highly decoupled" composition and "smaller consumer code" by relying on props rather than nested structures. This design allows a  
-
-`Button` component to be developed independently, while a `withTooltip` HOC can then introduce tooltip functionality without the `Button` needing any direct awareness of the `Tooltip`'s implementation. TypeScript generics (`THOCProps`, `TLOCProps`, `THOCName`) are indispensable in this context because they enable the HOC to correctly merge the types of the original component's props with any new props it introduces. This ensures that when a component like  
-
-`LoggedButton` is utilized, the IDE provides accurate suggestions for both its original props (e.g., `label`, `onClick`) and the HOC-added props (e.g., `logMessage`). This type-safe decoupling offers a significant architectural advantage, leading to more modular and easily maintainable or extensible codebases.
-
-Without generics, HOCs would frequently lead to "type erosion," a phenomenon where the specific types of the wrapped component's props are lost, compelling developers to resort to `any` or less precise types. Generics directly counteract this by preserving the original type information. If an HOC were typed without generics, for example, `function withLogger(WrappedComponent: React.ComponentType<any>)`, then the resulting `LoggedButton` would also possess `any` props, thereby negating all the type safety initially defined for `MyButtonProps`. This constitutes "type erosion." The use of `P extends object` for the `WrappedComponent`'s props and the intersection type `P & WithLoggerProps` for the returned component's props (as demonstrated in the example and described in ) is precisely how generics prevent this. They act as placeholders that carry the specific type information of the wrapped component through the HOC transformation, ensuring that the final component's props are a correctly merged and type-checked union of the original and newly added props. This is a fundamental reason why generics are indispensable for achieving type-safe HOCs.  
-
-```typescript
+```tsx
 // src/hocs/withLogger.tsx
 import React from 'react';
 
@@ -1584,29 +1574,17 @@ export default LoggedButtonExample;
 
 ### B. Typing Render Props with Generics
 
-The Render Props pattern involves a component accepting a prop (often named `render` or `children`) whose value is a function that returns a React element. This pattern facilitates code sharing and enables inversion of control. Generics are indispensable for accurately typing the arguments passed to the render prop function.  
+The Render Props pattern involves a component accepting a prop (often named `render` or `children`) whose value is a function that returns a React element. This pattern facilitates code sharing and enables inversion of control. Generics are indispensable for accurately typing the arguments passed to the render prop function.
 
-A `List` component utilizing a `renderItem` prop serves as a classic illustration of this pattern. The  
+A `List` component utilizing a `renderItem` prop serves as a classic illustration of this pattern. The `renderItem` function must receive an `item` whose type is dependent on the `items` array provided to the `List`. By making the `List` component generic (`List<Item>`) and typing `renderItem` as `(item: Item) => React.ReactNode`, TypeScript can correctly infer the type of `item` when the `List` component is used. This enables the creation of a single, reusable `List` component that maintains type safety for any collection of data.
 
-`renderItem` function must receive an `item` whose type is dependent on the `items` array provided to the `List`. By making the `List` component generic (`List<Item>`) and typing `renderItem` as `(item: Item) => React.ReactNode`, TypeScript can correctly infer the type of `item` when the `List` component is used. This enables the creation of a single, reusable  
+Render Props fundamentally shifts the responsibility of rendering from the child component to the parent. TypeScript generics ensure that this inversion of control is type-safe, allowing the parent to dictate rendering logic while maintaining strong typing for the data being rendered. The article states that render props are a mechanism to achieve "Inversion of Control (IaC)". Instead of a `List` component rigidly defining how each `Pokemon` is rendered, it delegates that responsibility to the `renderItem` prop. This design makes the `List` component highly flexible and reusable. TypeScript's generics (`List<Item>`) are crucial because they guarantee that the `item` argument passed to the `renderItem` function is correctly typed according to the `items` array. Without generics, the `item` would be of type `any`, and the benefits of TypeScript would be lost for the rendering logic. This pattern facilitates powerful customization while preserving compile-time safety, which is essential for developing robust and adaptable UI libraries or reusable components.
 
-`List` component that maintains type safety for any collection of data.
+The ability of TypeScript to infer the generic type `Item` from the `items` array significantly enhances the developer experience and ergonomics of utilizing render props. When `ListRenderer items={products} renderItem={(product) =>...}` is used, TypeScript automatically infers `Item` as `Product` because `products` is of type `Product`. This eliminates the need for developers to explicitly write `renderItem={(product: Product) =>...}`. This automatic inference reduces boilerplate code and contributes to cleaner, more enjoyable development, all while providing comprehensive type safety within the `renderItem` callback. It exemplifies how TypeScript's type inference engine contributes to a more efficient and less error-prone development process.
 
-Render Props fundamentally shifts the responsibility of rendering from the child component to the parent. TypeScript generics ensure that this inversion of control is type-safe, allowing the parent to dictate rendering logic while maintaining strong typing for the data being rendered. The article states that render props are a mechanism to achieve "Inversion of Control (IaC)". Instead of a  
-
-`List` component rigidly defining how each `Pokemon` is rendered, it delegates that responsibility to the `renderItem` prop. This design makes the `List` component highly flexible and reusable. TypeScript's generics (`List<Item>`) are crucial because they guarantee that the  
-
-`item` argument passed to the `renderItem` function is correctly typed according to the `items` array. Without generics, the `item` would be of type `any`, and the benefits of TypeScript would be lost for the rendering logic. This pattern facilitates powerful customization while preserving compile-time safety, which is essential for developing robust and adaptable UI libraries or reusable components.
-
-The ability of TypeScript to infer the generic type `Item` from the `items` array significantly enhances the developer experience and ergonomics of utilizing render props. When  
-
-`ListRenderer items={products} renderItem={(product) =>...}` is used, TypeScript automatically infers `Item` as `Product` because `products` is of type `Product`. This eliminates the need for developers to explicitly write  
-
-`renderItem={(product: Product) =>...}`. This automatic inference reduces boilerplate code and contributes to cleaner, more enjoyable development, all while providing comprehensive type safety within the `renderItem` callback. It exemplifies how TypeScript's type inference engine contributes to a more efficient and less error-prone development process.
-
-```typescript
+```tsx
 // src/components/ListRenderer.tsx
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 // Define generic props for a List component using Render Props pattern
 // Item: The type of each item in the list
@@ -1618,14 +1596,15 @@ interface ListProps<Item> {
 
 // Generic List component
 // The <Item> generic parameter is used to type the items array and the renderItem function
-function ListRenderer<Item>({ items, renderItem }: ListProps<Item>): JSX.Element {
+function ListRenderer<Item>({
+  items,
+  renderItem,
+}: ListProps<Item>): JSX.Element {
   return (
     <ul>
       {items.map((item, index) => (
         // Call the renderItem prop function for each item
-        <React.Fragment key={index}>
-          {renderItem(item, index)}
-        </React.Fragment>
+        <React.Fragment key={index}>{renderItem(item, index)}</React.Fragment>
       ))}
     </ul>
   );
@@ -1634,8 +1613,8 @@ function ListRenderer<Item>({ items, renderItem }: ListProps<Item>): JSX.Element
 export default ListRenderer;
 
 // src/components/RenderPropsExample.tsx
-import React from 'react';
-import ListRenderer from './ListRenderer';
+import React from "react";
+import ListRenderer from "./ListRenderer";
 
 interface Product {
   id: number;
@@ -1644,9 +1623,9 @@ interface Product {
 }
 
 const products: Product = [
-  { id: 1, name: 'Laptop', price: 1200 },
-  { id: 2, name: 'Mouse', price: 25 },
-  { id: 3, name: 'Keyboard', price: 75 },
+  { id: 1, name: "Laptop", price: 1200 },
+  { id: 2, name: "Mouse", price: 25 },
+  { id: 3, name: "Keyboard", price: 75 },
 ];
 
 interface User {
@@ -1656,19 +1635,22 @@ interface User {
 }
 
 const users: User = [
-  { id: 1, username: 'alice', email: 'alice@example.com' },
-  { id: 2, username: 'bob', email: 'bob@example.com' },
+  { id: 1, username: "alice", email: "alice@example.com" },
+  { id: 2, username: "bob", email: "bob@example.com" },
 ];
 
 const RenderPropsExample: React.FC = () => {
   return (
-    <div style={{ border: '1px solid #ccc', padding: '15px', margin: '20px' }}>
+    <div style={{ border: "1px solid #ccc", padding: "15px", margin: "20px" }}>
       <h3>Render Props with Generics Example</h3>
 
       <h4>Products:</h4>
       <ListRenderer
         items={products}
-        renderItem={(product, index) => ( // TypeScript infers 'product' as Product
+        renderItem={(
+          product,
+          index // TypeScript infers 'product' as Product
+        ) => (
           <li key={product.id}>
             {product.name} - ${product.price}
           </li>
@@ -1678,7 +1660,9 @@ const RenderPropsExample: React.FC = () => {
       <h4>Users:</h4>
       <ListRenderer
         items={users}
-        renderItem={(user) => ( // TypeScript infers 'user' as User
+        renderItem={(
+          user // TypeScript infers 'user' as User
+        ) => (
           <li key={user.id}>
             <strong>{user.username}</strong> ({user.email})
           </li>
@@ -1693,19 +1677,9 @@ export default RenderPropsExample;
 
 ### C. Building Type-Safe Polymorphic Components (`as` Prop)
 
-Polymorphic components are a design pattern that allows a React component to render as different HTML tags or even other React components, typically controlled by an `as` prop. Building these components with TypeScript ensures that the correct attributes and types are enforced based on the rendered element.  
+Polymorphic components are a design pattern that allows a React component to render as different HTML tags or even other React components, typically controlled by an `as` prop. Building these components with TypeScript ensures that the correct attributes and types are enforced based on the rendered element.
 
-The `as` prop should strictly accept only valid HTML tags (e.g., `span`, `div`). To enforce this,  
-
-`React.ElementType` from `@types/react` can be utilized. To enable the component to accept props specific to the HTML tag provided by the  
-
-`as` prop (e.g., `htmlFor` for a `label` element), a generic type must be employed. This involves defining a generic type  
-
-`PropsOf<T>` that extracts the valid props for a given React element type `T` using `React.ComponentPropsWithoutRef<T>`. The component's own props are then merged with these extracted props, using  
-
-`Omit` to handle potential conflicts and ensure the component's own props take precedence. For type-safe  
-
-`ref` props, `React.ComponentPropsWithRef` is used, and the component's type signature is carefully constructed with `React.forwardRef` to ensure correct ref inference based on the `as` prop.  
+The `as` prop should strictly accept only valid HTML tags (e.g., `span`, `div`). To enforce this, `React.ElementType` from `@types/react` can be utilized. To enable the component to accept props specific to the HTML tag provided by the `as` prop (e.g., `htmlFor` for a `label` element), a generic type must be employed. This involves defining a generic type `PropsOf<T>` that extracts the valid props for a given React element type `T` using `React.ComponentPropsWithoutRef<T>`. The component's own props are then merged with these extracted props, using `Omit` to handle potential conflicts and ensure the component's own props take precedence. For type-safe `ref` props, `React.ComponentPropsWithRef` is used, and the component's type signature is carefully constructed with `React.forwardRef` to ensure correct ref inference based on the `as` prop.
 
 ```csharp
 // src/components/PolymorphicText.tsx
@@ -1757,9 +1731,11 @@ const PolymorphicText = React.forwardRef(
 );
 
 export default PolymorphicText;
+```
 
-// Example Usage (e.g., in App.tsx):
-/*
+**Example Usage (e.g., in App.tsx):**
+
+```tsx
 import React, { useRef } from 'react';
 import PolymorphicText from './components/PolymorphicText';
 
@@ -1806,113 +1782,105 @@ function App() {
 
 ### D. Leveraging TypeScript Utility Types in React
 
-TypeScript's built-in utility types are powerful tools for transforming and reusing existing types, significantly enhancing code maintainability and expressiveness in React applications.  
+TypeScript's built-in utility types are powerful tools for transforming and reusing existing types, significantly enhancing code maintainability and expressiveness in React applications.
 
 #### 1\. `Partial`, `Pick`, `Omit` for Props and State
 
 These utility types are invaluable for manipulating the properties of existing types, commonly used for component props and state management.
 
-- **`Partial<Type>`**: Constructs a type with all properties of `Type` set to optional. This is useful for scenarios like form drafts or patch operations where not all fields are initially present or required.  
+- **`Partial<Type>`**: Constructs a type with all properties of `Type` set to optional. This is useful for scenarios like form drafts or patch operations where not all fields are initially present or required.
 
-    ```go
-    type User = {
-      id: string;
-      name: string;
-      email: string;
-    };
-    type PartialUser = Partial<User>; // { id?: string; name?: string; email?: string; }
-    const draftUser: PartialUser = { name: "Alice" }; // Valid
-    ```
+  ```tsx
+  type User = {
+    id: string;
+    name: string;
+    email: string;
+  };
+  type PartialUser = Partial<User>; // { id?: string; name?: string; email?: string; }
+  const draftUser: PartialUser = { name: "Alice" }; // Valid
+  ```
 
-- **`Pick<Type, Keys>`**: Creates a new type by selecting a subset of properties (`Keys`) from `Type`. This is ideal for extracting specific properties needed for a particular component or function.  
+- **`Pick<Type, Keys>`**: Creates a new type by selecting a subset of properties (`Keys`) from `Type`. This is ideal for extracting specific properties needed for a particular component or function.
 
-    ```go
-    type UserProfileProps = Pick<User, 'name' | 'email'>; // { name: string; email: string; }
-    const profile: UserProfileProps = { name: "Bob", email: "bob@example.com" };
-    ```
+  ```tsx
+  type UserProfileProps = Pick<User, 'name' | 'email'>; // { name: string; email: string; }
+  const profile: UserProfileProps = { name: "Bob", email: "bob@example.com" };
+  ```
 
-- **`Omit<Type, Keys>`**: Constructs a type by excluding specified properties (`Keys`) from `Type`. This is the inverse of  
+- **`Omit<Type, Keys>`**: Constructs a type by excluding specified properties (`Keys`) from `Type`. This is the inverse of `Pick` and is useful for creating public-facing types that hide sensitive information.
 
-    `Pick` and is useful for creating public-facing types that hide sensitive information.
-
-    ```go
-    type PublicUser = Omit<User, 'id'>; // { name: string; email: string; }
-    const publicData: PublicUser = { name: "Charlie", email: "charlie@example.com" };
-    ```
+  ```tsx
+  type PublicUser = Omit<User, 'id'>; // { name: string; email: string; }
+  const publicData: PublicUser = { name: "Charlie", email: "charlie@example.com" };
+  ```
 
 #### 2\. `Exclude`, `Extract`, `NonNullable` for Union Types
 
 These utility types are designed for working with union types, allowing for precise manipulation of their members.
 
-- **`Exclude<UnionType, ExcludedMembers>`**: Removes specific members from a union type.  
+- **`Exclude<UnionType, ExcludedMembers>`**: Removes specific members from a union type.
 
-    ```bash
-    type Status = 'idle' | 'loading' | 'success' | 'error';
-    type NonLoadingStatus = Exclude<Status, 'loading'>; // 'idle' | 'success' | 'error'
-    ```
+  ```tsx
+  type Status = 'idle' | 'loading' | 'success' | 'error';
+  type NonLoadingStatus = Exclude<Status, 'loading'>; // 'idle' | 'success' | 'error'
+  ```
 
-- **`Extract<UnionType, IncludedMembers>`**: Keeps only the matching members from a union type.  
+- **`Extract<UnionType, IncludedMembers>`**: Keeps only the matching members from a union type.
 
-    ```bash
-    type ActionType = 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR' | 'RESET';
-    type FetchActions = Extract<ActionType, 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR'>; // 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR'
-    ```
+  ```tsx
+  type ActionType = 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR' | 'RESET';
+  type FetchActions = Extract<ActionType, 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR'>; // 'FETCH_START' | 'FETCH_SUCCESS' | 'FETCH_ERROR'
+  ```
 
-- **`NonNullable<Type>`**: Removes `null` and `undefined` from a type. This is crucial for ensuring that a value is guaranteed to be present.  
+- **`NonNullable<Type>`**: Removes `null` and `undefined` from a type. This is crucial for ensuring that a value is guaranteed to be present.
 
-    ```typescript
-    type MaybeString = string | null | undefined;
-    type DefinitelyString = NonNullable<MaybeString>; // string
-    const myString: DefinitelyString = "hello";
-    ```
+  ```tsx
+  type MaybeString = string | null | undefined;
+  type DefinitelyString = NonNullable<MaybeString>; // string
+  const myString: DefinitelyString = "hello";
+  ```
 
 #### 3\. `ComponentProps`, `ComponentPropsWithRef` for Element Props
 
 These utility types are specifically useful in React for extracting the props of native HTML elements or other React components.
 
-- **`ComponentProps<Type>`**: Extracts the props type of a React component or a native HTML element (specified as a string literal like `'div'` or `'button'`). This allows a custom component to accept all standard HTML attributes of an element.  
+- **`ComponentProps<Type>`**: Extracts the props type of a React component or a native HTML element (specified as a string literal like `'div'` or `'button'`). This allows a custom component to accept all standard HTML attributes of an element.
 
-    ```typescript
-    import { ComponentProps } from 'react';
-    type DivProps = ComponentProps<'div'>; // All props a <div> accepts
-    type MyCustomButtonProps = ComponentProps<typeof MyButton>; // Props of an existing React component
-    ```
+  ```tsx
+  import { ComponentProps } from "react";
+  type DivProps = ComponentProps<"div">; // All props a <div> accepts
+  type MyCustomButtonProps = ComponentProps<typeof MyButton>; // Props of an existing React component
+  ```
 
-- **`ComponentPropsWithRef<Type>`**: Similar to `ComponentProps`, but specifically includes the `ref` prop, which is essential when a component needs to forward a ref to the underlying DOM element.  
+- **`ComponentPropsWithRef<Type>`**: Similar to `ComponentProps`, but specifically includes the `ref` prop, which is essential when a component needs to forward a ref to the underlying DOM element.
 
-    ```python
-    import { ComponentPropsWithRef } from 'react';
-    type InputWithRefProps = ComponentPropsWithRef<'input'>; // All <input> props, including 'ref'
-    ```
+  ```tsx
+  import { ComponentPropsWithRef } from 'react';
+  type InputWithRefProps = ComponentPropsWithRef<'input'>; // All <input> props, including 'ref'
+  ```
 
 #### **Table: Common TypeScript Utility Types for React**
 
-|       Utility Type       |                     Purpose                      |                                                           Example Use Case in React                                                           |
-|--------------------------|--------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
-|        `Partial<T>`        |       Makes all properties of `T` optional.        |                      Defining props for a component that updates only a subset of an object (e.g., `UserUpdateFormProps`).                      |
-|        `Pick<T, K>`        | Creates a type by selecting properties `K` from `T`. |                   Creating a simplified prop interface for a child component (e.g., `UserProfileHeaderProps` from `UserProps`).                   |
-|        `Omit<T, K>`        | Creates a type by excluding properties `K` from `T`. |                         Defining public data structures that hide sensitive fields (e.g., `PublicUser` from `FullUser`).                          |
-|      `Exclude<U, E>`       |          Removes types `E` from union `U`.           |                                  Filtering out specific status states from a union of API response statuses.                                  |
-|      `Extract<U, I>`       |         Keeps only types `I` from union `U`.         |                                     Isolating specific action types from a larger union of Redux actions.                                     |
-|      `NonNullable<T>`      |        Removes `null` and `undefined` from `T`.        |                                  Ensuring a context value or state variable is always present after a check.                                  |
-|    `ComponentProps<T>`     |  Extracts props of a component or HTML element.  | Allowing a custom component to accept all standard HTML attributes of an underlying element (e.g., `MyDivProps extends ComponentProps<'div'>`). |
-| `ComponentPropsWithRef<T>` |      Extracts props including the `ref` prop.      |    Typing a component that forwards a ref to an underlying DOM element (e.g., `ForwardedInputProps extends ComponentPropsWithRef<'input'>`).    |
+| Utility Type               | Purpose                                              | Example Use Case in React                                                                                                                       |
+| -------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Partial<T>`               | Makes all properties of `T` optional.                | Defining props for a component that updates only a subset of an object (e.g., `UserUpdateFormProps`).                                           |
+| `Pick<T, K>`               | Creates a type by selecting properties `K` from `T`. | Creating a simplified prop interface for a child component (e.g., `UserProfileHeaderProps` from `UserProps`).                                   |
+| `Omit<T, K>`               | Creates a type by excluding properties `K` from `T`. | Defining public data structures that hide sensitive fields (e.g., `PublicUser` from `FullUser`).                                                |
+| `Exclude<U, E>`            | Removes types `E` from union `U`.                    | Filtering out specific status states from a union of API response statuses.                                                                     |
+| `Extract<U, I>`            | Keeps only types `I` from union `U`.                 | Isolating specific action types from a larger union of Redux actions.                                                                           |
+| `NonNullable<T>`           | Removes `null` and `undefined` from `T`.             | Ensuring a context value or state variable is always present after a check.                                                                     |
+| `ComponentProps<T>`        | Extracts props of a component or HTML element.       | Allowing a custom component to accept all standard HTML attributes of an underlying element (e.g., `MyDivProps extends ComponentProps<'div'>`). |
+| `ComponentPropsWithRef<T>` | Extracts props including the `ref` prop.             | Typing a component that forwards a ref to an underlying DOM element (e.g., `ForwardedInputProps extends ComponentPropsWithRef<'input'>`).       |
 
 ### E. Enhancing State Logic with Type Guards and Discriminated Unions
 
-Type guards and discriminated unions are advanced TypeScript features that significantly enhance the robustness and clarity of state management, particularly when dealing with complex, multi-state scenarios.  
+Type guards and discriminated unions are advanced TypeScript features that significantly enhance the robustness and clarity of state management, particularly when dealing with complex, multi-state scenarios.
 
-A discriminated union is a union type where each member shares a common property (the "discriminant" or "tag") whose literal type distinguishes between the members. This allows TypeScript to narrow down the specific type within the union based on the value of this discriminant property. For instance, a  
+A discriminated union is a union type where each member shares a common property (the "discriminant" or "tag") whose literal type distinguishes between the members. This allows TypeScript to narrow down the specific type within the union based on the value of this discriminant property. For instance, a `RequestState` type could be a union of `{ status: 'loading' }`, `{ status: 'success', data: Data }`, and `{ status: 'error', error: Error }`. By checking `requestState.status`, TypeScript intelligently understands which properties are available, preventing access to `data` when `status` is `'loading'`.
 
-`RequestState` type could be a union of `{ status: 'loading' }`, `{ status: 'success', data: Data }`, and `{ status: 'error', error: Error }`. By checking `requestState.status`, TypeScript intelligently understands which properties are available, preventing access to `data` when `status` is `'loading'`.  
+Type guards are functions or conditional checks that narrow the type of a variable within a certain scope. Common type guards include `typeof` checks (e.g., `typeof value === 'string'`) and `instanceof` checks (e.g., `value instanceof MyClass`). Custom type guards can also be defined using type predicates ( `value is Type`). When combined with discriminated unions, type guards enable precise and safe handling of different state variations. This pattern is particularly powerful for managing asynchronous data fetching states, where the available data or error information depends entirely on the current status. It ensures that components only attempt to access properties that are guaranteed to exist for the current state, preventing runtime errors and making the state logic explicit and self-documenting.
 
-Type guards are functions or conditional checks that narrow the type of a variable within a certain scope. Common type guards include  
-
-`typeof` checks (e.g., `typeof value === 'string'`) and `instanceof` checks (e.g., `value instanceof MyClass`). Custom type guards can also be defined using type predicates (  
-
-`value is Type`). When combined with discriminated unions, type guards enable precise and safe handling of different state variations. This pattern is particularly powerful for managing asynchronous data fetching states, where the available data or error information depends entirely on the current status. It ensures that components only attempt to access properties that are guaranteed to exist for the current state, preventing runtime errors and making the state logic explicit and self-documenting.  
-
-```typescript
+```tsx
 // src/components/DataDisplay.tsx
 import React from 'react';
 
@@ -2020,45 +1988,36 @@ Integrating third-party libraries into a TypeScript React project requires caref
 
 #### 1\. Utilizing `@types` Packages
 
-Many popular open-source projects, including core React libraries like `react` and `react-dom`, do not ship with their type definitions directly within their packages. Instead, their type definitions are maintained separately by the community in the DefinitelyTyped repository and published as `@types` packages on npm. For example, to use a library like  
-
-`classnames` with TypeScript, one would install `@types/classnames`. When a library includes its type definitions by default (e.g.,  
-
-`redux`, `redux-thunk`), no additional `@types` package installation is required. These  
-
-`@types` packages provide the necessary type declarations, enabling TypeScript to understand the library's API and provide intelligent autocompletion and type-checking.
+Many popular open-source projects, including core React libraries like `react` and `react-dom`, do not ship with their type definitions directly within their packages. Instead, their type definitions are maintained separately by the community in the DefinitelyTyped repository and published as `@types` packages on npm. For example, to use a library like `classnames` with TypeScript, one would install `@types/classnames`. When a library includes its type definitions by default (e.g., `redux`, `redux-thunk`), no additional `@types` package installation is required. These `@types` packages provide the necessary type declarations, enabling TypeScript to understand the library's API and provide intelligent autocompletion and type-checking.
 
 #### 2\. Declaring Modules Without Official Type Definitions
 
-Occasionally, a third-party module might lack official type definitions, either within the package itself or via an `@types` package. In such scenarios, developers can create custom type declaration files (typically with a  
-
-`.d.ts` extension) to inform TypeScript about the module's existence and its API.  
+Occasionally, a third-party module might lack official type definitions, either within the package itself or via an `@types` package. In such scenarios, developers can create custom type declaration files (typically with a `.d.ts` extension) to inform TypeScript about the module's existence and its API.
 
 - **For modules exporting a default function**: A simple global declaration can be used in a `.d.ts` file, for example:
 
-    ```javascript
-    // foo-module.d.ts
-    declare module 'foo-module' {
-      export default function foo(): void;
-    }
-    ```
+  ```javascript
+  // foo-module.d.ts
+  declare module 'foo-module' {
+    export default function foo(): void;
+  }
+  ```
 
-    This allows `import foo from 'foo-module';` to be used in TypeScript code.  
+  This allows `import foo from 'foo-module';` to be used in TypeScript code.
 
 - **For CommonJS modules using `module.exports`**: The `export =` syntax can be employed in the declaration file:
 
-    ```typescript
-    // bar-module.d.ts
-    declare module 'bar-module' {
-      const bar: () => void;
-      export = bar;
-    }
-    ```
+  ```tsx
+  // bar-module.d.ts
+  declare module "bar-module" {
+    const bar: () => void;
+    export = bar;
+  }
+  ```
 
-    This supports `import * as bar from 'bar-module';` or `const bar = require('bar-module');`.  
+  This supports `import * as bar from 'bar-module';` or `const bar = require('bar-module');`.
 
 These custom declaration files bridge the gap between untyped JavaScript libraries and TypeScript's strict type system, allowing the project to compile without errors while still providing some level of type safety for the interactions with the third-party code. While these methods are generally applicable, placing `.d.ts` files in a location discoverable by the TypeScript compiler (e.g., a `types` folder in the project root or alongside the consuming component) is crucial for their effectiveness.
-
 ## V. Conclusion & Key Takeaways
 
 The comprehensive exploration of TypeScript in React reveals its profound impact on the development lifecycle, transforming it from a reactive debugging process to a proactive, type-safe engineering discipline. The foundational benefits of static type-checking, including enhanced developer experience, improved code readability, and safer refactoring, are consistently reinforced throughout various React patterns.
