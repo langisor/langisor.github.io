@@ -245,16 +245,16 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, children, footer }) => {
   return (
-    <div style={{ border: "1px solid #ccc", padding: "16px", margin: "16px" }}>
+    <div style={`{ border: "1px solid #ccc", padding: "16px", margin: "16px" }`}>
       <h2>{title}</h2>
       <div>{children}</div>
       {footer && (
         <div
-          style={{
+          style={`{
             marginTop: "10px",
             borderTop: "1px dashed #eee",
             paddingTop: "10px",
-          }}
+          }`}
         >
           {footer}
         </div>

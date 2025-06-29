@@ -14,6 +14,9 @@
     - [useEffect: Managing Side Effects](#useeffect-managing-side-effects)
       - [The Dependency Array](#the-dependency-array)
       - [Common useEffect Patterns](#common-useeffect-patterns)
+        - [**1. Data Fetching**](#1-data-fetching)
+        - [**2. Subscriptions**](#2-subscriptions)
+        - [**3. DOM Manipulations**](#3-dom-manipulations)
   - [Additional Core React Hooks](#additional-core-react-hooks)
     - [1. useContext: Managing Global State](#1-usecontext-managing-global-state)
     - [2. useReducer: Complex State Logic](#2-usereducer-complex-state-logic)
@@ -437,7 +440,7 @@ function DOMManipulator() {
   }, []); // Runs once on mount and cleans up on unmount
 
   return (
-    <div id="some-element" style={{ opacity: 0, transition: "opacity 0.5s" }}>
+    <div id="some-element" style={`{ opacity: 0, transition: "opacity 0.5s" }`}>
       Hello, I'm a DOM element!
     </div>
   );
@@ -494,7 +497,7 @@ function ThemedButton() {
   return (
     <button
       onClick={toggleTheme}
-      style={{
+      style={`{
         background: theme === "light" ? "#fff" : "#333",
         color: theme === "light" ? "#333" : "#fff",
         padding: "10px 15px",
@@ -510,7 +513,7 @@ function ThemedButton() {
 function App() {
   return (
     <ThemeProvider>
-      <div style={{ padding: "20px" }}>
+      <div style={`{ padding: "20px" }`}>
         <h1>Context Example</h1>
         <ThemedButton />
       </div>
@@ -594,7 +597,7 @@ function TodoApp() {
         {todos.map((todo) => (
           <li
             key={todo.id}
-            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
+            style={`{ textDecoration: todo.completed ? "line-through" : "none" }}
           >
             <span
               onClick={() =>
@@ -1263,7 +1266,7 @@ function ComplexFormWithReducer() {
           onChange={handleChange}
         />
         {state.errors.name && (
-          <span style={{ color: "red" }}>{state.errors.name}</span>
+          <span style={`{ color: "red" }`}>{state.errors.name}</span>
         )}
       </div>
       <div>
@@ -1275,7 +1278,7 @@ function ComplexFormWithReducer() {
           onChange={handleChange}
         />
         {state.errors.email && (
-          <span style={{ color: "red" }}>{state.errors.email}</span>
+          <span style={`{ color: "red" }`}>{state.errors.email}</span>
         )}
       </div>
       <div>
@@ -1287,14 +1290,14 @@ function ComplexFormWithReducer() {
           onChange={handleChange}
         />
         {state.errors.password && (
-          <span style={{ color: "red" }}>{state.errors.password}</span>
+          <span style={`{ color: "red" }`}>{state.errors.password}</span>
         )}
       </div>
       <button type="submit" disabled={state.isSubmitting}>
         {state.isSubmitting ? "Submitting..." : "Submit"}
       </button>
       {state.isSuccess && (
-        <p style={{ color: "green" }}>Form submitted successfully!</p>
+        <p style={`{ color: "green" }`}>Form submitted successfully!</p>
       )}
     </form>
   );
@@ -1365,7 +1368,7 @@ function useUser(userId: string): UseUserResult {
 // Dummy components for demonstration
 const Spinner = () => <div>Loading...</div>;
 const ErrorMessage = ({ error }: { error: Error }) => (
-  <div style={{ color: "red" }}>Error: {error.message}</div>
+  <div style={`{ color: "red" }`}>Error: {error.message}</div>
 );
 
 // Component focused on UI
