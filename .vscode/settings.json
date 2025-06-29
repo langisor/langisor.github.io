@@ -12,6 +12,9 @@
       "strings": false
     }
   },
+  "markdownlint.config": {
+    "no-inline-html": false,
+  },
   "git.enableSmartCommit": true,
   "css.styleSheets": ["./assets/css/style.scss", "./custom-tag-style.css"],
   "git.postCommitCommand": "sync",
