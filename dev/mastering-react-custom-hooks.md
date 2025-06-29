@@ -101,7 +101,7 @@ React provides an ESLint plugin that will warn you if you break these rules, so 
 The `useState` hook is the most basic and frequently used hook in React. It allows you to add state to functional components, something that was previously only possible with class components.
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Counter() {
   // Declare a state variable called "count" with initial value of 0
@@ -110,9 +110,7 @@ function Counter() {
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
   );
 }
@@ -125,7 +123,7 @@ In this example, `useState` returns a pair: the current state value (`count`) an
 While the example above uses a simple number as state, `useState` can handle more complex data structures like objects and arrays. However, unlike `this.setState` in class components, `useState` doesn't automatically merge update objects.
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 interface UserPreferences {
   darkMode: boolean;
@@ -140,22 +138,22 @@ interface User {
 
 function UserProfile() {
   const [user, setUser] = useState<User>({
-    name: 'John',
-    email: 'john@example.com',
+    name: "John",
+    email: "john@example.com",
     preferences: {
       darkMode: false,
-      notifications: true
-    }
+      notifications: true,
+    },
   });
 
   // Update a nested property in state
   const toggleDarkMode = () => {
-    setUser(prevUser => ({
+    setUser((prevUser) => ({
       ...prevUser,
       preferences: {
         ...prevUser.preferences,
-        darkMode: !prevUser.preferences.darkMode
-      }
+        darkMode: !prevUser.preferences.darkMode,
+      },
     }));
   };
 
@@ -163,7 +161,7 @@ function UserProfile() {
     <div>
       <h2>{user.name}'s Profile</h2>
       <p>Email: {user.email}</p>
-      <p>Dark Mode: {user.preferences.darkMode ? 'On' : 'Off'}</p>
+      <p>Dark Mode: {user.preferences.darkMode ? "On" : "Off"}</p>
       <button onClick={toggleDarkMode}>Toggle Dark Mode</button>
     </div>
   );
@@ -177,14 +175,14 @@ Notice how we have to use the spread operator (`...`) to maintain the existing s
 When new state depends on previous state, React recommends using the functional update form of `useState`:
 
 ```tsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function Counter() {
   const [count, setCount] = useState<number>(0);
 
   // Using functional update form
   const increment = () => {
-    setCount(prevCount => prevCount + 1);
+    setCount((prevCount) => prevCount + 1);
   };
 
   return (
@@ -203,7 +201,7 @@ This approach ensures you're always working with the most current state value, w
 The `useEffect` hook lets you perform side effects in functional components. Side effects can include data fetching, subscriptions, or manually changing the DOM.
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface UserData {
   name: string;
@@ -219,14 +217,17 @@ function UserDataComponent() {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const response = await fetch('[https://api.example.com/user](https://api.example.com/user)');
+        const response = await fetch(
+          "[https://api.example.com/user](https://api.example.com/user)"
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const userData: UserData = await response.json();
         setUser(userData);
-      } catch (error: any) { // Type 'any' for error for demonstration; in real apps, use stricter error handling
-        console.error('Error fetching user data:', error);
+      } catch (error: any) {
+        // Type 'any' for error for demonstration; in real apps, use stricter error handling
+        console.error("Error fetching user data:", error);
       } finally {
         setLoading(false);
       }
@@ -267,7 +268,7 @@ The dependency array is a crucial part of `useEffect`. It determines when the ef
 <!-- end list -->
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface SearchResult {
   id: number;
@@ -283,18 +284,20 @@ function SearchResults({ query }: SearchResultsProps) {
   const [results, setResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
-    if (query.trim() === '') return;
+    if (query.trim() === "") return;
 
     const fetchResults = async () => {
       try {
-        const response = await fetch(`https://api.example.com/search?q=${query}`);
+        const response = await fetch(
+          `https://api.example.com/search?q=${query}`
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
         const data: SearchResult[] = await response.json();
         setResults(data);
       } catch (error) {
-        console.error('Error fetching search results:', error);
+        console.error("Error fetching search results:", error);
       }
     };
 
@@ -303,7 +306,7 @@ function SearchResults({ query }: SearchResultsProps) {
 
   return (
     <ul>
-      {results.map(result => (
+      {results.map((result) => (
         <li key={result.id}>{result.title}</li>
       ))}
     </ul>
@@ -318,12 +321,14 @@ In the above example, the effect runs whenever the `query` prop changes, fetchin
 **1. Data Fetching**
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Assume a function to fetch some data
 async function fetchSomeData(): Promise<any> {
   // Simulate API call
-  return new Promise(resolve => setTimeout(() => resolve({ message: 'Data fetched!' }), 1000));
+  return new Promise((resolve) =>
+    setTimeout(() => resolve({ message: "Data fetched!" }), 1000)
+  );
 }
 
 function DataFetcher({ dependencyValue }: { dependencyValue: string }) {
@@ -339,17 +344,19 @@ function DataFetcher({ dependencyValue }: { dependencyValue: string }) {
 
     fetchData();
 
-    return () => { isMounted = false };
+    return () => {
+      isMounted = false;
+    };
   }, [dependencyValue]);
 
-  return <div>{data ? JSON.stringify(data) : 'Loading...'}</div>;
+  return <div>{data ? JSON.stringify(data) : "Loading..."}</div>;
 }
 ```
 
 **2. Subscriptions**
 
 ```tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 // Mock subscription functions
 type EventCallback = (data: string) => void;
@@ -364,18 +371,21 @@ function subscribeToEvent(eventId: string, callback: EventCallback) {
   return { eventId, callback }; // Return a subscription object for unsubscribe
 }
 
-function unsubscribe(subscription: { eventId: string; callback: EventCallback }) {
+function unsubscribe(subscription: {
+  eventId: string;
+  callback: EventCallback;
+}) {
   if (subscribers[subscription.eventId]) {
-    subscribers[subscription.eventId] = subscribers[subscription.eventId].filter(
-      cb => cb !== subscription.callback
-    );
+    subscribers[subscription.eventId] = subscribers[
+      subscription.eventId
+    ].filter((cb) => cb !== subscription.callback);
   }
   console.log(`Unsubscribed from ${subscription.eventId}`);
 }
 
 function fireEvent(eventId: string, data: string) {
   if (subscribers[eventId]) {
-    subscribers[eventId].forEach(callback => callback(data));
+    subscribers[eventId].forEach((callback) => callback(data));
   }
 }
 
@@ -395,7 +405,11 @@ function EventSubscriber({ eventId }: { eventId: string }) {
     <div>
       <p>Listening to event: {eventId}</p>
       {eventData && <p>Last event data: {eventData}</p>}
-      <button onClick={() => fireEvent(eventId, `New Data ${Math.random().toFixed(2)}`)}>
+      <button
+        onClick={() =>
+          fireEvent(eventId, `New Data ${Math.random().toFixed(2)}`)
+        }
+      >
         Fire Test Event
       </button>
     </div>
@@ -406,23 +420,27 @@ function EventSubscriber({ eventId }: { eventId: string }) {
 **3. DOM Manipulations**
 
 ```tsx
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
 function DOMManipulator() {
   useEffect(() => {
-    const element = document.getElementById('some-element');
+    const element = document.getElementById("some-element");
     if (element) {
-      element.style.opacity = '1';
+      element.style.opacity = "1";
     }
 
     return () => {
       if (element) {
-        element.style.opacity = '0';
+        element.style.opacity = "0";
       }
     };
   }, []); // Runs once on mount and cleans up on unmount
 
-  return <div id="some-element" style={{ opacity: 0, transition: 'opacity 0.5s' }}>Hello, I'm a DOM element!</div>;
+  return (
+    <div id="some-element" style={{ opacity: 0, transition: "opacity 0.5s" }}>
+      Hello, I'm a DOM element!
+    </div>
+  );
 }
 ```
 
@@ -435,10 +453,10 @@ Here is few other React hooks which are widely used along with `useState` and `u
 The `useContext` hook provides a way to pass data through the component tree without manually passing props at every level. This is especially useful for theme settings, user authentication, or language preferences. Basically using `useContext` hook you can access [React's context APIs](https://devdreaming.com/blogs/simplify-state-management-with-reactjs-context-api).
 
 ```tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
 interface ThemeContextType {
-  theme: 'light' | 'dark';
+  theme: "light" | "dark";
   toggleTheme: () => void;
 }
 
@@ -447,10 +465,10 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 // Provider component
 function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
   const contextValue: ThemeContextType = { theme, toggleTheme };
@@ -468,7 +486,7 @@ function ThemedButton() {
   const context = useContext(ThemeContext);
 
   if (context === undefined) {
-    throw new Error('ThemedButton must be used within a ThemeProvider');
+    throw new Error("ThemedButton must be used within a ThemeProvider");
   }
 
   const { theme, toggleTheme } = context;
@@ -477,10 +495,10 @@ function ThemedButton() {
     <button
       onClick={toggleTheme}
       style={{
-        background: theme === 'light' ? '#fff' : '#333',
-        color: theme === 'light' ? '#333' : '#fff',
-        padding: '10px 15px',
-        border: `1px solid ${theme === 'light' ? '#333' : '#fff'}`
+        background: theme === "light" ? "#fff" : "#333",
+        color: theme === "light" ? "#333" : "#fff",
+        padding: "10px 15px",
+        border: `1px solid ${theme === "light" ? "#333" : "#fff"}`,
       }}
     >
       Toggle Theme
@@ -492,7 +510,7 @@ function ThemedButton() {
 function App() {
   return (
     <ThemeProvider>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: "20px" }}>
         <h1>Context Example</h1>
         <ThemedButton />
       </div>
@@ -508,7 +526,7 @@ This pattern creates a "theme context" that can be accessed by any component wit
 For more complex state logic, `useReducer` provides an alternative to `useState`. Inspired by Redux, it's particularly useful when the next state depends on the previous state or when state transitions are complex. Checkout following example:
 
 ```tsx
-import React, { useReducer, useState, FormEvent, ChangeEvent } from 'react';
+import React, { useReducer, useState, FormEvent, ChangeEvent } from "react";
 
 interface Todo {
   id: number;
@@ -517,30 +535,30 @@ interface Todo {
 }
 
 type TodoAction =
-  | { type: 'ADD_TODO'; payload: string }
-  | { type: 'TOGGLE_TODO'; payload: number }
-  | { type: 'DELETE_TODO'; payload: number };
+  | { type: "ADD_TODO"; payload: string }
+  | { type: "TOGGLE_TODO"; payload: number }
+  | { type: "DELETE_TODO"; payload: number };
 
 // Reducer function
 function todoReducer(state: Todo[], action: TodoAction): Todo[] {
   switch (action.type) {
-    case 'ADD_TODO':
+    case "ADD_TODO":
       return [
         ...state,
         {
           id: Date.now(),
           text: action.payload,
-          completed: false
-        }
+          completed: false,
+        },
       ];
-    case 'TOGGLE_TODO':
-      return state.map(todo =>
+    case "TOGGLE_TODO":
+      return state.map((todo) =>
         todo.id === action.payload
           ? { ...todo, completed: !todo.completed }
           : todo
       );
-    case 'DELETE_TODO':
-      return state.filter(todo => todo.id !== action.payload);
+    case "DELETE_TODO":
+      return state.filter((todo) => todo.id !== action.payload);
     default:
       return state;
   }
@@ -548,13 +566,13 @@ function todoReducer(state: Todo[], action: TodoAction): Todo[] {
 
 function TodoApp() {
   const [todos, dispatch] = useReducer(todoReducer, []);
-  const [text, setText] = useState<string>('');
+  const [text, setText] = useState<string>("");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!text.trim()) return;
-    dispatch({ type: 'ADD_TODO', payload: text });
-    setText('');
+    dispatch({ type: "ADD_TODO", payload: text });
+    setText("");
   };
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -573,15 +591,23 @@ function TodoApp() {
       </form>
 
       <ul>
-        {todos.map(todo => (
+        {todos.map((todo) => (
           <li
             key={todo.id}
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+            style={{ textDecoration: todo.completed ? "line-through" : "none" }}
           >
-            <span onClick={() => dispatch({ type: 'TOGGLE_TODO', payload: todo.id })}>
+            <span
+              onClick={() =>
+                dispatch({ type: "TOGGLE_TODO", payload: todo.id })
+              }
+            >
               {todo.text}
             </span>
-            <button onClick={() => dispatch({ type: 'DELETE_TODO', payload: todo.id })}>
+            <button
+              onClick={() =>
+                dispatch({ type: "DELETE_TODO", payload: todo.id })
+              }
+            >
               Delete
             </button>
           </li>
@@ -605,7 +631,7 @@ The `useReducer` hook is preferred over `useState` when:
 The `useRef` hook creates a mutable reference that persists across renders. Unlike state, changing a ref doesn't trigger a re-render.
 
 ```tsx
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 
 function StopwatchWithFocus() {
   const [time, setTime] = useState<number>(0);
@@ -616,7 +642,7 @@ function StopwatchWithFocus() {
   useEffect(() => {
     if (isRunning) {
       timerIdRef.current = setInterval(() => {
-        setTime(prevTime => prevTime + 1);
+        setTime((prevTime) => prevTime + 1);
       }, 1000);
     } else if (timerIdRef.current) {
       clearInterval(timerIdRef.current);
@@ -647,15 +673,15 @@ function StopwatchWithFocus() {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
 
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   return (
     <div>
       <h2>Stopwatch: {formatTime(time)}</h2>
-      <button onClick={handleStartStop}>
-        {isRunning ? 'Stop' : 'Start'}
-      </button>
+      <button onClick={handleStartStop}>{isRunning ? "Stop" : "Start"}</button>
       <button onClick={handleReset}>Reset</button>
       <div>
         <input
@@ -684,23 +710,21 @@ There are few hooks that improve the performance of your React app, you must use
 The `useMemo` hook helps optimize performance by memoizing expensive calculations so they only recompute when dependencies change.
 
 ```tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo } from "react";
 
 interface ExpensiveCalculationProps {
   numbers: number[];
 }
 
 function ExpensiveCalculation({ numbers }: ExpensiveCalculationProps) {
-  const [filter, setFilter] = useState<string>('');
+  const [filter, setFilter] = useState<string>("");
 
   // Memoize expensive calculation
   const filteredAndSortedNumbers = useMemo(() => {
-    console.log('Computing filtered and sorted numbers...');
+    console.log("Computing filtered and sorted numbers...");
 
     // Simulating expensive operation
-    const filtered = numbers.filter(n =>
-      n.toString().includes(filter)
-    );
+    const filtered = numbers.filter((n) => n.toString().includes(filter));
     // Sort is expensive for large arrays
     return [...filtered].sort((a, b) => a - b);
   }, [numbers, filter]); // Only recompute when numbers or filter changes
@@ -709,12 +733,12 @@ function ExpensiveCalculation({ numbers }: ExpensiveCalculationProps) {
     <div>
       <input
         value={filter}
-        onChange={e => setFilter(e.target.value)}
+        onChange={(e) => setFilter(e.target.value)}
         placeholder="Filter numbers..."
       />
       <h3>Filtered and Sorted Numbers:</h3>
       <ul>
-        {filteredAndSortedNumbers.map(n => (
+        {filteredAndSortedNumbers.map((n) => (
           <li key={n}>{n}</li>
         ))}
       </ul>
@@ -734,7 +758,7 @@ This optimization is particularly valuable for:
 The `useCallback` hook memoizes function definitions, which is useful when passing callbacks to optimized child components that rely on reference equality to prevent unnecessary renders.
 
 ```tsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback } from "react";
 
 interface Item {
   id: number;
@@ -748,10 +772,10 @@ interface ItemListProps {
 
 // Child component that uses React.memo
 const ItemList = React.memo(({ items, onItemClick }: ItemListProps) => {
-  console.log('ItemList rendered');
+  console.log("ItemList rendered");
   return (
     <ul>
-      {items.map(item => (
+      {items.map((item) => (
         <li key={item.id} onClick={() => onItemClick(item.id)}>
           {item.name}
         </li>
@@ -762,9 +786,9 @@ const ItemList = React.memo(({ items, onItemClick }: ItemListProps) => {
 
 function ShoppingList() {
   const [items, setItems] = useState<Item[]>([
-    { id: 1, name: 'Apples' },
-    { id: 2, name: 'Bananas' },
-    { id: 3, name: 'Cherries' }
+    { id: 1, name: "Apples" },
+    { id: 2, name: "Bananas" },
+    { id: 3, name: "Cherries" },
   ]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
@@ -798,7 +822,7 @@ The `useCallback` hook is essential when:
 One of the most powerful features of **React Hooks** is the ability to create custom hooks, allowing you to extract component logic into reusable functions.
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface WindowSize {
   width: number;
@@ -809,22 +833,22 @@ interface WindowSize {
 function useWindowSize(): WindowSize {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
     };
 
     // Add event listener
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Clean up
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []); // Empty array means only run on mount and unmount
 
   return windowSize;
@@ -832,7 +856,7 @@ function useWindowSize(): WindowSize {
 ```
 
 ```tsx
-import React from 'react';
+import React from "react";
 // Using the above custom hook
 function ResponsiveComponent() {
   const size = useWindowSize();
@@ -840,12 +864,10 @@ function ResponsiveComponent() {
   return (
     <div>
       <h2>Window Size:</h2>
-      <p>Width: {size.width}px, Height: {size.height}px</p>
-      {size.width < 768 ? (
-        <p>Mobile view</p>
-      ) : (
-        <p>Desktop view</p>
-      )}
+      <p>
+        Width: {size.width}px, Height: {size.height}px
+      </p>
+      {size.width < 768 ? <p>Mobile view</p> : <p>Desktop view</p>}
     </div>
   );
 }
@@ -858,7 +880,7 @@ Here are a few more examples of useful custom hooks:
 #### 1\. useFetch: Simplified Data Fetching
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface UseFetchResult<T> {
   data: T | null;
@@ -866,7 +888,10 @@ interface UseFetchResult<T> {
   error: string | null;
 }
 
-function useFetch<T>(url: string, options: RequestInit = {}): UseFetchResult<T> {
+function useFetch<T>(
+  url: string,
+  options: RequestInit = {}
+): UseFetchResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -880,7 +905,7 @@ function useFetch<T>(url: string, options: RequestInit = {}): UseFetchResult<T> 
         setLoading(true);
         const response = await fetch(url, {
           ...options,
-          signal: controller.signal
+          signal: controller.signal,
         });
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -891,7 +916,7 @@ function useFetch<T>(url: string, options: RequestInit = {}): UseFetchResult<T> 
           setError(null);
         }
       } catch (err: any) {
-        if (isMounted && err.name !== 'AbortError') {
+        if (isMounted && err.name !== "AbortError") {
           setError(err.message);
           setData(null);
         }
@@ -915,7 +940,7 @@ function useFetch<T>(url: string, options: RequestInit = {}): UseFetchResult<T> 
 #### 2\. useLocalStorage: Persistent State
 
 ```tsx
-import { useState } from 'react';
+import { useState } from "react";
 
 type SetValue<T> = (value: T | ((prevValue: T) => T)) => void;
 
@@ -939,7 +964,8 @@ function useLocalStorage<T>(key: string, initialValue: T): [T, SetValue<T>] {
   const setValue: SetValue<T> = (value) => {
     try {
       // Allow value to be a function like in useState
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
       // Save state
       setStoredValue(valueToStore);
       // Save to localStorage
@@ -970,9 +996,9 @@ We already learned the top 2 rules at the beginning of this article. You should 
 Use hooks to organize related logic together, rather than splitting it across different lifecycle methods as in class components.
 
 ```tsx
-import React from 'react';
-import { useFetch } from './useFetch'; // Assuming useFetch is defined elsewhere
-import { useUserSettings } from './useUserSettings'; // Assuming useUserSettings is defined elsewhere
+import React from "react";
+import { useFetch } from "./useFetch"; // Assuming useFetch is defined elsewhere
+import { useUserSettings } from "./useUserSettings"; // Assuming useUserSettings is defined elsewhere
 
 interface UserProfileProps {
   userId: string;
@@ -980,10 +1006,16 @@ interface UserProfileProps {
 
 // Prefer this
 function UserProfile({ userId }: UserProfileProps) {
-  interface UserData { /* ... define user data structure ... */ }
-  interface UserSettings { /* ... define user settings structure ... */ }
+  interface UserData {
+    /* ... define user data structure ... */
+  }
+  interface UserSettings {
+    /* ... define user settings structure ... */
+  }
 
-  const { data: user, loading: userLoading } = useFetch<UserData>(`/api/users/${userId}`);
+  const { data: user, loading: userLoading } = useFetch<UserData>(
+    `/api/users/${userId}`
+  );
   const { settings, updateSettings } = useUserSettings(userId);
 
   // All user-related logic stays together
@@ -1011,7 +1043,7 @@ Extract logic into custom hooks when it's used across multiple components:
 <!-- end list -->
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function Component1() {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
@@ -1020,16 +1052,16 @@ function Component1() {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
-  return <div>Component 1 is {isOnline ? 'online' : 'offline'}</div>;
+  return <div>Component 1 is {isOnline ? "online" : "offline"}</div>;
 }
 
 function Component2() {
@@ -1039,16 +1071,16 @@ function Component2() {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
-  return <div>Component 2 is {isOnline ? 'online' : 'offline'}</div>;
+  return <div>Component 2 is {isOnline ? "online" : "offline"}</div>;
 }
 ```
 
@@ -1057,7 +1089,7 @@ function Component2() {
 <!-- end list -->
 
 ```tsx
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 function useOnlineStatus(): boolean {
   const [isOnline, setIsOnline] = useState<boolean>(navigator.onLine);
@@ -1066,12 +1098,12 @@ function useOnlineStatus(): boolean {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
 
     return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
     };
   }, []);
 
@@ -1084,12 +1116,12 @@ function useOnlineStatus(): boolean {
 <!-- end list -->
 
 ```tsx
-import React from 'react';
-import { useOnlineStatus } from './useOnlineStatus'; // Assuming useOnlineStatus is defined above
+import React from "react";
+import { useOnlineStatus } from "./useOnlineStatus"; // Assuming useOnlineStatus is defined above
 
 function Component1() {
   const isOnline = useOnlineStatus();
-  return <div>Component 1 is {isOnline ? 'online' : 'offline'}</div>;
+  return <div>Component 1 is {isOnline ? "online" : "offline"}</div>;
 }
 ```
 
@@ -1106,7 +1138,7 @@ For complex state logic, prefer `useReducer` over multiple `useState` calls:
 <!-- end list -->
 
 ```tsx
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent } from "react";
 
 interface FormErrors {
   name?: string;
@@ -1115,9 +1147,9 @@ interface FormErrors {
 }
 
 function ComplexFormMultiState() {
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -1128,11 +1160,7 @@ function ComplexFormMultiState() {
     console.log({ name, email, password });
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      {/* Form fields and handlers */}
-    </form>
-  );
+  return <form onSubmit={handleSubmit}>{/* Form fields and handlers */}</form>;
 }
 ```
 
@@ -1141,7 +1169,7 @@ function ComplexFormMultiState() {
 <!-- end list -->
 
 ```tsx
-import React, { useReducer, FormEvent, ChangeEvent } from 'react';
+import React, { useReducer, FormEvent, ChangeEvent } from "react";
 
 interface FormState {
   name: string;
@@ -1153,24 +1181,32 @@ interface FormState {
 }
 
 type FormAction =
-  | { type: 'UPDATE_FIELD'; field: keyof Omit<FormState, 'errors' | 'isSubmitting' | 'isSuccess'>; value: string }
-  | { type: 'SET_ERRORS'; errors: { [key: string]: string } }
-  | { type: 'START_SUBMIT' }
-  | { type: 'SUBMIT_SUCCESS' }
-  | { type: 'SUBMIT_FAIL' };
+  | {
+      type: "UPDATE_FIELD";
+      field: keyof Omit<FormState, "errors" | "isSubmitting" | "isSuccess">;
+      value: string;
+    }
+  | { type: "SET_ERRORS"; errors: { [key: string]: string } }
+  | { type: "START_SUBMIT" }
+  | { type: "SUBMIT_SUCCESS" }
+  | { type: "SUBMIT_FAIL" };
 
 function formReducer(state: FormState, action: FormAction): FormState {
   switch (action.type) {
-    case 'UPDATE_FIELD':
-      return { ...state, [action.field]: action.value, errors: { ...state.errors, [action.field]: undefined } };
-    case 'SET_ERRORS':
+    case "UPDATE_FIELD":
+      return {
+        ...state,
+        [action.field]: action.value,
+        errors: { ...state.errors, [action.field]: undefined },
+      };
+    case "SET_ERRORS":
       return { ...state, errors: action.errors };
-    case 'START_SUBMIT':
+    case "START_SUBMIT":
       return { ...state, isSubmitting: true, isSuccess: false, errors: {} };
-    case 'SUBMIT_SUCCESS':
+    case "SUBMIT_SUCCESS":
       return { ...state, isSubmitting: false, isSuccess: true };
-    case 'SUBMIT_FAIL':
-        return { ...state, isSubmitting: false, isSuccess: false };
+    case "SUBMIT_FAIL":
+      return { ...state, isSubmitting: false, isSuccess: false };
     default:
       return state;
   }
@@ -1178,29 +1214,40 @@ function formReducer(state: FormState, action: FormAction): FormState {
 
 function ComplexFormWithReducer() {
   const [state, dispatch] = useReducer(formReducer, {
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
     errors: {},
     isSubmitting: false,
-    isSuccess: false
+    isSuccess: false,
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: 'UPDATE_FIELD', field: e.target.name as keyof Omit<FormState, 'errors' | 'isSubmitting' | 'isSuccess'>, value: e.target.value });
+    dispatch({
+      type: "UPDATE_FIELD",
+      field: e.target.name as keyof Omit<
+        FormState,
+        "errors" | "isSubmitting" | "isSuccess"
+      >,
+      value: e.target.value,
+    });
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    dispatch({ type: 'START_SUBMIT' });
+    dispatch({ type: "START_SUBMIT" });
     // Simulate API call
     setTimeout(() => {
-      if (state.name === 'error') { // Example error condition
-        dispatch({ type: 'SET_ERRORS', errors: { name: 'Name cannot be "error"' } });
-        dispatch({ type: 'SUBMIT_FAIL' });
+      if (state.name === "error") {
+        // Example error condition
+        dispatch({
+          type: "SET_ERRORS",
+          errors: { name: 'Name cannot be "error"' },
+        });
+        dispatch({ type: "SUBMIT_FAIL" });
       } else {
-        dispatch({ type: 'SUBMIT_SUCCESS' });
-        console.log('Form submitted:', state);
+        dispatch({ type: "SUBMIT_SUCCESS" });
+        console.log("Form submitted:", state);
       }
     }, 1000);
   };
@@ -1209,23 +1256,46 @@ function ComplexFormWithReducer() {
     <form onSubmit={handleSubmit}>
       <div>
         <label>Name:</label>
-        <input type="text" name="name" value={state.name} onChange={handleChange} />
-        {state.errors.name && <span style={{ color: 'red' }}>{state.errors.name}</span>}
+        <input
+          type="text"
+          name="name"
+          value={state.name}
+          onChange={handleChange}
+        />
+        {state.errors.name && (
+          <span style={{ color: "red" }}>{state.errors.name}</span>
+        )}
       </div>
       <div>
         <label>Email:</label>
-        <input type="email" name="email" value={state.email} onChange={handleChange} />
-        {state.errors.email && <span style={{ color: 'red' }}>{state.errors.email}</span>}
+        <input
+          type="email"
+          name="email"
+          value={state.email}
+          onChange={handleChange}
+        />
+        {state.errors.email && (
+          <span style={{ color: "red" }}>{state.errors.email}</span>
+        )}
       </div>
       <div>
         <label>Password:</label>
-        <input type="password" name="password" value={state.password} onChange={handleChange} />
-        {state.errors.password && <span style={{ color: 'red' }}>{state.errors.password}</span>}
+        <input
+          type="password"
+          name="password"
+          value={state.password}
+          onChange={handleChange}
+        />
+        {state.errors.password && (
+          <span style={{ color: "red" }}>{state.errors.password}</span>
+        )}
       </div>
       <button type="submit" disabled={state.isSubmitting}>
-        {state.isSubmitting ? 'Submitting...' : 'Submit'}
+        {state.isSubmitting ? "Submitting..." : "Submit"}
       </button>
-      {state.isSuccess && <p style={{ color: 'green' }}>Form submitted successfully!</p>}
+      {state.isSuccess && (
+        <p style={{ color: "green" }}>Form submitted successfully!</p>
+      )}
     </form>
   );
 }
@@ -1236,7 +1306,7 @@ function ComplexFormWithReducer() {
 Extract data fetching logic into custom hooks to keep components focused on UI rendering:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 // Define a type for your user data
 interface User {
@@ -1294,7 +1364,9 @@ function useUser(userId: string): UseUserResult {
 
 // Dummy components for demonstration
 const Spinner = () => <div>Loading...</div>;
-const ErrorMessage = ({ error }: { error: Error }) => <div style={{ color: 'red' }}>Error: {error.message}</div>;
+const ErrorMessage = ({ error }: { error: Error }) => (
+  <div style={{ color: "red" }}>Error: {error.message}</div>
+);
 
 // Component focused on UI
 interface UserProfileProps {
@@ -1327,8 +1399,8 @@ As you become more familiar with basic hooks like `useState`, `useEffect`, and `
 Compose multiple hooks together to create more powerful abstractions:
 
 ```tsx
-import { useFetch } from './useFetch'; // Assuming useFetch is defined elsewhere
-import { useOnlineStatus } from './useOnlineStatus'; // Assuming useOnlineStatus is defined elsewhere
+import { useFetch } from "./useFetch"; // Assuming useFetch is defined elsewhere
+import { useOnlineStatus } from "./useOnlineStatus"; // Assuming useOnlineStatus is defined elsewhere
 
 interface UserData {
   id: string;
@@ -1344,14 +1416,18 @@ interface UseUserDataWithStatusResult {
 }
 
 function useUserDataWithStatus(userId: string): UseUserDataWithStatusResult {
-  const { data: user, loading: userLoading, error: userError } = useFetch<UserData>(`/api/users/${userId}`);
+  const {
+    data: user,
+    loading: userLoading,
+    error: userError,
+  } = useFetch<UserData>(`/api/users/${userId}`);
   const isOnline = useOnlineStatus();
 
   return {
     user,
     loading: userLoading,
     error: userError,
-    isOnline
+    isOnline,
   };
 }
 ```
@@ -1361,7 +1437,7 @@ function useUserDataWithStatus(userId: string): UseUserDataWithStatusResult {
 Combine context and reducers for global state management:
 
 ```tsx
-import React, { createContext, useReducer, useContext, ReactNode } from 'react';
+import React, { createContext, useReducer, useContext, ReactNode } from "react";
 
 interface AppState {
   user: { id: string; name: string } | null;
@@ -1370,20 +1446,22 @@ interface AppState {
 }
 
 type AppAction =
-  | { type: 'SET_USER'; payload: { id: string; name: string } | null }
-  | { type: 'TOGGLE_THEME' };
-  // other cases
+  | { type: "SET_USER"; payload: { id: string; name: string } | null }
+  | { type: "TOGGLE_THEME" };
+// other cases
 
 // Create context
 const AppStateContext = createContext<AppState | undefined>(undefined);
-const AppDispatchContext = createContext<React.Dispatch<AppAction> | undefined>(undefined);
+const AppDispatchContext = createContext<React.Dispatch<AppAction> | undefined>(
+  undefined
+);
 
 // Reducer function
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
-    case 'SET_USER':
+    case "SET_USER":
       return { ...state, user: action.payload };
-    case 'TOGGLE_THEME':
+    case "TOGGLE_THEME":
       return { ...state, darkMode: !state.darkMode };
     // other cases
     default:
@@ -1412,7 +1490,7 @@ function AppProvider({ children }: { children: ReactNode }) {
 function useAppState(): AppState {
   const context = useContext(AppStateContext);
   if (context === undefined) {
-    throw new Error('useAppState must be used within an AppProvider');
+    throw new Error("useAppState must be used within an AppProvider");
   }
   return context;
 }
@@ -1420,7 +1498,7 @@ function useAppState(): AppState {
 function useAppDispatch(): React.Dispatch<AppAction> {
   const context = useContext(AppDispatchContext);
   if (context === undefined) {
-    throw new Error('useAppDispatch must be used within an AppProvider');
+    throw new Error("useAppDispatch must be used within an AppProvider");
   }
   return context;
 }
@@ -1479,7 +1557,7 @@ TypeScript integration with hooks has improved dramatically:
 A common issue is creating infinite loops with `useEffect`:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface SearchResult {
   id: string;
@@ -1488,28 +1566,30 @@ interface SearchResult {
 
 // Dummy search API
 async function fetchResults(query: string): Promise<SearchResult[]> {
-  console.log('Fetching results for:', query);
-  return new Promise(resolve =>
+  console.log("Fetching results for:", query);
+  return new Promise((resolve) =>
     setTimeout(() => {
-      resolve([{ id: '1', name: `Result for ${query}` }]);
+      resolve([{ id: "1", name: `Result for ${query}` }]);
     }, 500)
   );
 }
 
 // Problematic code
 function SearchComponentProblem() {
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<SearchResult[]>([]);
 
   // This creates an infinite loop!
   useEffect(() => {
-    fetchResults(query).then(data => setResults(data));
+    fetchResults(query).then((data) => setResults(data));
   }, [results]); // results change triggers effect, which updates results!
   // ...
   return (
     <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} />
-      {results.map(r => <div key={r.id}>{r.name}</div>)}
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      {results.map((r) => (
+        <div key={r.id}>{r.name}</div>
+      ))}
     </div>
   );
 }
@@ -1518,7 +1598,7 @@ function SearchComponentProblem() {
 **Solution:** Ensure your dependency array only includes values that, when changed, should trigger the effect:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface SearchResult {
   id: string;
@@ -1527,22 +1607,23 @@ interface SearchResult {
 
 // Dummy search API
 async function fetchResults(query: string): Promise<SearchResult[]> {
-  console.log('Fetching results for:', query);
-  return new Promise(resolve =>
+  console.log("Fetching results for:", query);
+  return new Promise((resolve) =>
     setTimeout(() => {
-      resolve([{ id: '1', name: `Result for ${query}` }]);
+      resolve([{ id: "1", name: `Result for ${query}` }]);
     }, 500)
   );
 }
 
 // Fixed code
 function SearchComponentFixed() {
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string>("");
   const [results, setResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
-    if (query) { // Only fetch if query is not empty
-      fetchResults(query).then(data => setResults(data));
+    if (query) {
+      // Only fetch if query is not empty
+      fetchResults(query).then((data) => setResults(data));
     } else {
       setResults([]); // Clear results if query is empty
     }
@@ -1550,8 +1631,10 @@ function SearchComponentFixed() {
 
   return (
     <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} />
-      {results.map(r => <div key={r.id}>{r.name}</div>)}
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      {results.map((r) => (
+        <div key={r.id}>{r.name}</div>
+      ))}
     </div>
   );
 }
@@ -1562,7 +1645,7 @@ function SearchComponentFixed() {
 Closures in JavaScript can lead to stale state in event handlers:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function TimerProblem() {
   const [count, setCount] = useState<number>(0);
@@ -1583,7 +1666,7 @@ function TimerProblem() {
 **Solution:** Use the functional update form of state setters:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 function TimerFixed() {
   const [count, setCount] = useState<number>(0);
@@ -1591,7 +1674,7 @@ function TimerFixed() {
   useEffect(() => {
     const timer = setInterval(() => {
       // This always uses the latest count value
-      setCount(prevCount => prevCount + 1);
+      setCount((prevCount) => prevCount + 1);
     }, 1000);
 
     return () => clearInterval(timer);
@@ -1606,7 +1689,7 @@ function TimerFixed() {
 A common mistake is wrapping everything in `useMemo` and `useCallback`:
 
 ```tsx
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback } from "react";
 
 interface User {
   id: number;
@@ -1621,14 +1704,12 @@ interface UserListProps {
 function UserListProblem({ users }: UserListProps) {
   // Unnecessary for simple operations
   const displayUsers = useMemo(() => {
-    return users.map(user => (
-      <li key={user.id}>{user.name}</li>
-    ));
+    return users.map((user) => <li key={user.id}>{user.name}</li>);
   }, [users]);
 
   // Unnecessary for this simple function
   const handleClick = useCallback(() => {
-    console.log('Clicked');
+    console.log("Clicked");
   }, []);
 
   return (
@@ -1652,7 +1733,7 @@ function UserListProblem({ users }: UserListProps) {
 <!-- end list -->
 
 ```tsx
-import React from 'react';
+import React from "react";
 
 interface User {
   id: number;
@@ -1665,14 +1746,14 @@ interface UserListProps {
 
 function UserListFixed({ users }: UserListProps) {
   const handleClick = () => {
-    console.log('Clicked');
+    console.log("Clicked");
   };
 
   return (
     <div>
       <h2>User List</h2>
       <ul>
-        {users.map(user => (
+        {users.map((user) => (
           <li key={user.id}>{user.name}</li>
         ))}
       </ul>
@@ -1687,7 +1768,7 @@ function UserListFixed({ users }: UserListProps) {
 Managing dependencies can be tricky:
 
 ```tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 interface SearchResult {
   id: string;
@@ -1696,8 +1777,8 @@ interface SearchResult {
 
 // Dummy search API
 const searchAPI = (query: string): SearchResult[] => {
-  console.log('Searching API with:', query);
-  return [{ id: 'a', value: `Result for ${query}` }];
+  console.log("Searching API with:", query);
+  return [{ id: "a", value: `Result for ${query}` }];
 };
 
 interface SearchComponentProps {
@@ -1706,7 +1787,10 @@ interface SearchComponentProps {
 }
 
 // Missing dependencies
-function SearchComponentMissingDeps({ onSearch, defaultQuery }: SearchComponentProps) {
+function SearchComponentMissingDeps({
+  onSearch,
+  defaultQuery,
+}: SearchComponentProps) {
   const [query, setQuery] = useState<string>(defaultQuery);
 
   useEffect(() => {
@@ -1716,7 +1800,7 @@ function SearchComponentMissingDeps({ onSearch, defaultQuery }: SearchComponentP
 
   return (
     <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
     </div>
   );
 }
@@ -1725,7 +1809,7 @@ function SearchComponentMissingDeps({ onSearch, defaultQuery }: SearchComponentP
 **Solution:** Use ESLint's `react-hooks/exhaustive-deps` rule and address all warnings:
 
 ```tsx
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 
 interface SearchResult {
   id: string;
@@ -1734,8 +1818,8 @@ interface SearchResult {
 
 // Dummy search API
 const searchAPI = (query: string): SearchResult[] => {
-  console.log('Searching API with:', query);
-  return [{ id: 'a', value: `Result for ${query}` }];
+  console.log("Searching API with:", query);
+  return [{ id: "a", value: `Result for ${query}` }];
 };
 
 interface SearchComponentProps {
@@ -1743,7 +1827,10 @@ interface SearchComponentProps {
   defaultQuery: string;
 }
 
-function SearchComponentFixedDeps({ onSearch, defaultQuery }: SearchComponentProps) {
+function SearchComponentFixedDeps({
+  onSearch,
+  defaultQuery,
+}: SearchComponentProps) {
   const [query, setQuery] = useState<string>(defaultQuery);
 
   useEffect(() => {
@@ -1753,7 +1840,7 @@ function SearchComponentFixedDeps({ onSearch, defaultQuery }: SearchComponentPro
 
   return (
     <div>
-      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
     </div>
   );
 }
@@ -1761,11 +1848,14 @@ function SearchComponentFixedDeps({ onSearch, defaultQuery }: SearchComponentPro
 // Example usage in a parent component to demonstrate useCallback for onSearch
 function ParentComponent() {
   const handleSearchResults = useCallback((results: SearchResult[]) => {
-    console.log('Parent received search results:', results);
+    console.log("Parent received search results:", results);
   }, []); // Memoize onSearch if it doesn't need to change often
 
   return (
-    <SearchComponentFixedDeps onSearch={handleSearchResults} defaultQuery="initial" />
+    <SearchComponentFixedDeps
+      onSearch={handleSearchResults}
+      defaultQuery="initial"
+    />
   );
 }
 ```
