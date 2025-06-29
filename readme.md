@@ -7,4 +7,5 @@ Web Development
 - [Mastering React Custom Hooks](dev/mastering-react-custom-hooks.md)
 - [React Lifecycles](dev/react-lifecycles.md)
 - [Dnd-kit](dev/dnd-kit.md)
+- [Combining `useReducer` with TypeScript](dev/combining-useReducer-with-ts.md)
 - [Using Foam with Netlify](dev/using-foam-with-netlify.md)

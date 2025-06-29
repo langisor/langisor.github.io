@@ -8,21 +8,24 @@ Here's a detailed explanation of how to apply the `useReducer` hook using TypeSc
 
 <!-- toc -->
 
-- [Understanding the Core Concepts](#understanding-the-core-concepts)
-- [`useReducer` Signature](#usereducer-signature)
-- [TypeScript and `useReducer`](#typescript-and-usereducer)
-  - [Example: Simple Counter](#example-simple-counter)
-    - [Step 1: Define the State Type](#step-1-define-the-state-type)
-    - [Step 2: Define Action Types](#step-2-define-action-types)
-    - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function)
-    - [Step 4: Use `useReducer` in your Component](#step-4-use-usereducer-in-your-component)
-- [More Complex Example: Todo List](#more-complex-example-todo-list)
-  - [Step 1: Define State Types](#step-1-define-state-types)
-  - [Step 2: Define Action Types](#step-2-define-action-types-1)
-  - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function-1)
-  - [Step 4: Use `useReducer` in your Component](#step-4-use-usereducer-in-your-component-1)
-- [Benefits of using `useReducer` with TypeScript](#benefits-of-using-usereducer-with-typescript)
-- [When to use `useReducer` vs `useState`](#when-to-use-usereducer-vs-usestate)
+- [Combining `useReducer` hook with `Typescript`](#combining-usereducer-hook-with-typescript)
+  - [Understanding the Core Concepts](#understanding-the-core-concepts)
+  - [`useReducer` Signature](#usereducer-signature)
+  - [TypeScript and `useReducer`](#typescript-and-usereducer)
+    - [Example: Simple Counter](#example-simple-counter)
+      - [Step 1: Define the State Type](#step-1-define-the-state-type)
+      - [Step 2: Define Action Types](#step-2-define-action-types)
+      - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function)
+      - [Step 4: Use `useReducer` in your Component](#step-4-use-usereducer-in-your-component)
+  - [More Complex Example: Todo List](#more-complex-example-todo-list)
+      - [Step 1: Define State Types](#step-1-define-state-types)
+      - [Step 2: Define Action Types](#step-2-define-action-types-1)
+      - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function-1)
+      - [Step 4: Use `useReducer` in your Component](#step-4-use-usereducer-in-your-component-1)
+  - [Benefits of using `useReducer` with TypeScript](#benefits-of-using-usereducer-with-typescript)
+  - [When to use `useReducer` vs `useState`](#when-to-use-usereducer-vs-usestate)
+  - [Comperhensive Examples](#comperhensive-examples)
+  - [Quizzes - 10 questions](#quizzes---10-questions)
 
 <!-- tocstop -->
 
@@ -320,5 +323,9 @@ By combining `useReducer` with TypeScript, you gain the benefits of predictable 
 
 ## Comperhensive Examples
 
-- [Example 1: Form Management with Validation](./examples/form-management-with-validation.md)
-- [Example 2: Shopping Cart Management](./examples/shopping-cart-management.md)
+- [Example 1: Form Management with Validation](./etc/examples/form-management-with-validation.md)
+- [Example 2: Shopping Cart Management](./etc/examples/shopping-cart-management.md)
+
+## Quizzes - 10 questions
+
+ [Quiz - 10 questions](./etc/quizzes/useReducer-quiz.md)
