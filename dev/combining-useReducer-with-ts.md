@@ -17,7 +17,7 @@ Here's a detailed explanation of how to apply the `useReducer` hook using TypeSc
       - [Step 2: Define Action Types](#step-2-define-action-types)
       - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function)
       - [Step 4: Use `useReducer` in your Component](#step-4-use-usereducer-in-your-component)
-  - [More Complex Example: Todo List](#more-complex-example-todo-list)
+    - [More Complex Example: Todo List](#more-complex-example-todo-list)
       - [Step 1: Define State Types](#step-1-define-state-types)
       - [Step 2: Define Action Types](#step-2-define-action-types-1)
       - [Step 3: Create the Reducer Function](#step-3-create-the-reducer-function-1)
@@ -123,7 +123,7 @@ function counterReducer(state: CounterState, action: CounterAction): CounterStat
 
 Finally, integrate `useReducer` into your React component.
 
-```typescript jsx
+```tsx
 // Counter.tsx
 import React, { useReducer } from 'react';
 
@@ -183,7 +183,7 @@ In this component:
   - TypeScript infers the type of `state` to be `CounterState` based on `initialState` and the `reducer`'s return type.
   - TypeScript infers the type of `dispatch` based on the `action` argument of `counterReducer`, meaning `dispatch` will only accept actions conforming to `CounterAction`.
 
-## More Complex Example: Todo List
+### More Complex Example: Todo List
 
 Let's consider a slightly more complex scenario: a Todo List application.
 
@@ -214,7 +214,7 @@ type TodoAction =
 
 #### Step 3: Create the Reducer Function
 
-```typescript
+```tsx
 // todoReducer.ts
 import { Todo, TodoState, TodoAction } from './types'; // Assuming types.ts
 
