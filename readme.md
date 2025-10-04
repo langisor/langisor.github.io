@@ -10,4 +10,5 @@ Web Development
 - [Combining `useReducer` with TypeScript](dev/combining-useReducer-with-ts.md)
 - [Using Foam with Netlify](dev/using-foam-with-netlify.md)
 - [JS/TS Collection Quick Guide](dev/Js-ts-collections.md)
+- [`hookstate`: A React States Management](dev/hookstate/index.md)
 - [Code Snippets/ Examples](dev/etc/index.md)
