@@ -12,3 +12,4 @@ Web Development
 - [JS/TS Collection Quick Guide](dev/Js-ts-collections.md)
 - [`hookstate`: A React States Management](dev/hookstate/index.md)
 - [Code Snippets/ Examples](dev/etc/index.md)
+- [React `useMemo`, `useCallback`](dev/useMemo-useCallback.md)
