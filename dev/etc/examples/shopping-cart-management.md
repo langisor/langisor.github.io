@@ -1,3 +1,5 @@
+# Shopping Cart Management
+
 ## Example 2: Shopping Cart Management
 
 A shopping cart often involves adding items, updating quantities, removing items, and calculating totals. This is a classic use case for `useReducer`.
@@ -33,13 +35,16 @@ Actions will cover adding, removing, and updating quantities of items.
 ```typescript
 // types.ts
 type CartAction =
-  | { type: 'ADD_ITEM'; payload: { item: Omit<CartItem, 'quantity'>; quantity?: number } }
-  | { type: 'REMOVE_ITEM'; payload: { id: string } }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | {
+      type: "ADD_ITEM";
+      payload: { item: Omit<CartItem, "quantity">; quantity?: number };
+    }
+  | { type: "REMOVE_ITEM"; payload: { id: string } }
+  | { type: "UPDATE_QUANTITY"; payload: { id: string; quantity: number } }
+  | { type: "CLEAR_CART" };
 ```
 
-* `Omit<CartItem, 'quantity'>`: When adding an item, we typically provide its base details and an optional initial quantity. The `quantity` property is omitted from the input `item` because the reducer will manage it.
+- `Omit<CartItem, 'quantity'>`: When adding an item, we typically provide its base details and an optional initial quantity. The `quantity` property is omitted from the input `item` because the reducer will manage it.
 
 #### 3\. Create the Reducer Function
 
@@ -47,11 +52,16 @@ The reducer will handle all cart modifications and recalculate `totalItems` and 
 
 ```tsx
 // cartReducer.ts
-import { CartItem, CartState, CartAction } from './types'; // Assuming types.ts
+import { CartItem, CartState, CartAction } from "./types"; // Assuming types.ts
 
-const calculateTotals = (items: CartItem[]): { totalItems: number; totalPrice: number } => {
+const calculateTotals = (
+  items: CartItem[]
+): { totalItems: number; totalPrice: number } => {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalPrice = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
   return { totalItems, totalPrice };
 };
 
@@ -65,7 +75,7 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
   let updatedItems: CartItem[];
 
   switch (action.type) {
-    case 'ADD_ITEM':
+    case "ADD_ITEM":
       const { item, quantity = 1 } = action.payload;
       const existingItem = state.items.find((i) => i.id === item.id);
 
@@ -78,19 +88,23 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
       }
       break;
 
-    case 'REMOVE_ITEM':
-      updatedItems = state.items.filter((item) => item.id !== action.payload.id);
+    case "REMOVE_ITEM":
+      updatedItems = state.items.filter(
+        (item) => item.id !== action.payload.id
+      );
       break;
 
-    case 'UPDATE_QUANTITY':
-      updatedItems = state.items.map((item) =>
-        item.id === action.payload.id
-          ? { ...item, quantity: Math.max(0, action.payload.quantity) } // Ensure quantity doesn't go below 0
-          : item
-      ).filter(item => item.quantity > 0); // Remove if quantity becomes 0
+    case "UPDATE_QUANTITY":
+      updatedItems = state.items
+        .map((item) =>
+          item.id === action.payload.id
+            ? { ...item, quantity: Math.max(0, action.payload.quantity) } // Ensure quantity doesn't go below 0
+            : item
+        )
+        .filter((item) => item.quantity > 0); // Remove if quantity becomes 0
       break;
 
-    case 'CLEAR_CART':
+    case "CLEAR_CART":
       updatedItems = [];
       break;
 
@@ -108,8 +122,8 @@ export function cartReducer(state: CartState, action: CartAction): CartState {
 }
 ```
 
-* The `calculateTotals` helper function ensures that `totalItems` and `totalPrice` are always up-to-date.
-* The reducer handles logic for incrementing quantity if an item already exists or adding a new item.
+- The `calculateTotals` helper function ensures that `totalItems` and `totalPrice` are always up-to-date.
+- The reducer handles logic for incrementing quantity if an item already exists or adding a new item.
 
 #### 4\. Use `useReducer` in your Component
 

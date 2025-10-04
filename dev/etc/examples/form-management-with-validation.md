@@ -1,3 +1,5 @@
+# Form Management with Validation
+
 ## Example 1: Form Management with Validation
 
 Managing form input fields, especially with validation, can become complex with multiple `useState` hooks. `useReducer` provides a cleaner way to handle all form-related state and validation logic.
@@ -39,13 +41,28 @@ We'll need actions for updating field values, setting errors, marking fields as 
 ```typescript
 // types.ts
 type FormAction =
-  | { type: 'UPDATE_FIELD'; payload: { fieldName: keyof Omit<FormState, 'isFormValid'>; value: string } }
-  | { type: 'SET_ERROR'; payload: { fieldName: keyof Omit<FormState, 'isFormValid'>; error: string | null } }
-  | { type: 'TOUCH_FIELD'; payload: { fieldName: keyof Omit<FormState, 'isFormValid'> } }
-  | { type: 'RESET_FORM' };
+  | {
+      type: "UPDATE_FIELD";
+      payload: {
+        fieldName: keyof Omit<FormState, "isFormValid">;
+        value: string;
+      };
+    }
+  | {
+      type: "SET_ERROR";
+      payload: {
+        fieldName: keyof Omit<FormState, "isFormValid">;
+        error: string | null;
+      };
+    }
+  | {
+      type: "TOUCH_FIELD";
+      payload: { fieldName: keyof Omit<FormState, "isFormValid"> };
+    }
+  | { type: "RESET_FORM" };
 ```
 
-* `fieldName: keyof Omit<FormState, 'isFormValid'>`: This ensures that `fieldName` can only be one of 'username', 'email', or 'password'. `Omit<FormState, 'isFormValid'>` excludes `isFormValid` because it's derived, not a direct field.
+- `fieldName: keyof Omit<FormState, 'isFormValid'>`: This ensures that `fieldName` can only be one of 'username', 'email', or 'password'. `Omit<FormState, 'isFormValid'>` excludes `isFormValid` because it's derived, not a direct field.
 
 #### 3\. Create the Reducer Function
 
@@ -53,21 +70,23 @@ The reducer will handle all state changes and also the validation logic.
 
 ```typescript
 // formReducer.ts
-import { FormState, FormAction } from './types'; // Assuming types.ts
+import { FormState, FormAction } from "./types"; // Assuming types.ts
 
 // Basic validation functions
 const validateUsername = (username: string): string | null => {
-  if (username.length < 3) return 'Username must be at least 3 characters long.';
+  if (username.length < 3)
+    return "Username must be at least 3 characters long.";
   return null;
 };
 
 const validateEmail = (email: string): string | null => {
-  if (!/\S+@\S+\.\S+/.test(email)) return 'Invalid email format.';
+  if (!/\S+@\S+\.\S+/.test(email)) return "Invalid email format.";
   return null;
 };
 
 const validatePassword = (password: string): string | null => {
-  if (password.length < 6) return 'Password must be at least 6 characters long.';
+  if (password.length < 6)
+    return "Password must be at least 6 characters long.";
   return null;
 };
 
@@ -83,9 +102,9 @@ const validateForm = (state: FormState): boolean => {
 };
 
 export const initialFormState: FormState = {
-  username: { value: '', error: null, touched: false },
-  email: { value: '', error: null, touched: false },
-  password: { value: '', error: null, touched: false },
+  username: { value: "", error: null, touched: false },
+  email: { value: "", error: null, touched: false },
+  password: { value: "", error: null, touched: false },
   isFormValid: false,
 };
 
@@ -93,7 +112,7 @@ export function formReducer(state: FormState, action: FormAction): FormState {
   let newState = { ...state };
 
   switch (action.type) {
-    case 'UPDATE_FIELD':
+    case "UPDATE_FIELD":
       const { fieldName, value } = action.payload;
       newState = {
         ...state,
@@ -105,7 +124,7 @@ export function formReducer(state: FormState, action: FormAction): FormState {
       };
       break;
 
-    case 'SET_ERROR':
+    case "SET_ERROR":
       newState = {
         ...state,
         [action.payload.fieldName]: {
@@ -115,7 +134,7 @@ export function formReducer(state: FormState, action: FormAction): FormState {
       };
       break;
 
-    case 'TOUCH_FIELD':
+    case "TOUCH_FIELD":
       newState = {
         ...state,
         [action.payload.fieldName]: {
@@ -125,7 +144,7 @@ export function formReducer(state: FormState, action: FormAction): FormState {
       };
       break;
 
-    case 'RESET_FORM':
+    case "RESET_FORM":
       return initialFormState;
 
     default:
@@ -148,8 +167,8 @@ export function formReducer(state: FormState, action: FormAction): FormState {
 }
 ```
 
-* Notice how the validation logic is integrated directly into the reducer. After any state update (via `UPDATE_FIELD`, `SET_ERROR`, `TOUCH_FIELD`), the `isFormValid` status is re-evaluated.
-* Errors are only displayed if the field has been `touched`.
+- Notice how the validation logic is integrated directly into the reducer. After any state update (via `UPDATE_FIELD`, `SET_ERROR`, `TOUCH_FIELD`), the `isFormValid` status is re-evaluated.
+- Errors are only displayed if the field has been `touched`.
 
 #### 4\. Use `useReducer` in your Component
 

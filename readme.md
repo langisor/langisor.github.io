@@ -9,3 +9,5 @@ Web Development
 - [Dnd-kit](dev/dnd-kit.md)
 - [Combining `useReducer` with TypeScript](dev/combining-useReducer-with-ts.md)
 - [Using Foam with Netlify](dev/using-foam-with-netlify.md)
+- [JS/TS Collection Quick Guide](dev/Js-ts-collections.md)
+- [Code Snippets/ Examples](dev/etc/index.md)
