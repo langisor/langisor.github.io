@@ -13,3 +13,4 @@ Web Development
 - [`hookstate`: A React States Management](dev/hookstate/index.md)
 - [Code Snippets/ Examples](dev/etc/index.md)
 - [React `useMemo`, `useCallback`](dev/useMemo-useCallback.md)
+- [Making your `Nextjs` app work offline](dev/etc/nextjs-app-to-pwa.md)
