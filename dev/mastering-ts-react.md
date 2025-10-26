@@ -2018,6 +2018,7 @@ Occasionally, a third-party module might lack official type definitions, either 
   This supports `import * as bar from 'bar-module';` or `const bar = require('bar-module');`.
 
 These custom declaration files bridge the gap between untyped JavaScript libraries and TypeScript's strict type system, allowing the project to compile without errors while still providing some level of type safety for the interactions with the third-party code. While these methods are generally applicable, placing `.d.ts` files in a location discoverable by the TypeScript compiler (e.g., a `types` folder in the project root or alongside the consuming component) is crucial for their effectiveness.
+
 ## V. Conclusion & Key Takeaways
 
 The comprehensive exploration of TypeScript in React reveals its profound impact on the development lifecycle, transforming it from a reactive debugging process to a proactive, type-safe engineering discipline. The foundational benefits of static type-checking, including enhanced developer experience, improved code readability, and safer refactoring, are consistently reinforced throughout various React patterns.

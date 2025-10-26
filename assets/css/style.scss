@@ -1,17 +1,10 @@
-<<<<<<< HEAD
- a {
-=======
-@import "{{ site.theme }}";
-
-a {
->>>>>>> gh-pages
-  color: #3300ff;
+a{
+    color: #3300ff;
 }
 
 .markdown-body {
   width: 100%;
   margin: 0.5rem 0.5rem;
->>>>>>> gh-pages
   font-size: 16px;
 }
 
@@ -79,4 +72,10 @@ pre {
   padding: 4px 16px;
   color: black;
   border-radius: 4px;
+}
+.summary{
+  border:2px dashed gray;
+  padding:0.4rem;
+  margin: 0.5rem 3px;
+  border-radius: 10px;
 }
