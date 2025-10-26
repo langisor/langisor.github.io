@@ -170,7 +170,7 @@ After deployment:
 
 ---
 
-# Caching your app's static assets (`HTML, CSS, JavaScript`, icons) to enable basic offline access.
+# Caching your app's static assets (`HTML, CSS, JavaScript`, icons) to enable basic offline access
 
 That's an excellent follow-up question. The previous guide focused on caching your app's **static assets** (HTML, CSS, JavaScript, icons) to enable basic offline access. To truly make an app like your Urdu Library useful offline, you need to cache the **data** (JSON files from API requests) as well.
 
