@@ -8,3 +8,4 @@ Examples
 - [`Nextjs useParams,usePathname...](examples/nextjs-useParams.md)
 - [`hookstate/core` Gists](vscode://vsls-contrib.gistfs/open?gist=838db412a9302e18928a9dbaa10c8d1b)
 - [Mutation with forms using `swr/useSWR` and Nextjs server action](examples/nextjs-action-swr.md)
+- [Smart Table Component](examples/smart-table-component.md)
