@@ -3,10 +3,19 @@
 ## Source Code
 
 ```tsx
-"use client"
-import * as React from "react"
-import { cn } from "@/lib/utils"
-import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight, Settings, Eye, EyeOff } from "lucide-react"
+"use client";
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import {
+  ChevronUp,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronLeft,
+  ChevronRight,
+  Settings,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -16,28 +25,28 @@ import {
   ColumnDef,
   SortingState,
   VisibilityState,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 // Exported interfaces for users
 export interface ColumnsVisibility {
-  sm?: string[]
-  md?: string[]
-  lg?: string[]
+  sm?: string[];
+  md?: string[];
+  lg?: string[];
 }
 
 export interface ColumnsConfig {
-  columnsVisibility?: ColumnsVisibility
-  freezeHeader?: boolean
-  enableColumnToggle?: boolean
+  columnsVisibility?: ColumnsVisibility;
+  freezeHeader?: boolean;
+  enableColumnToggle?: boolean;
 }
 
 export interface SmartTableProps<TData> {
-  data: TData[]
-  columns: ColumnDef<TData, any>[]
-  columnsConfig?: ColumnsConfig
-  className?: string
-  headerStyle?: React.CSSProperties
-  pageSize?: number
+  data: TData[];
+  columns: ColumnDef<TData, any>[];
+  columnsConfig?: ColumnsConfig;
+  className?: string;
+  headerStyle?: React.CSSProperties;
+  pageSize?: number;
 }
 
 // Utility hook to handle responsive column visibility
@@ -46,63 +55,77 @@ function useResponsiveColumns<TData>(
   columnsVisibility?: ColumnsVisibility,
   enableColumnToggle?: boolean
 ) {
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [userToggledColumns, setUserToggledColumns] = React.useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [userToggledColumns, setUserToggledColumns] =
+    React.useState<VisibilityState>({});
 
   React.useEffect(() => {
     if (!columnsVisibility) {
       // Apply user toggles if no responsive config
-      setColumnVisibility(userToggledColumns)
-      return
+      setColumnVisibility(userToggledColumns);
+      return;
     }
 
     const updateVisibility = () => {
-      const width = window.innerWidth
-      let visibleColumnIds: string[] | undefined
+      const width = window.innerWidth;
+      let visibleColumnIds: string[] | undefined;
 
       // Tailwind breakpoints: sm: 640px, md: 768px, lg: 1024px
       if (width < 640 && columnsVisibility.sm) {
-        visibleColumnIds = columnsVisibility.sm
+        visibleColumnIds = columnsVisibility.sm;
       } else if (width >= 640 && width < 768 && columnsVisibility.md) {
-        visibleColumnIds = columnsVisibility.md
+        visibleColumnIds = columnsVisibility.md;
       } else if (width >= 768 && width < 1024 && columnsVisibility.lg) {
-        visibleColumnIds = columnsVisibility.lg
+        visibleColumnIds = columnsVisibility.lg;
       }
 
       if (visibleColumnIds) {
-        const visibility: VisibilityState = {}
+        const visibility: VisibilityState = {};
         columns.forEach((col) => {
-          const colId = (col as any).accessorKey || (col as any).id
+          const colId = (col as any).accessorKey || (col as any).id;
           if (colId) {
             // Merge responsive visibility with user toggles
-            const isVisibleByBreakpoint = visibleColumnIds!.includes(colId)
-            const userToggled = userToggledColumns[colId]
-            visibility[colId] = userToggled !== undefined ? userToggled : isVisibleByBreakpoint
+            const isVisibleByBreakpoint = visibleColumnIds!.includes(colId);
+            const userToggled = userToggledColumns[colId];
+            visibility[colId] =
+              userToggled !== undefined ? userToggled : isVisibleByBreakpoint;
           }
-        })
-        setColumnVisibility(visibility)
+        });
+        setColumnVisibility(visibility);
       } else {
         // All columns visible by default, but respect user toggles
-        setColumnVisibility(userToggledColumns)
+        setColumnVisibility(userToggledColumns);
       }
-    }
+    };
 
-    updateVisibility()
-    window.addEventListener("resize", updateVisibility)
-    return () => window.removeEventListener("resize", updateVisibility)
-  }, [columns, columnsVisibility, userToggledColumns])
+    updateVisibility();
+    window.addEventListener("resize", updateVisibility);
+    return () => window.removeEventListener("resize", updateVisibility);
+  }, [columns, columnsVisibility, userToggledColumns]);
 
-  const toggleColumn = React.useCallback((columnId: string) => {
-    setUserToggledColumns(prev => {
-      const current = columnVisibility[columnId] ?? true
-      return {
-        ...prev,
-        [columnId]: !current
-      }
-    })
-  }, [columnVisibility])
+  const toggleColumn = React.useCallback(
+    (columnId: string) => {
+      setUserToggledColumns((prev) => {
+        const current =
+          prev[columnId] !== undefined
+            ? prev[columnId]
+            : (columnVisibility[columnId] ?? true);
+        return {
+          ...prev,
+          [columnId]: !current,
+        };
+      });
+    },
+    [columnVisibility]
+  );
 
-  return { columnVisibility, setColumnVisibility, toggleColumn, userToggledColumns }
+  return {
+    columnVisibility,
+    setColumnVisibility,
+    toggleColumn,
+    userToggledColumns,
+  };
 }
 
 function SmartTable<TData>({
@@ -113,12 +136,13 @@ function SmartTable<TData>({
   headerStyle,
   pageSize = 50,
 }: SmartTableProps<TData>) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const { columnVisibility, setColumnVisibility, toggleColumn } = useResponsiveColumns(
-    columns,
-    columnsConfig?.columnsVisibility,
-    columnsConfig?.enableColumnToggle
-  )
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const { columnVisibility, setColumnVisibility, toggleColumn } =
+    useResponsiveColumns(
+      columns,
+      columnsConfig?.columnsVisibility,
+      columnsConfig?.enableColumnToggle
+    );
 
   const table = useReactTable({
     data,
@@ -137,10 +161,10 @@ function SmartTable<TData>({
         pageSize,
       },
     },
-  })
+  });
 
-  const freezeHeader = columnsConfig?.freezeHeader ?? false
-  const enableColumnToggle = columnsConfig?.enableColumnToggle ?? false
+  const freezeHeader = columnsConfig?.freezeHeader ?? false;
+  const enableColumnToggle = columnsConfig?.enableColumnToggle ?? false;
 
   return (
     <div className="w-full space-y-4">
@@ -174,13 +198,13 @@ function SmartTable<TData>({
 
       <SmartTablePagination table={table} />
     </div>
-  )
+  );
 }
 
 interface ColumnToggleMenuProps<TData> {
-  columns: ColumnDef<TData, any>[]
-  columnVisibility: VisibilityState
-  toggleColumn: (columnId: string) => void
+  columns: ColumnDef<TData, any>[];
+  columnVisibility: VisibilityState;
+  toggleColumn: (columnId: string) => void;
 }
 
 function ColumnToggleMenu<TData>({
@@ -188,21 +212,21 @@ function ColumnToggleMenu<TData>({
   columnVisibility,
   toggleColumn,
 }: ColumnToggleMenuProps<TData>) {
-  const [showMenu, setShowMenu] = React.useState(false)
-  const menuRef = React.useRef<HTMLDivElement>(null)
+  const [showMenu, setShowMenu] = React.useState(false);
+  const menuRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (!showMenu) return
+    if (!showMenu) return;
 
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setShowMenu(false)
+        setShowMenu(false);
       }
-    }
+    };
 
-    document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [showMenu])
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showMenu]);
 
   return (
     <div className="flex justify-end" ref={menuRef}>
@@ -219,11 +243,12 @@ function ColumnToggleMenu<TData>({
           <div className="p-2 border-b font-medium text-sm">Toggle Columns</div>
           <div className="p-2 max-h-[300px] overflow-y-auto">
             {columns.map((col) => {
-              const colId = (col as any).accessorKey || (col as any).id
-              if (!colId) return null
+              const colId = (col as any).accessorKey || (col as any).id;
+              if (!colId) return null;
 
-              const header = typeof col.header === "string" ? col.header : colId
-              const isVisible = columnVisibility[colId] ?? true
+              const header =
+                typeof col.header === "string" ? col.header : colId;
+              const isVisible = columnVisibility[colId] ?? true;
 
               return (
                 <label
@@ -243,38 +268,57 @@ function ColumnToggleMenu<TData>({
                   )}
                   <span>{header}</span>
                 </label>
-              )
+              );
             })}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }
 
 interface SmartTableHeaderProps {
-  headerGroups: any[]
-  style?: React.CSSProperties
-  freezeHeader?: boolean
+  headerGroups: Array<{
+    id: string;
+    headers: Array<{
+      id: string;
+      isPlaceholder: boolean;
+      column: {
+        getCanSort: () => boolean;
+        getIsSorted: () => false | "asc" | "desc";
+        getToggleSortingHandler: () => ((event: unknown) => void) | undefined;
+        columnDef: ColumnDef<any, any>;
+      };
+      getContext: () => any;
+    }>;
+  }>;
+  style?: React.CSSProperties;
+  freezeHeader?: boolean;
 }
 
-function SmartTableHeader({ headerGroups, style, freezeHeader }: SmartTableHeaderProps) {
-  const [isFrozen, setIsFrozen] = React.useState(false)
-  const headerRef = React.useRef<HTMLTableSectionElement>(null)
+function SmartTableHeader({
+  headerGroups,
+  style,
+  freezeHeader,
+}: SmartTableHeaderProps) {
+  const [isFrozen, setIsFrozen] = React.useState(false);
+  const headerRef = React.useRef<HTMLTableSectionElement>(null);
 
   React.useEffect(() => {
-    if (!freezeHeader) return
+    if (!freezeHeader) return;
 
-    const container = headerRef.current?.closest('[data-slot="smart-table-container"]')
-    if (!container) return
+    const container = headerRef.current?.closest(
+      '[data-slot="smart-table-container"]'
+    );
+    if (!container) return;
 
     const checkScroll = () => {
-      setIsFrozen(container.scrollTop > 0)
-    }
+      setIsFrozen(container.scrollTop > 0);
+    };
 
-    container.addEventListener("scroll", checkScroll)
-    return () => container.removeEventListener("scroll", checkScroll)
-  }, [freezeHeader])
+    container.addEventListener("scroll", checkScroll);
+    return () => container.removeEventListener("scroll", checkScroll);
+  }, [freezeHeader]);
 
   return (
     <thead
@@ -295,17 +339,27 @@ function SmartTableHeader({ headerGroups, style, freezeHeader }: SmartTableHeade
         </tr>
       ))}
     </thead>
-  )
+  );
 }
 
 interface SmartTableHeadProps {
-  header: any
-  className?: string
+  header: {
+    id: string;
+    isPlaceholder: boolean;
+    column: {
+      getCanSort: () => boolean;
+      getIsSorted: () => false | "asc" | "desc";
+      getToggleSortingHandler: () => ((event: unknown) => void) | undefined;
+      columnDef: ColumnDef<any, any>;
+    };
+    getContext: () => any;
+  };
+  className?: string;
 }
 
 function SmartTableHead({ header, className }: SmartTableHeadProps) {
-  const canSort = header.column.getCanSort()
-  const isSorted = header.column.getIsSorted()
+  const canSort = header.column.getCanSort();
+  const isSorted = header.column.getIsSorted();
 
   return (
     <th
@@ -334,11 +388,20 @@ function SmartTableHead({ header, className }: SmartTableHeadProps) {
         )}
       </div>
     </th>
-  )
+  );
 }
 
 interface SmartTableBodyProps {
-  rows: any[]
+  rows: Array<{
+    id: string;
+    getVisibleCells: () => Array<{
+      id: string;
+      column: {
+        columnDef: ColumnDef<any, any>;
+      };
+      getContext: () => any;
+    }>;
+  }>;
 }
 
 function SmartTableBody({ rows }: SmartTableBodyProps) {
@@ -354,12 +417,21 @@ function SmartTableBody({ rows }: SmartTableBodyProps) {
         </tr>
       )}
     </tbody>
-  )
+  );
 }
 
 interface SmartTableRowProps {
-  row: any
-  className?: string
+  row: {
+    id: string;
+    getVisibleCells: () => Array<{
+      id: string;
+      column: {
+        columnDef: ColumnDef<any, any>;
+      };
+      getContext: () => any;
+    }>;
+  };
+  className?: string;
 }
 
 function SmartTableRow({ row, className }: SmartTableRowProps) {
@@ -375,12 +447,18 @@ function SmartTableRow({ row, className }: SmartTableRowProps) {
         <SmartTableCell key={cell.id} cell={cell} />
       ))}
     </tr>
-  )
+  );
 }
 
 interface SmartTableCellProps {
-  cell: any
-  className?: string
+  cell: {
+    id: string;
+    column: {
+      columnDef: ColumnDef<any, any>;
+    };
+    getContext: () => any;
+  };
+  className?: string;
 }
 
 function SmartTableCell({ cell, className }: SmartTableCellProps) {
@@ -391,20 +469,40 @@ function SmartTableCell({ cell, className }: SmartTableCellProps) {
     >
       {flexRender(cell.column.columnDef.cell, cell.getContext())}
     </td>
-  )
+  );
 }
 
 interface SmartTablePaginationProps {
-  table: any
+  table: {
+    getState: () => {
+      pagination: {
+        pageIndex: number;
+        pageSize: number;
+      };
+    };
+    getFilteredRowModel: () => {
+      rows: any[];
+    };
+    getCanPreviousPage: () => boolean;
+    getCanNextPage: () => boolean;
+    previousPage: () => void;
+    nextPage: () => void;
+    getPageCount: () => number;
+  };
 }
 
 function SmartTablePagination({ table }: SmartTablePaginationProps) {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="text-sm text-muted-foreground">
-        Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
+        Showing{" "}
+        {table.getState().pagination.pageIndex *
+          table.getState().pagination.pageSize +
+          1}{" "}
+        to{" "}
         {Math.min(
-          (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+          (table.getState().pagination.pageIndex + 1) *
+            table.getState().pagination.pageSize,
           table.getFilteredRowModel().rows.length
         )}{" "}
         of {table.getFilteredRowModel().rows.length} results
@@ -418,7 +516,8 @@ function SmartTablePagination({ table }: SmartTablePaginationProps) {
           <ChevronLeft className="h-4 w-4" />
         </button>
         <div className="text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
         </div>
         <button
           onClick={() => table.nextPage()}
@@ -429,18 +528,18 @@ function SmartTablePagination({ table }: SmartTablePaginationProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
 // Demo Component
 interface Employee {
-  id: number
-  name: string
-  email: string
-  role: string
-  status: string
-  department: string
-  salary: number
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  department: string;
+  salary: number;
 }
 
 function Demo() {
@@ -451,8 +550,8 @@ function Demo() {
     role: ["Developer", "Designer", "Manager", "Analyst"][i % 4],
     status: i % 5 === 0 ? "Inactive" : "Active",
     department: ["Engineering", "Design", "HR", "Sales"][i % 4],
-    salary: 50000 + (i * 1000),
-  }))
+    salary: 50000 + i * 1000,
+  }));
 
   const columns: ColumnDef<Employee>[] = [
     {
@@ -485,11 +584,11 @@ function Demo() {
       header: "Salary",
       enableSorting: true,
       cell: ({ getValue }) => {
-        const value = getValue() as number
+        const value = getValue() as number;
         return new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
-        }).format(value)
+        }).format(value);
       },
     },
     {
@@ -497,7 +596,7 @@ function Demo() {
       header: "Status",
       enableSorting: true,
       cell: ({ getValue }) => {
-        const status = getValue() as string
+        const status = getValue() as string;
         return (
           <span
             className={cn(
@@ -509,10 +608,10 @@ function Demo() {
           >
             {status}
           </span>
-        )
+        );
       },
     },
-  ]
+  ];
 
   const columnsConfig: ColumnsConfig = {
     columnsVisibility: {
@@ -522,13 +621,14 @@ function Demo() {
     },
     freezeHeader: true,
     enableColumnToggle: true,
-  }
+  };
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">SmartTable Component Demo</h1>
       <p className="text-muted-foreground mb-6">
-        Featuring sorting, pagination (50 rows/page), frozen headers, responsive column visibility, and manual column toggle
+        Featuring sorting, pagination (50 rows/page), frozen headers, responsive
+        column visibility, and manual column toggle
       </p>
 
       <SmartTable
@@ -539,10 +639,10 @@ function Demo() {
         pageSize={50}
       />
     </div>
-  )
+  );
 }
 
-export default Demo
+export default Demo;
 
 export {
   SmartTable,
@@ -552,9 +652,9 @@ export {
   SmartTableRow,
   SmartTableCell,
   SmartTablePagination,
-}
-```
+};
 
+```
 ### 1. **Extended Breakpoints**
 
 ```typescript
