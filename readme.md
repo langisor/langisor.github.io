@@ -1,7 +1,8 @@
 # [📂 Articles](./readme.md)
 
 - [📂 AI/](./docs/ai/ai-intro-with-vercel-ai-sdk.md)
-  - [📄 AI Intro With `Vercel AI SDK`](./docs/ai/ai-intro-with-vercel-ai-sdk.md)
+  - [📄 AI Intro With `Vercel AI SDK - Gemini response`](./docs/ai/ai-intro-with-vercel-ai-sdk-gemini.md)
+  - [📄 AI Intro With `Vercel AI SDK` - Claude response](./docs/ai/ai-intro-with-vercel-ai-sdk-claude.md)
 - [📂 `Foam`/](./docs/foam/form-management-with-validation.md)
   - [📄 Form Management With Validation](./docs/foam/form-management-with-validation.md)
   - [📄 Using `Foam` With `Netlify`](./docs/foam/using-foam-with-netlify.md)
