@@ -115,4 +115,27 @@ Would you like me to show you how to implement **Tools** (so the AI can actually
 
 [A Complete Guide To Vercel's AI SDK](https://www.youtube.com/watch?v=mojZpktAiYQ)
 
-This video provides a practical, deep-dive walkthrough of the AI SDK's core concepts and demonstrates how to build real-world AI features in Next.js applications.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mojZpktAiYQ?si=U6hBSuUlO8FTn-1K" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+**Summarize the video:**
+
+This comprehensive tutorial by Matt Pocock provides a complete guide to Vercel's AI SDK, an essential tool for building and shipping AI applications (0:00). The video covers a wide range of functionalities offered by the SDK, including:
+
+    Understanding the AI SDK: The AI SDK simplifies interactions with large language models (LLMs) by providing a unified API, reducing the need for extensive glue code when switching between different LLM providers like OpenAI or Anthropic (1:20). It offers helpful features for common use cases such as streaming text, structured outputs, tool calling, and agents (2:00).
+    Core Functionalities:
+        Generating Text: Demonstrates how to use generateText for simple text generation (3:23).
+        Streaming Text: Explains streamText for receiving text token by token, useful for real-time UI updates (4:58).
+        System Prompts: Shows how to use system prompts to define the AI's role and instructions, ensuring consistent behavior (6:02).
+        Hot-Swapping Models: Highlights the flexibility of swapping between different LLM models by treating them as language model types (6:52).
+        Preserving Chat History: Details how to maintain conversation context using the CoreMessage type and messages array (7:57).
+        Running Local Models: Explains how to connect the AI SDK to locally running models using createOpenAICompatible (12:38).
+    Advanced Features:
+        Structured Outputs: Demonstrates extracting structured data from LLMs using Zod schemas and generateObject (13:49).
+        Streaming Structured Outputs: Shows how to stream structured objects as they are being generated using streamObject for real-time updates (16:21).
+        Building a Classifier: Illustrates classifying text into categories (e.g., positive, negative, neutral) using generateObject with an enum output (18:07).
+        Describing Images: Explains how to generate alt text for images by passing image data or URLs to the LLM (19:36).
+        Data Extraction from PDFs: Shows how to extract structured information from PDF files using the AI SDK (23:10).
+        Embeddings & Vector Databases: Introduces how to create and use embeddings for semantic similarity comparisons, useful for search and categorization (26:04).
+        Tool Calling: Explores how LLMs can interact with external tools by describing the tools they want to call, allowing for more powerful applications (30:08).
+        Building an Agent: Demonstrates creating an agentic loop where tool results are fed back into the LLM, enabling it to take multiple steps and ground itself in real-world information, reducing hallucinations (33:46).
+
