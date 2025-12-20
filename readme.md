@@ -1,6 +1,7 @@
 
 # [📂 Articles](./readme.md)
 
+<<<<<<< HEAD
 - [Quick Guide: Using Typescript In React](dev/booklet-ts-in-react.md)
 - [Mastering TypeScript In React](dev/mastering-ts-react.md)
 - [Mastering React Custom Hooks](dev/mastering-react-custom-hooks.md)
@@ -13,3 +14,26 @@
 - [Code Snippets/ Examples](dev/etc/index.md)
 - [React `useMemo`, `useCallback`](dev/useMemo-useCallback.md)
 - [Making your `Nextjs` app work offline](dev/etc/nextjs-app-to-pwa.md)
+=======
+└──[📂 ai/](./docs/ai/ai-intro-with-vercel-ai-sdk.md)
+│  ├── [📄 AI Intro With `Vercel AI SDK`](./docs/ai/ai-intro-with-vercel-ai-sdk.md)
+└──[📂 foam/](./docs/foam/form-management-with-validation.md)
+│  ├── [📄 form-management-with-validation.md](./docs/foam/form-management-with-validation.md)
+│  ├── [📄 using-foam-with-netlify.md](./docs/foam/using-foam-with-netlify.md)
+└──[📂 reac-nextjs/](./docs/reac-nextjs/booklet-ts-in-react.md)
+│  ├── [📄 booklet-ts-in-react.md](./docs/reac-nextjs/booklet-ts-in-react.md)
+│  ├── [📄 Js-ts-collections.md](./docs/reac-nextjs/Js-ts-collections.md)
+│  ├── [📄 combining-useReducer-with-ts.md](./docs/reac-nextjs/combining-useReducer-with-ts.md)
+│  ├── [📄 dnd-kit.md](./docs/reac-nextjs/dnd-kit.md)
+│  └── [📂 Examples/](./docs/reac-nextjs/examples/nextjs-action-swr.md)
+  │    ├── [📄 nextjs-action-swr.md](./docs/reac-nextjs/examples/nextjs-action-swr.md)
+  │    ├── [📄 nextjs-useParams.md](./docs/reac-nextjs/examples/nextjs-useParams.md)
+  │    ├── [📄 shopping-cart-management.md](./docs/reac-nextjs/examples/shopping-cart-management.md)
+  │    ├── [📄 smart-table-component.md](./docs/reac-nextjs/examples/smart-table-component.md)
+│  ├── [📄 hookstate.md](./docs/reac-nextjs/examples/hookstate.md)
+│  ├── [📄 mastering-react-custom-hooks.md](./docs/reac-nextjs/examples/mastering-react-custom-hooks.md)
+│  ├── [📄 mastering-ts-react.md](./docs/reac-nextjs/examples/mastering-ts-react.md)
+│  ├── [📄 nextjs-app-to-pwa.md](./docs/reac-nextjs/examples/nextjs-app-to-pwa.md)
+│  ├── [📄 react-lifecycles.md](./docs/reac-nextjs/examples/react-lifecycles.md)
+│  └── [📄 useMemo-useCallback.md](./docs/reac-nextjs/examples/useMemo-useCallback.md)
+>>>>>>> future
