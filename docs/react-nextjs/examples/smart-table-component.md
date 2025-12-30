@@ -653,15 +653,15 @@ export {
   SmartTableCell,
   SmartTablePagination,
 };
-
 ```
+
 ### 1. **Extended Breakpoints**
 
 ```typescript
 interface ColumnsVisibility {
-  sm?: string[]  // <640px
-  md?: string[]  // 640px-768px
-  lg?: string[]  // 768px-1024px (NEW!)
+  sm?: string[]; // <640px
+  md?: string[]; // 640px-768px
+  lg?: string[]; // 768px-1024px (NEW!)
 }
 ```
 

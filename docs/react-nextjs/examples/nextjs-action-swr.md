@@ -159,19 +159,19 @@ export function EditUserForm({ user }: { user: InitialUser }) {
 ### Explanation of Key Concepts
 
 1. **Form Data Handling:**
-    - When you use an async function in the `<form action={...}>` prop, the browser automatically serializes all form fields (using their **`name`** attributes) into a standard **`FormData`** object and passes it as the **first argument** to your Server Action.
+   - When you use an async function in the `<form action={...}>` prop, the browser automatically serializes all form fields (using their **`name`** attributes) into a standard **`FormData`** object and passes it as the **first argument** to your Server Action.
 2. **Progressive Enhancement:**
-    - By binding the action to the form, the form will submit and work even if JavaScript is disabled. This is the **Progressive Enhancement** feature.
+   - By binding the action to the form, the form will submit and work even if JavaScript is disabled. This is the **Progressive Enhancement** feature.
 3. **`useFormStatus` (Client Component Hook):**
-    - This hook (from `react-dom`) is used in any component _inside_ the `<form>` to get the submission status, letting you disable the button and show a "Saving..." state automatically.
+   - This hook (from `react-dom`) is used in any component _inside_ the `<form>` to get the submission status, letting you disable the button and show a "Saving..." state automatically.
 4. **Returning Values:**
-    - The Server Action returns a value (e.g., `{ success: boolean; message: string }`). When called from a Client Component (like in the `handleSubmit` wrapper), you can await this result to handle success or error messages on the client side.
+   - The Server Action returns a value (e.g., `{ success: boolean; message: string }`). When called from a Client Component (like in the `handleSubmit` wrapper), you can await this result to handle success or error messages on the client side.
 5. **`revalidatePath`:**
-    - Since a successful mutation changes your data, calling `revalidatePath('/path')` inside the Server Action tells Next.js to purge the cache for that path, ensuring subsequent navigation or server fetches get the new data.
+   - Since a successful mutation changes your data, calling `revalidatePath('/path')` inside the Server Action tells Next.js to purge the cache for that path, ensuring subsequent navigation or server fetches get the new data.
 
 ---
 
-# Adding Errors Handling
+## Adding Errors Handling
 
 That's an excellent next step\! Handling validation errors from the Server Action and displaying them in your Client Component form is crucial for a good user experience.
 
@@ -362,11 +362,11 @@ By passing the structured `errors` object from the Server Action to the Client C
 
 ---
 
-# That's an excellent next step\! Handling validation errors from the Server Action and displaying them in your Client Component form is crucial for a good user experience
+## That's an excellent next step\! Handling validation errors from the Server Action and displaying them in your Client Component form is crucial for a good user experience
 
 Here's how you can achieve this by modifying both the Server Action and the Client Component:
 
-## 1\. Modify the Server Action to Return Validation Errors 🛠️
+### 3\. Modify the Server Action to Return Validation Errors 🛠️
 
 Instead of a simple success/failure message, the Server Action should return a more structured object that includes an **`errors`** field for client-side display.
 
@@ -434,7 +434,7 @@ export async function updateUser(
 
 ---
 
-## 2\. Modify the Client Component to Display Errors
+## 4\. Modify the Client Component to Display Errors
 
 The Client Component needs state to hold any returned validation errors and logic to update that state based on the Server Action's result.
 
@@ -551,7 +551,7 @@ By passing the structured `errors` object from the Server Action to the Client C
 
 ---
 
-# Combine Server Actions with **optimistic UI updates** (for an even snappier user experience)
+## Combine Server Actions with **optimistic UI updates** (for an even snappier user experience)
 
 Yes, combining Server Actions with **optimistic UI updates** provides an exceptionally fast and responsive feel to your application, even while network requests are processing.
 

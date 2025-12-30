@@ -1,7 +1,5 @@
 # Using Foam with GitHub and netlify
 
-<!-- toc -->
-
 - [Using Foam with GitHub and netlify](#using-foam-with-github-and-netlify)
   - [What is Foam?](#what-is-foam)
   - [Needed Knowledge](#needed-knowledge)
