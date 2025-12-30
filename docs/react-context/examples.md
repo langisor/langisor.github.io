@@ -2,13 +2,11 @@
 
 ## Example 1: Preloading Large Datasets with React Context
 
-# Preloading Large Datasets with React Context
-
 For preloading ~2000 records at app startup, here's a robust pattern that handles loading states, errors, and caching:
 
-## Step 1: Create the Data Context
+### Step 1: Create the Data Context
 
-```typescript
+```ts
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -87,9 +85,9 @@ export function useRecords() {
 }
 ```
 
-## Step 2: Add Provider to Layout with Loading UI
+### Step 2: Add Provider to Layout with Loading UI
 
-```typescript
+```ts
 // src/app/layout.tsx
 import { DataProvider } from '@/contexts/DataContext'
 import { Toaster } from '@/components/ui/toaster'
@@ -112,11 +110,11 @@ export default function RootLayout({
 }
 ```
 
-## Step 3: Create a Loading Wrapper Component
+### Step 3: Create a Loading Wrapper Component
 
 To show a loading screen until data is ready:
 
-```typescript
+```ts
 // src/components/DataLoader.tsx
 'use client'
 
@@ -173,9 +171,9 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
-## Step 4: Wrap Your App Content
+### Step 4: Wrap Your App Content
 
-```typescript
+```ts
 // src/app/page.tsx
 import { DataLoader } from '@/components/DataLoader'
 import { Dashboard } from '@/components/Dashboard'
@@ -189,9 +187,9 @@ export default function Home() {
 }
 ```
 
-## Step 5: Use the Data in Components
+### Step 5: Use the Data in Components
 
-```typescript
+```ts
 // src/components/Dashboard.tsx
 'use client'
 
@@ -244,11 +242,11 @@ export function Dashboard() {
 }
 ```
 
-## Step 6: Advanced Pattern - With Pagination & Caching
+### Step 6: Advanced Pattern - With Pagination & Caching
 
 For better performance with 2000 records:
 
-```typescript
+```ts
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -388,9 +386,9 @@ export function useRecords() {
 }
 ```
 
-## Step 7: Using the Helper Methods
+### Step 7: Using the Helper Methods
 
-```typescript
+```ts
 // src/components/RecordDetail.tsx
 'use client'
 
@@ -419,7 +417,7 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
-## Key Benefits of This Approach
+### Key Benefits of This Approach
 
 1. **Single fetch**: Data loads once at app startup
 2. **Global access**: Any component can access the data without prop drilling
@@ -431,10 +429,7 @@ export function RecordDetail({ id }: { id: string }) {
 
 This pattern works great for reference data, lookup tables, or any dataset that doesn't change frequently during a session.
 
-
 ## Example 2. Preloading Large Datasets with React Context + SWR
-
-# Preloading Large Datasets with React Context + SWR
 
 Using SWR gives you automatic caching, revalidation, and optimized data fetching out of the box.
 
@@ -446,7 +441,7 @@ npm install swr
 
 ## Step 2: Create the Data Context with SWR
 
-```typescript
+```ts
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -563,7 +558,7 @@ export function useRecords() {
 
 For better control across your app:
 
-```typescript
+```ts
 // src/app/providers.tsx
 'use client'
 
@@ -616,7 +611,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 ## Step 4: Update Layout
 
-```typescript
+```ts
 // src/app/layout.tsx
 import { Providers } from '@/app/providers'
 import { Toaster } from '@/components/ui/toaster'
@@ -642,7 +637,7 @@ export default function RootLayout({
 
 ## Step 5: Create Loading Wrapper Component
 
-```typescript
+```ts
 // src/components/DataLoader.tsx
 'use client'
 
@@ -702,7 +697,7 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 
 ## Step 6: Use in Your App
 
-```typescript
+```ts
 // src/app/page.tsx
 import { DataLoader } from '@/components/DataLoader'
 import { Dashboard } from '@/components/Dashboard'
@@ -718,7 +713,7 @@ export default function Home() {
 
 ## Step 7: Use the Data in Components
 
-```typescript
+```ts
 // src/components/Dashboard.tsx
 'use client'
 
@@ -790,18 +785,18 @@ export function Dashboard() {
 
 ## Step 8: Using Helper Methods
 
-```typescript
+```tsx
 // src/components/RecordDetail.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { useRecords } from "@/contexts/DataContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export function RecordDetail({ id }: { id: string }) {
-  const { getRecordById } = useRecords()
+  const { getRecordById } = useRecords();
 
-  const record = getRecordById(id)
+  const record = getRecordById(id);
 
   if (!record) {
     return (
@@ -810,7 +805,7 @@ export function RecordDetail({ id }: { id: string }) {
           Record not found
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -821,11 +816,9 @@ export function RecordDetail({ id }: { id: string }) {
           <Badge variant="secondary">{record.category}</Badge>
         )}
       </CardHeader>
-      <CardContent>
-        {/* Record details */}
-      </CardContent>
+      <CardContent>{/* Record details */}</CardContent>
     </Card>
-  )
+  );
 }
 ```
 
@@ -833,44 +826,42 @@ export function RecordDetail({ id }: { id: string }) {
 
 When you need to update records optimistically:
 
-```typescript
+```tsx
 // src/components/RecordEditor.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useRecords } from "@/contexts/DataContext";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export function RecordEditor({ id }: { id: string }) {
-  const { getRecordById, mutate, records } = useRecords()
-  const [name, setName] = useState('')
+  const { getRecordById, mutate, records } = useRecords();
+  const [name, setName] = useState("");
 
-  const record = getRecordById(id)
+  const record = getRecordById(id);
 
   const updateRecord = async () => {
     // Optimistically update the UI
     mutate(
-      records.map(r =>
-        r.id === id ? { ...r, name } : r
-      ),
+      records.map((r) => (r.id === id ? { ...r, name } : r)),
       false // Don't revalidate immediately
-    )
+    );
 
     try {
       // Make the API call
       await fetch(`/api/records/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      })
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
 
       // Revalidate to ensure consistency
-      mutate()
+      mutate();
     } catch (error) {
       // Revert on error
-      mutate()
+      mutate();
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
@@ -879,11 +870,9 @@ export function RecordEditor({ id }: { id: string }) {
         onChange={(e) => setName(e.target.value)}
         className="border rounded px-3 py-2 w-full"
       />
-      <Button onClick={updateRecord}>
-        Update Record
-      </Button>
+      <Button onClick={updateRecord}>Update Record</Button>
     </div>
-  )
+  );
 }
 ```
 
@@ -891,32 +880,32 @@ export function RecordEditor({ id }: { id: string }) {
 
 For even faster initial loads in Next.js:
 
-```typescript
+```tsx
 // src/app/page.tsx
-import { DataLoader } from '@/components/DataLoader'
-import { Dashboard } from '@/components/Dashboard'
-import { Suspense } from 'react'
+import { DataLoader } from "@/components/DataLoader";
+import { Dashboard } from "@/components/Dashboard";
+import { Suspense } from "react";
 
 async function getRecords() {
-  const response = await fetch('https://your-api.com/records', {
-    cache: 'no-store' // or next: { revalidate: 60 }
-  })
-  return response.json()
+  const response = await fetch("https://your-api.com/records", {
+    cache: "no-store", // or next: { revalidate: 60 }
+  });
+  return response.json();
 }
 
 export default async function Home() {
   // Preload data on server
-  const initialData = await getRecords()
+  const initialData = await getRecords();
 
   return (
     <DataLoader fallbackData={initialData}>
       <Dashboard />
     </DataLoader>
-  )
+  );
 }
 ```
 
-## Key Benefits of Using SWR
+### Key Benefits of Using SWR
 
 1. **Automatic caching**: Data is cached and shared across components
 2. **Revalidation**: Automatic background updates when needed
@@ -931,13 +920,11 @@ This approach is production-ready and handles all edge cases like network failur
 
 ## Example 3. Preloading Dictionary Data with React Context + SWR
 
-# Preloading Dictionary Data with React Context + SWR
+> Here's a complete implementation for your dictionary app with ~2000 words.
 
-Here's a complete implementation for your dictionary app with ~2000 words.
+### Step 1: Create the Dictionary Context with SWR
 
-## Step 1: Create the Dictionary Context with SWR
-
-```typescript
+```ts
 // src/contexts/DictionaryContext.tsx
 'use client'
 
@@ -1084,9 +1071,9 @@ export function useDictionary() {
 }
 ```
 
-## Step 2: Configure SWR Globally with Persistence
+### Step 2: Configure SWR Globally with Persistence
 
-```typescript
+```ts
 // src/app/providers.tsx
 'use client'
 
@@ -1131,9 +1118,9 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
-## Step 3: Update Layout
+### Step 3: Update Layout
 
-```typescript
+```ts
 // src/app/layout.tsx
 import { Providers } from '@/app/providers'
 import { Toaster } from '@/components/ui/toaster'
@@ -1162,26 +1149,29 @@ export default function RootLayout({
 }
 ```
 
-## Step 4: Create Loading Wrapper Component
+### Step 4: Create Loading Wrapper Component
 
-```typescript
+```tsx
 // src/components/DictionaryLoader.tsx
-'use client'
+"use client";
 
-import { useDictionary } from '@/contexts/DictionaryContext'
-import { Loader2, AlertCircle, BookOpen } from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { ReactNode } from 'react'
-import { Progress } from '@/components/ui/progress'
+import { useDictionary } from "@/contexts/DictionaryContext";
+import { Loader2, AlertCircle, BookOpen } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
+import { Progress } from "@/components/ui/progress";
 
 interface DictionaryLoaderProps {
-  children: ReactNode
-  fallback?: ReactNode
+  children: ReactNode;
+  fallback?: ReactNode;
 }
 
-export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) {
-  const { isLoading, error, mutate, total } = useDictionary()
+export function DictionaryLoader({
+  children,
+  fallback,
+}: DictionaryLoaderProps) {
+  const { isLoading, error, mutate, total } = useDictionary();
 
   if (isLoading) {
     return (
@@ -1193,14 +1183,14 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
               <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
               <h2 className="text-2xl font-semibold">Loading Dictionary</h2>
               <p className="text-muted-foreground">
-                Loading {total > 0 ? total : '~2000'} words...
+                Loading {total > 0 ? total : "~2000"} words...
               </p>
             </div>
             <Progress value={33} className="w-full" />
           </div>
         </div>
       )
-    )
+    );
   }
 
   if (error) {
@@ -1210,7 +1200,10 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error Loading Dictionary</AlertTitle>
           <AlertDescription className="mt-2 space-y-4">
-            <p>{error.message || 'An error occurred while loading the dictionary data.'}</p>
+            <p>
+              {error.message ||
+                "An error occurred while loading the dictionary data."}
+            </p>
             <Button
               onClick={() => mutate()}
               variant="outline"
@@ -1221,16 +1214,16 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
           </AlertDescription>
         </Alert>
       </div>
-    )
+    );
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 ```
 
-## Step 5: Use in Your App
+### Step 5: Use in Your App
 
-```typescript
+```ts
 // src/app/page.tsx
 import { DictionaryLoader } from '@/components/DictionaryLoader'
 import { DictionaryDashboard } from '@/components/DictionaryDashboard'
@@ -1244,9 +1237,9 @@ export default function Home() {
 }
 ```
 
-## Step 6: Create Dashboard Component
+### Step 6: Create Dashboard Component
 
-```typescript
+```ts
 // src/components/DictionaryDashboard.tsx
 'use client'
 
@@ -1436,9 +1429,9 @@ export function DictionaryDashboard() {
 }
 ```
 
-## Step 7: Word Detail Component Example
+### Step 7: Word Detail Component Example
 
-```typescript
+```ts
 // src/components/WordDetail.tsx
 'use client'
 
@@ -1547,9 +1540,9 @@ export function WordDetail({ serial }: { serial: number }) {
 }
 ```
 
-## Step 8: Category Statistics Component
+### Step 8: Category Statistics Component
 
-```typescript
+```ts
 // src/components/CategoryStats.tsx
 'use client'
 
@@ -1593,7 +1586,7 @@ export function CategoryStats() {
 }
 ```
 
-## Key Features
+### Key Features
 
 1. **Single API call on startup**: All 2000 words loaded once
 2. **Fast lookups**: O(1) access using Maps for serial numbers and categories
