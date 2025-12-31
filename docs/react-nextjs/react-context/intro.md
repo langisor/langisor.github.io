@@ -1,13 +1,5 @@
 # React Context with TypeScript: A Complete Guide
 
-## Examples
-
-- [[ex1]]
-- [[ex2]]
-- [[ex3]]
-
-React Context is a way to share data across your component tree without passing props through every level. It's perfect for things like theme settings, user authentication, or any global state.
-
 ## Step 1: Understanding the Basics
 
 Context solves the "prop drilling" problem. Instead of passing data through multiple components, you create a context that any component can access directly.
@@ -277,9 +269,8 @@ export default function RootLayout({
 
 5. **Mark as 'use client'**: In Next.js App Router, context providers must be client components, so always add `'use client'` at the top of your context files.
 
-This should give you a solid foundation for using Context with TypeScript in your Next.js projects!
+## Examples
 
-
-[ex1]: ex1.md "Preloading Large Datasets with React Context"
-[ex2]: ex2.md "Preloading Large Datasets with React Context + SWR"
-[ex3]: ex3.md "Preloading Dictionary Data with React Context + SWR"
+- [Example-1](./ex1.md)
+- [Example-2](./ex2.md)
+- [Example-3](./ex3.md)
