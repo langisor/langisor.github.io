@@ -6,8 +6,7 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 ### Step 1: Create the Data Context
 
-example 1
-<!--  
+ 
 ```typescript
 // src/contexts/DataContext.tsx
 'use client'
@@ -922,7 +921,7 @@ This approach is production-ready and handles all edge cases like network failur
 
 ## Example 3. Preloading Dictionary Data with React Context + SWR
 
-> Here's a complete implementation for your dictionary app with ~2000 words.
+ Here's a complete implementation for your dictionary app with ~2000 words.
 
 ### Step 1: Create the Dictionary Context with SWR
 
@@ -1602,4 +1601,3 @@ export function CategoryStats() {
 10. **Right-to-left support**: Proper RTL for Urdu and Arabic text
 
 This implementation is production-ready and handles your 2000+ word dictionary efficiently!
--->
