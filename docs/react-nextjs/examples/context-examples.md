@@ -6,6 +6,7 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 ### Step 1: Create the Data Context
 
+example 1
 <!--  
 ```typescript
 // src/contexts/DataContext.tsx
