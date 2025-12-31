@@ -785,7 +785,7 @@ export function Dashboard() {
 
 ### Step 8: Using Helper Methods
 
-```typescriptx
+```typescript
 // src/components/RecordDetail.tsx
 "use client";
 
@@ -826,7 +826,7 @@ export function RecordDetail({ id }: { id: string }) {
 
 When you need to update records optimistically:
 
-```typescriptx
+```typescript
 // src/components/RecordEditor.tsx
 "use client";
 
@@ -880,7 +880,7 @@ export function RecordEditor({ id }: { id: string }) {
 
 For even faster initial loads in Next.js:
 
-```typescriptx
+```typescript
 // src/app/page.tsx
 import { DataLoader } from "@/components/DataLoader";
 import { Dashboard } from "@/components/Dashboard";
@@ -1151,7 +1151,7 @@ export default function RootLayout({
 
 ### Step 4: Create Loading Wrapper Component
 
-```typescriptx
+```typescript
 // src/components/DictionaryLoader.tsx
 "use client";
 
