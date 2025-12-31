@@ -1,16 +1,20 @@
-# Disable Liquid processing for specific files or patterns
+ 
+# Prevent Liquid from processing code blocks
 liquid:
   error_mode: warn
   strict_filters: false
   strict_variables: false
 
-# Or exclude specific directories from processing
-exclude:
-  - node_modules/
-  - vendor/
-
-# Markdown settings
+# Use GitHub Flavored Markdown
 markdown: kramdown
 kramdown:
   input: GFM
   syntax_highlighter: rouge
+  parse_block_html: true
+
+# Exclude files from processing
+exclude:
+  - node_modules/
+  - vendor/
+  - .git/
+  - .vscode/
