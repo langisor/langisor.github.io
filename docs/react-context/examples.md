@@ -6,6 +6,8 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 ### Step 1: Create the Data Context
 
+{% raw %}
+
 ```ts
 // src/contexts/DataContext.tsx
 'use client'
@@ -85,7 +87,11 @@ export function useRecords() {
 }
 ```
 
+{% endraw %}
+
 ### Step 2: Add Provider to Layout with Loading UI
+
+{% raw %}
 
 ```ts
 // src/app/layout.tsx
@@ -110,9 +116,13 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ### Step 3: Create a Loading Wrapper Component
 
 To show a loading screen until data is ready:
+
+{% raw %}
 
 ```ts
 // src/components/DataLoader.tsx
@@ -171,7 +181,11 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
+{% endraw %}
+
 ### Step 4: Wrap Your App Content
+
+{% raw %}
 
 ```ts
 // src/app/page.tsx
@@ -187,7 +201,11 @@ export default function Home() {
 }
 ```
 
+{% endraw %}
+
 ### Step 5: Use the Data in Components
+
+{% raw %}
 
 ```ts
 // src/components/Dashboard.tsx
@@ -242,9 +260,13 @@ export function Dashboard() {
 }
 ```
 
+{% endraw %}
+
 ### Step 6: Advanced Pattern - With Pagination & Caching
 
 For better performance with 2000 records:
+
+{% raw %}
 
 ```ts
 // src/contexts/DataContext.tsx
@@ -386,7 +408,11 @@ export function useRecords() {
 }
 ```
 
+{% endraw %}
+
 ### Step 7: Using the Helper Methods
+
+{% raw %}
 
 ```ts
 // src/components/RecordDetail.tsx
@@ -417,6 +443,8 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
+{% endraw %}
+
 ### Key Benefits of This Approach
 
 1. **Single fetch**: Data loads once at app startup
@@ -439,7 +467,11 @@ Using SWR gives you automatic caching, revalidation, and optimized data fetching
 npm install swr
 ```
 
+{% endraw %}
+
 ## Step 2: Create the Data Context with SWR
+
+{% raw %}
 
 ```ts
 // src/contexts/DataContext.tsx
@@ -554,9 +586,13 @@ export function useRecords() {
 }
 ```
 
+{% endraw %}
+
 ## Step 3: Configure SWR Globally (Optional)
 
 For better control across your app:
+
+{% raw %}
 
 ```ts
 // src/app/providers.tsx
@@ -609,7 +645,11 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 4: Update Layout
+
+{% raw %}
 
 ```ts
 // src/app/layout.tsx
@@ -635,7 +675,11 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ## Step 5: Create Loading Wrapper Component
+
+{% raw %}
 
 ```ts
 // src/components/DataLoader.tsx
@@ -695,7 +739,11 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
+{% endraw %}
+
 ## Step 6: Use in Your App
+
+{% raw %}
 
 ```ts
 // src/app/page.tsx
@@ -711,7 +759,11 @@ export default function Home() {
 }
 ```
 
+{% endraw %}
+
 ## Step 7: Use the Data in Components
+
+{% raw %}
 
 ```ts
 // src/components/Dashboard.tsx
@@ -783,7 +835,11 @@ export function Dashboard() {
 }
 ```
 
+{% endraw %}
+
 ## Step 8: Using Helper Methods
+
+{% raw %}
 
 ```tsx
 // src/components/RecordDetail.tsx
@@ -822,9 +878,13 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 9: Advanced - Optimistic Updates
 
 When you need to update records optimistically:
+
+{% raw %}
 
 ```tsx
 // src/components/RecordEditor.tsx
@@ -876,9 +936,13 @@ export function RecordEditor({ id }: { id: string }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 10: Preloading with Server Components (Bonus)
 
 For even faster initial loads in Next.js:
+
+{% raw %}
 
 ```tsx
 // src/app/page.tsx
@@ -905,6 +969,8 @@ export default async function Home() {
 }
 ```
 
+{% endraw %}
+
 ### Key Benefits of Using SWR
 
 1. **Automatic caching**: Data is cached and shared across components
@@ -923,6 +989,8 @@ This approach is production-ready and handles all edge cases like network failur
 > Here's a complete implementation for your dictionary app with ~2000 words.
 
 ### Step 1: Create the Dictionary Context with SWR
+
+{% raw %}
 
 ```ts
 // src/contexts/DictionaryContext.tsx
@@ -1071,7 +1139,11 @@ export function useDictionary() {
 }
 ```
 
+{% endraw %}
+
 ### Step 2: Configure SWR Globally with Persistence
+
+{% raw %}
 
 ```ts
 // src/app/providers.tsx
@@ -1118,7 +1190,11 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
+{% endraw %}
+
 ### Step 3: Update Layout
+
+{% raw %}
 
 ```ts
 // src/app/layout.tsx
@@ -1149,7 +1225,11 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ### Step 4: Create Loading Wrapper Component
+
+{% raw %}
 
 ```tsx
 // src/components/DictionaryLoader.tsx
@@ -1221,7 +1301,11 @@ export function DictionaryLoader({
 }
 ```
 
+{% endraw %}
+
 ### Step 5: Use in Your App
+
+{% raw %}
 
 ```ts
 // src/app/page.tsx
@@ -1237,7 +1321,11 @@ export default function Home() {
 }
 ```
 
+{% endraw %}
+
 ### Step 6: Create Dashboard Component
+
+{% raw %}
 
 ```ts
 // src/components/DictionaryDashboard.tsx
@@ -1429,7 +1517,11 @@ export function DictionaryDashboard() {
 }
 ```
 
+{% endraw %}
+
 ### Step 7: Word Detail Component Example
+
+{% raw %}
 
 ```ts
 // src/components/WordDetail.tsx
@@ -1540,7 +1632,11 @@ export function WordDetail({ serial }: { serial: number }) {
 }
 ```
 
+{% endraw %}
+
 ### Step 8: Category Statistics Component
+
+{% raw %}
 
 ```ts
 // src/components/CategoryStats.tsx
@@ -1585,6 +1681,8 @@ export function CategoryStats() {
   )
 }
 ```
+
+{% endraw %}
 
 ### Key Features
 
