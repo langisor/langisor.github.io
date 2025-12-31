@@ -8,6 +8,8 @@ Context solves the "prop drilling" problem. Instead of passing data through mult
 
 Let's start with a theme context example:
 
+{% raw %}
+
 ```typescript
 // src/contexts/ThemeContext.tsx
 'use client'
@@ -54,9 +56,13 @@ export function useTheme() {
 }
 ```
 
+{% endraw %}
+
 ## Step 3: Using the Context in Your App
 
 In Next.js 16+ App Router, wrap your app with the provider:
+
+{% raw %}
 
 ```typescript
 // src/app/layout.tsx
@@ -79,9 +85,13 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ## Step 4: Consuming the Context
 
 Now any component can access the theme:
+
+{% raw %}
 
 ```typescript
 // src/components/ThemeToggle.tsx
@@ -102,9 +112,13 @@ export function ThemeToggle() {
 }
 ```
 
+{% endraw %}
+
 ## Step 5: More Complex Example - User Authentication
 
 Here's a more realistic example with authentication:
+
+{% raw %}
 
 ```typescript
 // src/contexts/AuthContext.tsx
@@ -196,7 +210,11 @@ export function useAuth() {
 }
 ```
 
+{% endraw %}
+
 Using it in a component:
+
+{% raw %}
 
 ```typescript
 // src/components/UserProfile.tsx
@@ -229,9 +247,13 @@ export function UserProfile() {
 }
 ```
 
+{% endraw %}
+
 ## Step 6: Combining Multiple Contexts
 
 You can nest providers or create a combined provider:
+
+{% raw %}
 
 ```typescript
 // src/app/layout.tsx
@@ -256,6 +278,8 @@ export default function RootLayout({
   )
 }
 ```
+
+{% endraw %}
 
 ## Best Practices
 

@@ -4,6 +4,8 @@ Here's a complete implementation for your dictionary app with ~2000 words.
 
 ## Step 1: Create the Dictionary Context with SWR
 
+{% raw %}
+
 ```typescript
 // src/contexts/DictionaryContext.tsx
 "use client";
@@ -154,7 +156,11 @@ export function useDictionary() {
 }
 ```
 
+{% endraw %}
+
 ## Step 2: Configure SWR Globally with Persistence
+
+{% raw %}
 
 ```typescript
 // src/app/providers.tsx
@@ -199,7 +205,11 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 3: Update Layout
+
+{% raw %}
 
 ```typescript
 // src/app/layout.tsx
@@ -228,7 +238,11 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ## Step 4: Create Loading Wrapper Component
+
+{% raw %}
 
 ```typescript
 // src/components/DictionaryLoader.tsx
@@ -300,7 +314,11 @@ export function DictionaryLoader({
 }
 ```
 
+{% endraw %}
+
 ## Step 5: Use in Your App
+
+{% raw %}
 
 ```typescript
 // src/app/page.tsx
@@ -316,7 +334,11 @@ export default function Home() {
 }
 ```
 
+{% endraw %}
+
 ## Step 6: Create Dashboard Component
+
+{% raw %}
 
 ```typescript
 // src/components/DictionaryDashboard.tsx
@@ -517,7 +539,11 @@ export function DictionaryDashboard() {
 }
 ```
 
+{% endraw %}
+
 ## Step 7: Word Detail Component Example
+
+{% raw %}
 
 ```typescript
 // src/components/WordDetail.tsx
@@ -628,7 +654,11 @@ export function WordDetail({ serial }: { serial: number }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 8: Category Statistics Component
+
+{% raw %}
 
 ```typescript
 // src/components/CategoryStats.tsx
@@ -673,6 +703,8 @@ export function CategoryStats() {
   );
 }
 ```
+
+{% endraw %}
 
 ## Key Features
 

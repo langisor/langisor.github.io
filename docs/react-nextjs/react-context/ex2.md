@@ -4,11 +4,17 @@ Using SWR gives you automatic caching, revalidation, and optimized data fetching
 
 ## Step 1: Install SWR
 
+{% raw %}
+
 ```bash
 npm install swr
 ```
 
+{% endraw %}
+
 ## Step 2: Create the Data Context with SWR
+
+{% raw %}
 
 ```typescript
 // src/contexts/DataContext.tsx
@@ -123,9 +129,13 @@ export function useRecords() {
 }
 ```
 
+{% endraw %}
+
 ## Step 3: Configure SWR Globally (Optional)
 
 For better control across your app:
+
+{% raw %}
 
 ```ts
 // src/app/providers.tsx
@@ -183,7 +193,11 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 4: Update Layout
+
+{% raw %}
 
 ```typescript
 // src/app/layout.tsx
@@ -207,7 +221,11 @@ export default function RootLayout({
 }
 ```
 
+{% endraw %}
+
 ## Step 5: Create Loading Wrapper Component
+
+{% raw %}
 
 ```typescript
 // src/components/DataLoader.tsx
@@ -263,7 +281,11 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
+{% endraw %}
+
 ## Step 6: Use in Your App
+
+{% raw %}
 
 ```typescript
 // src/app/page.tsx
@@ -279,7 +301,11 @@ export default function Home() {
 }
 ```
 
+{% endraw %}
+
 ## Step 7: Use the Data in Components
+
+{% raw %}
 
 ```typescript
 // src/components/Dashboard.tsx
@@ -353,7 +379,11 @@ export function Dashboard() {
 }
 ```
 
+{% endraw %}
+
 ## Step 8: Using Helper Methods
+
+{% raw %}
 
 ```typescript
 // src/components/RecordDetail.tsx
@@ -392,9 +422,13 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 9: Advanced - Optimistic Updates
 
 When you need to update records optimistically:
+
+{% raw %}
 
 ```typescript
 // src/components/RecordEditor.tsx
@@ -446,9 +480,13 @@ export function RecordEditor({ id }: { id: string }) {
 }
 ```
 
+{% endraw %}
+
 ## Step 10: Preloading with Server Components (Bonus)
 
 For even faster initial loads in Next.js:
+
+{% raw %}
 
 ```typescript
 // src/app/page.tsx
@@ -474,6 +512,8 @@ export default async function Home() {
   );
 }
 ```
+
+{% endraw %}
 
 ## Key Benefits of Using SWR
 

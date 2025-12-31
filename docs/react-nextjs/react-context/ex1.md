@@ -6,6 +6,8 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 {% raw %}
 
+{% raw %}
+
 ```typescript
 // src/contexts/DataContext.tsx
 "use client";
@@ -91,12 +93,13 @@ export function useRecords() {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 2: Add Provider to Layout with Loading UI
+
+{% raw %}
 
 {% raw %}
 
@@ -121,14 +124,15 @@ export default function RootLayout({
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 3: Create a Loading Wrapper Component
 
 To show a loading screen until data is ready:
+
+{% raw %}
 
 {% raw %}
 
@@ -183,12 +187,13 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 4: Wrap Your App Content
+
+{% raw %}
 
 {% raw %}
 
@@ -206,12 +211,13 @@ export default function Home() {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 5: Use the Data in Components
+
+{% raw %}
 
 {% raw %}
 
@@ -268,14 +274,15 @@ export function Dashboard() {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 6: Advanced Pattern - With Pagination & Caching
 
 For better performance with 2000 records:
+
+{% raw %}
 
 ```tsx
 // src/contexts/DataContext.tsx
@@ -425,12 +432,13 @@ export function useRecords() {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Step 7: Using the Helper Methods
+
+{% raw %}
 
 {% raw %}
 
@@ -461,11 +469,10 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
- 
+{% endraw %}
 
 {% endraw %}
 
- 
 ## Key Benefits of This Approach
 
 1. **Single fetch**: Data loads once at app startup
