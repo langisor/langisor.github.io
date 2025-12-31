@@ -1,0 +1,16 @@
+# Disable Liquid processing for specific files or patterns
+liquid:
+  error_mode: warn
+  strict_filters: false
+  strict_variables: false
+
+# Or exclude specific directories from processing
+exclude:
+  - node_modules/
+  - vendor/
+
+# Markdown settings
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
