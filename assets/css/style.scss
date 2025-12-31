@@ -68,11 +68,17 @@ pre {
 }
 
 .announcement {
-  background: #ede7ff;
+  background: #ffffff;
   padding: 4px 16px;
-  color: black;
+  color: rgb(160, 18, 132);
   border-radius: 4px;
 }
+code{
+  color:green;
+  font-style: italic;
+}
+
+
 .summary{
   border:2px dashed gray;
   padding:0.4rem;
