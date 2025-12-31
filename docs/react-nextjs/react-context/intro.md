@@ -1,7 +1,5 @@
 # React Context with TypeScript: A Complete Guide
 
-> [More Examples](./example.md)
-
 React Context is a way to share data across your component tree without passing props through every level. It's perfect for things like theme settings, user authentication, or any global state.
 
 ## Step 1: Understanding the Basics
