@@ -22,11 +22,13 @@
 
 First, you need to install `dnd-kit`. Open your terminal in your React project directory and run:
 
+{% raw %}
 ```bash
 npm install @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 # OR
 yarn add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 ```
+{% endraw %}
 
 - `@dnd-kit/core`: The core library providing fundamental drag and drop primitives.
 - `@dnd-kit/sortable`: Utilities for easily creating sortable lists.
@@ -49,6 +51,7 @@ Let's create a basic example where you can drag a box and drop it into a designa
 
 {% raw %}
 
+{% raw %}
 ```tsx
 import React, { useState } from "react";
 import {
@@ -170,6 +173,7 @@ function App(): JSX.Element {
 
 export default App;
 ```
+{% endraw %}
 
 {% endraw %}
 
@@ -187,6 +191,7 @@ For sortable lists, `dnd-kit` provides specific hooks and utilities in `@dnd-kit
 
 {% raw %}
 
+{% raw %}
 ```tsx
 import React, { useState } from "react";
 import {
@@ -300,6 +305,7 @@ function SortableList(): JSX.Element {
 
 export default SortableList;
 ```
+{% endraw %}
 
 {% endraw %}
 
@@ -321,6 +327,7 @@ This is a common and slightly more complex use case. We'll enable dragging items
 
 {% raw %}
 
+{% raw %}
 ```tsx
 import React, { useState } from "react";
 import {
@@ -530,6 +537,7 @@ function MultiContainerApp(): JSX.Element {
 
 export default MultiContainerApp;
 ```
+{% endraw %}
 
 **Explanation:**
 
@@ -564,6 +572,7 @@ export default MultiContainerApp;
 
 {% raw %}
 
+{% raw %}
 ```tsx
 import React, { useState, useCallback, useMemo, useEffect } from "react";
 import {
@@ -1315,5 +1324,6 @@ const App: React.FC = () => {
 
 export default App;
 ```
-
 {% endraw %}
+
+ 

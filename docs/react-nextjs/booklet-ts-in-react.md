@@ -39,19 +39,29 @@ TypeScript is a superset of JavaScript that adds static typing to the language. 
 
 To start a new React project with TypeScript, the easiest way is to use Create React App:
 
+{% raw %}
+
 ```bash
 npx create-react-app my-ts-app --template typescript
 cd my-ts-app
 npm start
 ```
 
+{% endraw %}
+
 For an existing React project, you can add TypeScript by installing the necessary packages:
+
+{% raw %}
 
 ```bash
 npm install --save-dev typescript @types/react @types/react-dom @types/node
 ```
 
+{% endraw %}
+
 You'll also need a `tsconfig.json` file to configure TypeScript. Create React App sets this up for you. For manual setup, ensure you have settings like `jsx: "react-jsx"` (or `react`), `lib` (including `dom`), and ideally `strict: true`.
+
+{% raw %}
 
 ```json
 // tsconfig.json
@@ -76,9 +86,13 @@ You'll also need a `tsconfig.json` file to configure TypeScript. Create React Ap
 }
 ```
 
+{% endraw %}
+
 ### 2\. Typing Component Props
 
 This is the most fundamental aspect of using TypeScript in React. You define an interface or type alias to describe the shape of your component's props.
+
+{% raw %}
 
 ```tsx
 // src/components/Greeting.tsx
@@ -111,24 +125,32 @@ export default Greeting;
 // <Greeting name="Bob" age={30} isActive={false} />
 ```
 
+{% endraw %}
+
 **Key Points:**
 
 - **`interface` vs. `type`:** Both can be used for defining prop types. `interface` is generally preferred for object shapes as it can be extended and implemented, while `type` aliases are more versatile for unions, intersections, and primitive types. For consistency, many prefer `type` for component props.
 
 - **`React.FC` (Functional Component):** While widely used, `React.FC` implicitly provides `children` prop and `displayName`. For more explicit control and to avoid some issues with default props or generics, some prefer typing props directly on the function:
 
-  ```tsx
+  {% raw %}
+
+```tsx
   // Alternative for functional component typing
   const Greeting = ({ name, age, isActive }: GreetingProps) => {
     // ...
   };
   ```
 
+{% endraw %}
+
   Both approaches are valid; choose what feels more comfortable for your team.
 
 ### 3\. Typing State with `useState`
 
 `useState` can often infer the type of your state based on the initial value. However, for more complex types, especially when the initial state is `null` or an empty object that will later contain data, explicit typing is crucial.
+
+{% raw %}
 
 ```tsx
 // src/components/Counter.tsx
@@ -182,9 +204,13 @@ const Counter: React.FC = () => {
 export default Counter;
 ```
 
+{% endraw %}
+
 ### 4\. Typing Event Handlers
 
 React's synthetic event types are available in `@types/react`. You'll typically use `React.MouseEvent`, `React.ChangeEvent`, `React.FormEvent`, etc., and specify the HTML element type they originate from.
+
+{% raw %}
 
 ```tsx
 // src/components/Form.tsx
@@ -228,9 +254,13 @@ const Form: React.FC = () => {
 export default Form;
 ```
 
+{% endraw %}
+
 ### 5\. Typing Children (`React.ReactNode`)
 
 When a component accepts children, you typically type the `children` prop as `React.ReactNode`. This type is a union of all possible things React can render (JSX elements, strings, numbers, booleans, null, undefined).
+
+{% raw %}
 
 ```tsx
 // src/components/Card.tsx
@@ -279,6 +309,8 @@ export default Card;
 // </Card>
 ```
 
+{% endraw %}
+
 ### 6\. Strict Mode in `tsconfig.json`
 
 Enabling `strict: true` in your `tsconfig.json` is highly recommended. It turns on a suite of stricter type-checking options that catch common programming errors and improve overall code quality.
@@ -288,6 +320,8 @@ Enabling `strict: true` in your `tsconfig.json` is highly recommended. It turns 
 ### 1\. Custom Hooks
 
 Custom hooks are functions that allow you to reuse stateful logic across components. Typing them involves specifying the types of their arguments and return values.
+
+{% raw %}
 
 ```tsx
 // src/hooks/useFetch.ts
@@ -332,7 +366,11 @@ function useFetch<T>(url: string): FetchResult<T> {
 export default useFetch;
 ```
 
+{% endraw %}
+
 **Usage example in a component:**
+
+{% raw %}
 
 ```tsx
 import useFetch from "../hooks/useFetch";
@@ -365,9 +403,13 @@ const PostsList: React.FC = () => {
 };
 ```
 
+{% endraw %}
+
 **Using `as const` for Tuples:**
 
 When a custom hook returns an array, TypeScript might infer a union type (`(boolean | typeof load)[]`) instead of a tuple (`[boolean, typeof load]`). `as const` can fix this.
+
+{% raw %}
 
 ```tsx
 // src/hooks/useToggle.ts
@@ -386,7 +428,11 @@ function useToggle(initialState: boolean = false) {
 export default useToggle;
 ```
 
+{% endraw %}
+
 **Usage:**
+
+{% raw %}
 
 ```tsx
 import useToggle from "./hooks/useToggle";
@@ -396,9 +442,13 @@ const MyComponent: React.FC = () => {
 };
 ```
 
+{% endraw %}
+
 ### 2\. Context API
 
 Typing React Context involves creating an interface for your context value and providing an initial value that matches that type (often `null` with a runtime check).
+
+{% raw %}
 
 ```tsx
 // src/context/ThemeContext.tsx
@@ -473,9 +523,13 @@ export const useTheme = () => {
 // };
 ```
 
+{% endraw %}
+
 ### 3\. Higher-Order Components (HOCs)
 
 <div class="summary">HOCs are functions that take a component and return a new component with enhanced props or behavior. Typing HOCs can be a bit tricky due to generics and prop manipulation.</div>
+
+{% raw %}
 
 ```tsx
 // src/hocs/withLoading.tsx
@@ -538,6 +592,8 @@ export default withLoading;
 // };
 ```
 
+{% endraw %}
+
 **Explanation of HOC Typing:**
 
 - `P extends object`: This is a generic type parameter representing the original props of the `WrappedComponent`. We use `object` as a general constraint.
@@ -547,6 +603,8 @@ export default withLoading;
 ### 4\. Render Props
 
 Render props is a pattern where a component takes a function as a prop, and that function returns a React element to be rendered. This allows the consumer to control the rendering logic.
+
+{% raw %}
 
 ```tsx
 // src/components/DataFetcher.tsx
@@ -624,11 +682,15 @@ export default DataFetcher;
 // };
 ```
 
+{% endraw %}
+
 ### 5\. Utility Types for Components
 
 TypeScript provides several built-in utility types that are incredibly useful when working with React components.
 
 - **`Partial<T>`:** Makes all properties in `T` optional. Useful for default props or draft objects.
+
+{% raw %}
 
 {% raw %}
 
@@ -651,9 +713,13 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
 {% endraw %}
 
+{% endraw %}
+
 - **`Pick<T, K>`:** Constructs a type by picking the set of properties `K` from `T`.
 
-  ```tsx
+  {% raw %}
+
+```tsx
   interface Product {
     id: string;
     name: string;
@@ -675,9 +741,13 @@ TypeScript provides several built-in utility types that are incredibly useful wh
   };
   ```
 
+{% endraw %}
+
 - **`Omit<T, K>`:** Constructs a type by omitting the set of properties `K` from `T`. Useful when extending a type but excluding certain properties.
 
-  ```tsx
+  {% raw %}
+
+```tsx
   // Assuming ButtonHTMLAttributes provides all standard button props
   type CustomButtonProps = Omit<
     React.ComponentPropsWithoutRef<"button">,
@@ -702,9 +772,13 @@ TypeScript provides several built-in utility types that are incredibly useful wh
   };
   ```
 
+{% endraw %}
+
 - **`Required<T>`:** Makes all properties in `T` required.
 
-  ```tsx
+  {% raw %}
+
+```tsx
   interface Config {
     apiKey?: string;
     endpoint?: string;
@@ -716,6 +790,8 @@ TypeScript provides several built-in utility types that are incredibly useful wh
   }
   ```
 
+{% endraw %}
+
 - **`React.ComponentProps<T>` / `React.ComponentPropsWithoutRef<T>` / `React.ComponentPropsWithRef<T>`:** These are powerful for "mirroring" props of existing HTML elements or React components.
 
   - `React.ComponentProps<'div'>` would give you all props for a `<div>` element.
@@ -724,7 +800,9 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
     <!-- end list -->
 
-    ```tsx
+    {% raw %}
+
+```tsx
     // Example: A wrapper around an HTML button
     type ButtonWrapperProps = React.ComponentPropsWithoutRef<"button"> & {
       customLabel: string;
@@ -739,6 +817,7 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
     // Usage: <ButtonWrapper customLabel="Click Me" onClick={() => alert('Clicked!')} type="submit" />
     ```
+{% endraw %}
 
 ### 6\. Polymorphic Components (The `as` Prop)
 
@@ -746,6 +825,7 @@ Polymorphic components are components that can render as different HTML elements
 
 {% raw %}
 
+{% raw %}
 ```tsx
 // src/components/PolymorphicButton.tsx
 
@@ -802,6 +882,8 @@ export default PolymorphicButton;
 //   Custom Link Button
 // </PolymorphicButton>
 ```
+
+{% endraw %}
 
 {% endraw %}
 

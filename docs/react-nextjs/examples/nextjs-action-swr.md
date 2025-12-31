@@ -1,692 +1,529 @@
-# Basic Example : `useSWR` and Server Action
+# Preloading Large Datasets with React Context + SWR
 
-## 1\. Define Your Server Action (The `use server` Function)
+Using SWR gives you automatic caching, revalidation, and optimized data fetching out of the box.
 
-Your server action, which will handle the data mutation, needs the `'use server'` directive and should accept the form data.
+## Step 1: Install SWR
 
-Assuming you want to update a user's name and email, your server action file (e.g., `app/actions/user.ts`) might look like this:
+{% raw %}
+
+```bash
+npm install swr
+```
+
+{% endraw %}
+
+## Step 2: Create the Data Context with SWR
+
+{% raw %}
 
 ```typescript
-// app/actions/user.ts
-"use server";
-
-import { revalidatePath } from "next/cache";
-
-interface User {
-  user_id: number;
-  name: string;
-  user_name: string;
-  email: string;
-  created_at: Date;
-}
-
-// NOTE: The Server Action must accept a FormData object when used directly in a <form action="...">
-export async function updateUser(
-  formData: FormData
-): Promise<{ success: boolean; message: string }> {
-  // 1. Extract data from the FormData object
-  const userId = formData.get("userId");
-  const newName = formData.get("name") as string;
-  const newEmail = formData.get("email") as string;
-
-  // You'll need to handle validation and type assertion here
-  if (!userId || !newName || !newEmail) {
-    return { success: false, message: "Missing required fields." };
-  }
-
-  const user_id = Number(userId);
-
-  try {
-    // 2. Perform the database mutation (Replace with your actual logic)
-    // const updatedUser = await db.user.update({
-    //     where: { user_id },
-    //     data: { name: newName, email: newEmail },
-    // });
-
-    console.log(
-      `Updating user ${user_id}: Name: ${newName}, Email: ${newEmail}`
-    );
-
-    // 3. (Optional but recommended for data fetching) Revalidate any cached data
-    // This is crucial if you have a page displaying this user's data.
-    revalidatePath("/dashboard/users");
-
-    return { success: true, message: "User updated successfully." };
-  } catch (error) {
-    console.error("Update failed:", error);
-    return {
-      success: false,
-      message: "Failed to update user due to a server error.",
-    };
-  }
-}
-```
-
----
-
-## 2\. Use the Server Action in a Client Component Form
-
-You will use a Client Component to render the interactive form and import the Server Action to use in the `action` prop of the `<form>` element.
-
-```tsx
-// app/dashboard/users/edit-form.tsx
+// src/contexts/DataContext.tsx
 "use client";
 
-import { updateUser } from "@/app/actions/user";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
-import { useState } from "react";
+import { createContext, useContext, ReactNode, useMemo } from "react";
+import useSWR from "swr";
 
-// Simplified type based on your interface
-interface InitialUser {
-  user_id: number;
+// Define your record type
+interface Record {
+  id: string;
   name: string;
-  email: string;
+  category?: string;
 }
 
-// A helper component to manage the button's loading state
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="p-2 bg-blue-500 text-white rounded"
-    >
-      {pending ? "Saving..." : "Save Changes"}
-    </button>
-  );
+interface DataContextType {
+  records: Record[];
+  isLoading: boolean;
+  error: any;
+  mutate: () => void;
+  // Helper methods
+  getRecordById: (id: string) => Record | undefined;
+  getRecordsByCategory: (category: string) => Record[];
+  searchRecords: (query: string) => Record[];
 }
 
-export function EditUserForm({ user }: { user: InitialUser }) {
-  const [statusMessage, setStatusMessage] = useState("");
+const DataContext = createContext<DataContextType | undefined>(undefined);
 
-  // This is the **key step**: Bind the Server Action to a client-side function
-  const handleSubmit = async (formData: FormData) => {
-    setStatusMessage("Saving...");
-    const result = await updateUser(formData);
+// Fetcher function for SWR
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
 
-    // Handle the response from the Server Action
-    if (result.success) {
-      setStatusMessage(`✅ ${result.message}`);
-    } else {
-      setStatusMessage(`❌ ${result.message}`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch records: ${response.statusText}`);
+  }
+
+  return response.json();
+};
+
+export function DataProvider({ children }: { children: ReactNode }) {
+  // SWR hook for data fetching
+  const { data, error, isLoading, mutate } = useSWR<Record[]>(
+    "/api/records",
+    fetcher,
+    {
+      // SWR configuration
+      revalidateOnFocus: false, // Don't refetch on window focus
+      revalidateOnReconnect: true, // Refetch on reconnect
+      dedupingInterval: 60000, // Dedupe requests within 60s
+      shouldRetryOnError: true,
+      errorRetryCount: 3,
+      errorRetryInterval: 5000,
+      // Cache the data
+      fallbackData: [], // Initial value before first fetch
     }
+  );
+
+  const records = data || [];
+
+  // Create indexed maps for fast lookups
+  const recordsById = useMemo(() => {
+    return new Map(records.map((record) => [record.id, record]));
+  }, [records]);
+
+  const recordsByCategory = useMemo(() => {
+    const map = new Map<string, Record[]>();
+    records.forEach((record) => {
+      if (record.category) {
+        const existing = map.get(record.category) || [];
+        map.set(record.category, [...existing, record]);
+      }
+    });
+    return map;
+  }, [records]);
+
+  // Helper functions
+  const getRecordById = (id: string) => recordsById.get(id);
+
+  const getRecordsByCategory = (category: string) =>
+    recordsByCategory.get(category) || [];
+
+  const searchRecords = (query: string) => {
+    const lowerQuery = query.toLowerCase();
+    return records.filter((record) =>
+      record.name.toLowerCase().includes(lowerQuery)
+    );
   };
 
   return (
-    // The form action can be bound to the client-side handleSubmit wrapper
-    <form action={handleSubmit} className="space-y-4 p-4 border rounded shadow">
-      {/* Hidden field for the ID - Server Actions get all form fields */}
-      <input type="hidden" name="userId" value={user.user_id} />
+    <DataContext.Provider
+      value={{
+        records,
+        isLoading,
+        error,
+        mutate,
+        getRecordById,
+        getRecordsByCategory,
+        searchRecords,
+      }}
+    >
+      {children}
+    </DataContext.Provider>
+  );
+}
 
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name" // The 'name' attribute is crucial for FormData
-          type="text"
-          defaultValue={user.name}
-          required
-          className="mt-1 p-2 w-full border rounded"
-        />
-      </div>
+export function useRecords() {
+  const context = useContext(DataContext);
+  if (context === undefined) {
+    throw new Error("useRecords must be used within a DataProvider");
+  }
+  return context;
+}
+```
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email" // The 'name' attribute is crucial for FormData
-          type="email"
-          defaultValue={user.email}
-          required
-          className="mt-1 p-2 w-full border rounded"
-        />
-      </div>
+{% endraw %}
 
-      <SubmitButton />
+## Step 3: Configure SWR Globally (Optional)
 
-      {statusMessage && <p className="mt-2 text-sm">{statusMessage}</p>}
-    </form>
+For better control across your app:
+
+{% raw %}
+
+```ts
+// src/app/providers.tsx
+"use client";
+
+import { SWRConfig } from "swr";
+import { DataProvider } from "@/contexts/DataContext";
+import { ReactNode } from "react";
+
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("An error occurred while fetching the data.");
+  }
+  return response.json();
+};
+
+export function Providers({ children }: { children: ReactNode }) {
+  return (
+    <SWRConfig
+      value={{
+        fetcher,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: true,
+        shouldRetryOnError: true,
+        errorRetryCount: 3,
+        dedupingInterval: 60000,
+        // Use localStorage for persistence
+        provider: () => {
+          if (typeof window !== "undefined") {
+            return new Map(
+              JSON.parse(localStorage.getItem("app-cache") || "[]")
+            );
+          }
+          return new Map();
+        },
+        // Persist to localStorage
+        onSuccess: (data, key) => {
+          if (typeof window !== "undefined") {
+            const cache = new Map(
+              JSON.parse(localStorage.getItem("app-cache") || "[]")
+            );
+            cache.set(key, data);
+            localStorage.setItem(
+              "app-cache",
+              JSON.stringify(Array.from(cache.entries()))
+            );
+          }
+        },
+      }}
+    >
+      <DataProvider>{children}</DataProvider>
+    </SWRConfig>
   );
 }
 ```
 
-### Explanation of Key Concepts
+{% endraw %}
 
-1. **Form Data Handling:**
-   - When you use an async function in the `<form action={...}>` prop, the browser automatically serializes all form fields (using their **`name`** attributes) into a standard **`FormData`** object and passes it as the **first argument** to your Server Action.
-2. **Progressive Enhancement:**
-   - By binding the action to the form, the form will submit and work even if JavaScript is disabled. This is the **Progressive Enhancement** feature.
-3. **`useFormStatus` (Client Component Hook):**
-   - This hook (from `react-dom`) is used in any component _inside_ the `<form>` to get the submission status, letting you disable the button and show a "Saving..." state automatically.
-4. **Returning Values:**
-   - The Server Action returns a value (e.g., `{ success: boolean; message: string }`). When called from a Client Component (like in the `handleSubmit` wrapper), you can await this result to handle success or error messages on the client side.
-5. **`revalidatePath`:**
-   - Since a successful mutation changes your data, calling `revalidatePath('/path')` inside the Server Action tells Next.js to purge the cache for that path, ensuring subsequent navigation or server fetches get the new data.
+## Step 4: Update Layout
 
----
-
-## Adding Errors Handling
-
-That's an excellent next step\! Handling validation errors from the Server Action and displaying them in your Client Component form is crucial for a good user experience.
-
-Here's how you can achieve this by modifying both the Server Action and the Client Component:
-
-## 1\. Modify the Server Action to Return Validation Errors 🛠️
-
-Instead of a simple success/failure message, the Server Action should return a more structured object that includes an **`errors`** field for client-side display.
+{% raw %}
 
 ```typescript
-// app/actions/user.ts (Modified)
-"use server";
+// src/app/layout.tsx
+import { Providers } from "@/app/providers";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
-import { revalidatePath } from "next/cache";
-
-// Define the shape of your expected result
-interface ServerActionResult {
-  success: boolean;
-  message: string;
-  errors?: {
-    name?: string;
-    email?: string;
-  };
-}
-
-export async function updateUser(
-  formData: FormData
-): Promise<ServerActionResult> {
-  const userId = formData.get("userId");
-  const newName = formData.get("name") as string;
-  const newEmail = formData.get("email") as string;
-
-  // --- 1. Perform Validation ---
-  const errors: ServerActionResult["errors"] = {};
-
-  if (!newName || newName.length < 3) {
-    errors.name = "Name must be at least 3 characters.";
-  }
-
-  // Simple email format check
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!newEmail || !emailRegex.test(newEmail)) {
-    errors.email = "Please provide a valid email address.";
-  }
-
-  // --- 2. Handle Validation Failure ---
-  if (Object.keys(errors).length > 0) {
-    return { success: false, message: "Validation failed.", errors };
-  }
-
-  const user_id = Number(userId);
-
-  try {
-    // ... (Database mutation logic goes here, as before) ...
-    console.log(
-      `Updating user ${user_id}: Name: ${newName}, Email: ${newEmail}`
-    );
-
-    revalidatePath("/dashboard/users");
-
-    return { success: true, message: "User updated successfully." };
-  } catch (error) {
-    console.error("Update failed:", error);
-    return {
-      success: false,
-      message: "Failed to update user due to a server error.",
-    };
-  }
-}
-```
-
----
-
-## 2\. Modify the Client Component to Display Errors
-
-The Client Component needs state to hold any returned validation errors and logic to update that state based on the Server Action's result.
-
-```tsx
-// app/dashboard/users/edit-form.tsx (Modified)
-"use client";
-
-import { updateUser } from "@/app/actions/user";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
-import { useState } from "react";
-
-// Simplified type for demonstration
-interface InitialUser {
-  user_id: number;
-  name: string;
-  email: string;
-}
-
-// Helper component (unchanged)
-function SubmitButton() {
-  const { pending } = useFormStatus();
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="p-2 bg-blue-500 text-white rounded"
-    >
-      {pending ? "Saving..." : "Save Changes"}
-    </button>
-  );
-}
-
-export function EditUserForm({ user }: { user: InitialUser }) {
-  const [statusMessage, setStatusMessage] = useState("");
-  // State to hold validation errors from the server
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string | undefined>
-  >({});
-
-  const handleSubmit = async (formData: FormData) => {
-    setStatusMessage("Saving...");
-    setValidationErrors({}); // Clear previous errors
-
-    const result = await updateUser(formData);
-
-    if (result.success) {
-      setStatusMessage(`✅ ${result.message}`);
-    } else {
-      // --- KEY LOGIC: Handle and display errors ---
-      if (result.errors) {
-        // Set the validation errors state to re-render the form with error messages
-        setValidationErrors(result.errors);
-        setStatusMessage("Please fix the errors below.");
-      } else {
-        // Handle general server error
-        setStatusMessage(`❌ ${result.message}`);
-      }
-    }
-  };
-
-  return (
-    <form action={handleSubmit} className="space-y-4 p-4 border rounded shadow">
-      <input type="hidden" name="userId" value={user.user_id} />
-
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          defaultValue={user.name}
-          className={`mt-1 p-2 w-full border rounded ${validationErrors.name ? "border-red-500" : ""}`}
-        />
-        {/* Display the error message */}
-        {validationErrors.name && (
-          <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          defaultValue={user.email}
-          className={`mt-1 p-2 w-full border rounded ${validationErrors.email ? "border-red-500" : ""}`}
-        />
-        {/* Display the error message */}
-        {validationErrors.email && (
-          <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
-        )}
-      </div>
-
-      <SubmitButton />
-
-      {statusMessage && (
-        <p
-          className={`mt-2 text-sm ${statusMessage.startsWith("❌") ? "text-red-500" : "text-green-500"}`}
-        >
-          {statusMessage}
-        </p>
-      )}
-    </form>
+    <html lang="en">
+      <body>
+        <Providers>{children}</Providers>
+        <Toaster />
+      </body>
+    </html>
   );
 }
 ```
 
-By passing the structured `errors` object from the Server Action to the Client Component's state, you can render specific error messages next to the corresponding form fields, providing targeted feedback to the user.
+{% endraw %}
 
----
+## Step 5: Create Loading Wrapper Component
 
-## That's an excellent next step\! Handling validation errors from the Server Action and displaying them in your Client Component form is crucial for a good user experience
-
-Here's how you can achieve this by modifying both the Server Action and the Client Component:
-
-### 3\. Modify the Server Action to Return Validation Errors 🛠️
-
-Instead of a simple success/failure message, the Server Action should return a more structured object that includes an **`errors`** field for client-side display.
+{% raw %}
 
 ```typescript
-// app/actions/user.ts (Modified)
-"use server";
+// src/components/DataLoader.tsx
+"use client";
 
-import { revalidatePath } from "next/cache";
+import { useRecords } from "@/contexts/DataContext";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
-// Define the shape of your expected result
-interface ServerActionResult {
-  success: boolean;
-  message: string;
-  errors?: {
-    name?: string;
-    email?: string;
-  };
+interface DataLoaderProps {
+  children: ReactNode;
+  fallback?: ReactNode;
 }
 
-export async function updateUser(
-  formData: FormData
-): Promise<ServerActionResult> {
-  const userId = formData.get("userId");
-  const newName = formData.get("name") as string;
-  const newEmail = formData.get("email") as string;
+export function DataLoader({ children, fallback }: DataLoaderProps) {
+  const { isLoading, error, mutate } = useRecords();
 
-  // --- 1. Perform Validation ---
-  const errors: ServerActionResult["errors"] = {};
-
-  if (!newName || newName.length < 3) {
-    errors.name = "Name must be at least 3 characters.";
+  if (isLoading) {
+    return (
+      fallback || (
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-center">
+            <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+            <p className="mt-4 text-lg text-muted-foreground">
+              Loading data...
+            </p>
+          </div>
+        </div>
+      )
+    );
   }
 
-  // Simple email format check
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!newEmail || !emailRegex.test(newEmail)) {
-    errors.email = "Please provide a valid email address.";
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <Alert variant="destructive" className="max-w-md">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Error Loading Data</AlertTitle>
+          <AlertDescription className="mt-2">
+            {error.message || "An error occurred while loading data."}
+          </AlertDescription>
+          <Button onClick={() => mutate()} variant="outline" className="mt-4">
+            Retry
+          </Button>
+        </Alert>
+      </div>
+    );
   }
 
-  // --- 2. Handle Validation Failure ---
-  if (Object.keys(errors).length > 0) {
-    return { success: false, message: "Validation failed.", errors };
+  return <>{children}</>;
+}
+```
+
+{% endraw %}
+
+## Step 6: Use in Your App
+
+{% raw %}
+
+```typescript
+// src/app/page.tsx
+import { DataLoader } from "@/components/DataLoader";
+import { Dashboard } from "@/components/Dashboard";
+
+export default function Home() {
+  return (
+    <DataLoader>
+      <Dashboard />
+    </DataLoader>
+  );
+}
+```
+
+{% endraw %}
+
+## Step 7: Use the Data in Components
+
+{% raw %}
+
+```typescript
+// src/components/Dashboard.tsx
+"use client";
+
+import { useRecords } from "@/contexts/DataContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
+import { useState, useMemo } from "react";
+
+export function Dashboard() {
+  const { records, mutate, isLoading } = useRecords();
+  const [search, setSearch] = useState("");
+
+  // Filter records client-side
+  const filteredRecords = useMemo(() => {
+    if (!search) return records;
+
+    return records.filter((record) =>
+      record.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [records, search]);
+
+  return (
+    <div className="container mx-auto p-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle>Records ({records.length} total)</CardTitle>
+          <Button
+            onClick={() => mutate()}
+            variant="outline"
+            size="sm"
+            disabled={isLoading}
+          >
+            <RefreshCw
+              className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <Input
+            placeholder="Search records..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="mb-4"
+          />
+
+          <div className="space-y-2">
+            {filteredRecords.map((record) => (
+              <div
+                key={record.id}
+                className="p-3 border rounded-lg hover:bg-accent transition-colors"
+              >
+                {record.name}
+              </div>
+            ))}
+          </div>
+
+          {filteredRecords.length === 0 && (
+            <p className="text-center text-muted-foreground py-8">
+              No records found
+            </p>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+{% endraw %}
+
+## Step 8: Using Helper Methods
+
+{% raw %}
+
+```typescript
+// src/components/RecordDetail.tsx
+"use client";
+
+import { useRecords } from "@/contexts/DataContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+export function RecordDetail({ id }: { id: string }) {
+  const { getRecordById } = useRecords();
+
+  const record = getRecordById(id);
+
+  if (!record) {
+    return (
+      <Card>
+        <CardContent className="py-8 text-center text-muted-foreground">
+          Record not found
+        </CardContent>
+      </Card>
+    );
   }
 
-  const user_id = Number(userId);
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{record.name}</CardTitle>
+        {record.category && (
+          <Badge variant="secondary">{record.category}</Badge>
+        )}
+      </CardHeader>
+      <CardContent>{/* Record details */}</CardContent>
+    </Card>
+  );
+}
+```
 
-  try {
-    // ... (Database mutation logic goes here, as before) ...
-    console.log(
-      `Updating user ${user_id}: Name: ${newName}, Email: ${newEmail}`
+{% endraw %}
+
+## Step 9: Advanced - Optimistic Updates
+
+When you need to update records optimistically:
+
+{% raw %}
+
+```typescript
+// src/components/RecordEditor.tsx
+"use client";
+
+import { useRecords } from "@/contexts/DataContext";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+export function RecordEditor({ id }: { id: string }) {
+  const { getRecordById, mutate, records } = useRecords();
+  const [name, setName] = useState("");
+
+  const record = getRecordById(id);
+
+  const updateRecord = async () => {
+    // Optimistically update the UI
+    mutate(
+      records.map((r) => (r.id === id ? { ...r, name } : r)),
+      false // Don't revalidate immediately
     );
 
-    revalidatePath("/dashboard/users");
+    try {
+      // Make the API call
+      await fetch(`/api/records/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
 
-    return { success: true, message: "User updated successfully." };
-  } catch (error) {
-    console.error("Update failed:", error);
-    return {
-      success: false,
-      message: "Failed to update user due to a server error.",
-    };
-  }
-}
-```
-
----
-
-## 4\. Modify the Client Component to Display Errors
-
-The Client Component needs state to hold any returned validation errors and logic to update that state based on the Server Action's result.
-
-```tsx
-// app/dashboard/users/edit-form.tsx (Modified)
-"use client";
-
-import { updateUser } from "@/app/actions/user";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
-import { useState } from "react";
-
-// Simplified type for demonstration
-interface InitialUser {
-  user_id: number;
-  name: string;
-  email: string;
-}
-
-// Helper component (unchanged)
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="p-2 bg-blue-500 text-white rounded"
-    >
-      {pending ? "Saving..." : "Save Changes"}
-    </button>
-  );
-}
-
-export function EditUserForm({ user }: { user: InitialUser }) {
-  const [statusMessage, setStatusMessage] = useState("");
-  // State to hold validation errors from the server
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string | undefined>
-  >({});
-
-  const handleSubmit = async (formData: FormData) => {
-    setStatusMessage("Saving...");
-    setValidationErrors({}); // Clear previous errors
-
-    const result = await updateUser(formData);
-
-    if (result.success) {
-      setStatusMessage(`✅ ${result.message}`);
-    } else {
-      // --- KEY LOGIC: Handle and display errors ---
-      if (result.errors) {
-        // Set the validation errors state to re-render the form with error messages
-        setValidationErrors(result.errors);
-        setStatusMessage("Please fix the errors below.");
-      } else {
-        // Handle general server error
-        setStatusMessage(`❌ ${result.message}`);
-      }
+      // Revalidate to ensure consistency
+      mutate();
+    } catch (error) {
+      // Revert on error
+      mutate();
     }
   };
 
   return (
-    <form action={handleSubmit} className="space-y-4 p-4 border rounded shadow">
-      <input type="hidden" name="userId" value={user.user_id} />
-
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          defaultValue={user.name}
-          className={`mt-1 p-2 w-full border rounded ${validationErrors.name ? "border-red-500" : ""}`}
-        />
-        {/* Display the error message */}
-        {validationErrors.name && (
-          <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium">
-          Email
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          defaultValue={user.email}
-          className={`mt-1 p-2 w-full border rounded ${validationErrors.email ? "border-red-500" : ""}`}
-        />
-        {/* Display the error message */}
-        {validationErrors.email && (
-          <p className="text-red-500 text-xs mt-1">{validationErrors.email}</p>
-        )}
-      </div>
-
-      <SubmitButton />
-
-      {statusMessage && (
-        <p
-          className={`mt-2 text-sm ${statusMessage.startsWith("❌") ? "text-red-500" : "text-green-500"}`}
-        >
-          {statusMessage}
-        </p>
-      )}
-    </form>
+    <div className="space-y-4">
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className="border rounded px-3 py-2 w-full"
+      />
+      <Button onClick={updateRecord}>Update Record</Button>
+    </div>
   );
 }
 ```
 
-By passing the structured `errors` object from the Server Action to the Client Component's state, you can render specific error messages next to the corresponding form fields, providing targeted feedback to the user.
+{% endraw %}
 
----
+## Step 10: Preloading with Server Components (Bonus)
 
-## Combine Server Actions with **optimistic UI updates** (for an even snappier user experience)
+For even faster initial loads in Next.js:
 
-Yes, combining Server Actions with **optimistic UI updates** provides an exceptionally fast and responsive feel to your application, even while network requests are processing.
+{% raw %}
 
-The pattern for this involves using the `useOptimistic` hook, which is part of React's suite of features supporting Server Actions.
+```typescript
+// src/app/page.tsx
+import { DataLoader } from "@/components/DataLoader";
+import { Dashboard } from "@/components/Dashboard";
+import { Suspense } from "react";
 
----
-
-## 1\. The Concept of Optimistic Updates ✨
-
-**Optimistic UI** means updating the user interface immediately after a form submission (or mutation) as if the request has already succeeded. This gives the user instant feedback. If the Server Action later succeeds, no further change is needed. If it fails, you revert the UI back to its previous state and display an error message.
-
-This pattern is especially useful for actions like "liking" a post, checking a to-do item, or, in your case, updating a user's name, where the operation is highly likely to succeed.
-
----
-
-## 2\. Implement `useOptimistic` in Your Form
-
-The `useOptimistic` hook allows you to define a temporary, "optimistic" state that is applied immediately upon action execution, which will then be superseded by the actual returned state once the Server Action completes.
-
-### Modifying `EditUserForm`
-
-We'll focus on optimistically updating the user's name in the UI.
-
-```tsx
-// app/dashboard/users/edit-form-optimistic.tsx
-"use client";
-
-import { updateUser } from "@/app/actions/user";
-import {
-  experimental_useFormStatus as useFormStatus,
-  useOptimistic,
-} from "react-dom";
-import { useState } from "react";
-
-interface InitialUser {
-  user_id: number;
-  name: string;
-  email: string;
+async function getRecords() {
+  const response = await fetch("https://your-api.com/records", {
+    cache: "no-store", // or next: { revalidate: 60 }
+  });
+  return response.json();
 }
 
-// ... (SubmitButton and other imports/types remain the same) ...
-
-export function EditUserFormOptimistic({ user }: { user: InitialUser }) {
-  const [statusMessage, setStatusMessage] = useState("");
-  const [validationErrors, setValidationErrors] = useState<
-    Record<string, string | undefined>
-  >({});
-
-  // --- KEY CHANGE: Initialize useOptimistic ---
-  // 1. Initial State: The current user object.
-  // 2. Updater Function: Defines how the state should change optimistically.
-  const [optimisticUser, addOptimisticUpdate] = useOptimistic(
-    user,
-    (currentState, newName: string) => ({
-      ...currentState,
-      name: newName, // Optimistically update ONLY the name
-    })
-  );
-  // ---------------------------------------------
-
-  // The Server Action wrapper needs to be updated for optimistic UI
-  const handleSubmit = async (formData: FormData) => {
-    const newName = formData.get("name") as string;
-
-    // --- 1. Optimistic Update (Immediate UI change) ---
-    addOptimisticUpdate(newName);
-    setStatusMessage("Saving...");
-    setValidationErrors({});
-
-    const result = await updateUser(formData);
-
-    if (result.success) {
-      // Success: The Server Action returns, and the optimistic state is automatically reconciled
-      // (or simply remains, as it matches the expected outcome).
-      setStatusMessage(`✅ ${result.message}`);
-    } else {
-      // Failure:
-      if (result.errors) {
-        setValidationErrors(result.errors);
-        setStatusMessage("Please fix the errors below.");
-      } else {
-        setStatusMessage(`❌ ${result.message}`);
-      }
-
-      // --- 2. Revert on Failure (Crucial step for pessimistic flow) ---
-      // Because the Server Action failed, we need to manually revert the optimistic change.
-      // A simple way is to pass the original state again.
-      addOptimisticUpdate(user.name);
-    }
-  };
+export default async function Home() {
+  // Preload data on server
+  const initialData = await getRecords();
 
   return (
-    <form action={handleSubmit} className="space-y-4 p-4 border rounded shadow">
-      <input type="hidden" name="userId" value={user.user_id} />
-
-      <div>
-        <label htmlFor="name" className="block text-sm font-medium">
-          Name
-        </label>
-        <input
-          id="name"
-          name="name"
-          type="text"
-          // --- Use the optimistic state value here ---
-          defaultValue={optimisticUser.name}
-          key={optimisticUser.name} // Key is often needed to force re-render when reverting
-          // ------------------------------------------
-          className={`mt-1 p-2 w-full border rounded ${validationErrors.name ? "border-red-500" : ""}`}
-        />
-        {validationErrors.name && (
-          <p className="text-red-500 text-xs mt-1">{validationErrors.name}</p>
-        )}
-      </div>
-
-      {/* ... (Email field and other form elements remain similar) ... */}
-
-      <SubmitButton />
-
-      {statusMessage && (
-        <p
-          className={`mt-2 text-sm ${statusMessage.startsWith("❌") ? "text-red-500" : "text-green-500"}`}
-        >
-          {statusMessage}
-        </p>
-      )}
-    </form>
+    <DataLoader fallbackData={initialData}>
+      <Dashboard />
+    </DataLoader>
   );
 }
 ```
 
-### How the Optimistic Flow Works
+{% endraw %}
 
-1. The user types a new name and clicks **"Save Changes."**
-2. The `handleSubmit` function is called.
-3. **`addOptimisticUpdate(newName)`** executes immediately. The `optimisticUser.name` value instantly changes to the new name in the input field (due to `key={optimisticUser.name}`). The UI appears updated.
-4. The **`updateUser(formData)`** Server Action runs asynchronously on the server.
-5. **If the action succeeds:** The form remains as is. The user sees an updated name instantly, and the state reconciliation happens transparently in the background.
-6. **If the action fails (e.g., validation error):** The code enters the `else` block. The Server Action's failure is detected, and **`addOptimisticUpdate(user.name)`** is called, reverting the displayed name back to the original value stored in the `user` prop.
+## Key Benefits of Using SWR
+
+1. **Automatic caching**: Data is cached and shared across components
+2. **Revalidation**: Automatic background updates when needed
+3. **Focus revalidation**: Optional refetch when user returns to tab
+4. **Error retry**: Built-in retry logic with exponential backoff
+5. **Optimistic updates**: Easy to implement optimistic UI updates
+6. **Deduplication**: Multiple components requesting same data = single request
+7. **Persistence**: Can persist cache to localStorage
+8. **TypeScript**: Full type safety out of the box
+
+This approach is production-ready and handles all edge cases like network failures, stale data, and concurrent requests automatically!

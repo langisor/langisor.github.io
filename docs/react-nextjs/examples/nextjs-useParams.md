@@ -2,6 +2,8 @@
 
 ## `app/dashboard/page.tsx`
 
+{% raw %}
+
 ```tsx
 import { Suspense } from "react";
 import SearchBar from "./search-bar";
@@ -28,7 +30,11 @@ export default function Page() {
 }
 ```
 
+{% endraw %}
+
 ## `src/app/components/search-bar.tsx` - Client Search bar
+
+{% raw %}
 
 ```tsx
 "use client";
@@ -80,3 +86,5 @@ export default function SearchBar() {
   );
 }
 ```
+
+{% endraw %}
