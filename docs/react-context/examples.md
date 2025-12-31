@@ -433,13 +433,13 @@ This pattern works great for reference data, lookup tables, or any dataset that 
 
 Using SWR gives you automatic caching, revalidation, and optimized data fetching out of the box.
 
-## Step 1: Install SWR
+### Step 1: Install SWR
 
 ```bash
 npm install swr
 ```
 
-## Step 2: Create the Data Context with SWR
+### Step 2: Create the Data Context with SWR
 
 ```ts
 // src/contexts/DataContext.tsx
@@ -554,7 +554,7 @@ export function useRecords() {
 }
 ```
 
-## Step 3: Configure SWR Globally (Optional)
+### Step 3: Configure SWR Globally (Optional)
 
 For better control across your app:
 
@@ -609,7 +609,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 ```
 
-## Step 4: Update Layout
+### Step 4: Update Layout
 
 ```ts
 // src/app/layout.tsx
@@ -635,7 +635,7 @@ export default function RootLayout({
 }
 ```
 
-## Step 5: Create Loading Wrapper Component
+### Step 5: Create Loading Wrapper Component
 
 ```ts
 // src/components/DataLoader.tsx
@@ -695,7 +695,7 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 }
 ```
 
-## Step 6: Use in Your App
+### Step 6: Use in Your App
 
 ```ts
 // src/app/page.tsx
@@ -711,7 +711,7 @@ export default function Home() {
 }
 ```
 
-## Step 7: Use the Data in Components
+### Step 7: Use the Data in Components
 
 ```ts
 // src/components/Dashboard.tsx
@@ -783,7 +783,7 @@ export function Dashboard() {
 }
 ```
 
-## Step 8: Using Helper Methods
+### Step 8: Using Helper Methods
 
 ```tsx
 // src/components/RecordDetail.tsx
@@ -822,7 +822,7 @@ export function RecordDetail({ id }: { id: string }) {
 }
 ```
 
-## Step 9: Advanced - Optimistic Updates
+### Step 9: Advanced - Optimistic Updates
 
 When you need to update records optimistically:
 
@@ -876,7 +876,7 @@ export function RecordEditor({ id }: { id: string }) {
 }
 ```
 
-## Step 10: Preloading with Server Components (Bonus)
+### Step 10: Preloading with Server Components (Bonus)
 
 For even faster initial loads in Next.js:
 
