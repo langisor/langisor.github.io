@@ -6,46 +6,48 @@ Here's a complete implementation for your dictionary app with ~2000 words.
 
 ```typescript
 // src/contexts/DictionaryContext.tsx
-'use client'
+"use client";
 
-import { createContext, useContext, ReactNode, useMemo } from 'react'
-import useSWR from 'swr'
-import { DictionaryResponse, Word, Category } from '@/lib/types'
+import { createContext, useContext, ReactNode, useMemo } from "react";
+import useSWR from "swr";
+import { DictionaryResponse, Word, Category } from "@/lib/types";
 
 interface DictionaryContextType {
   // Core data
-  words: Word[]
-  categories: Category[]
-  total: number
-  isLoading: boolean
-  error: any
-  mutate: () => void
-  
+  words: Word[];
+  categories: Category[];
+  total: number;
+  isLoading: boolean;
+  error: any;
+  mutate: () => void;
+
   // Helper methods
-  filterWordsByCategory: (categoryName: string) => Word[]
-  searchWords: (query: string) => Word[]
-  getWordBySerial: (serial: number) => Word | undefined
-  getCategoryById: (catId: number) => Category | undefined
-  getWordsBySerialRange: (start: number, end: number) => Word[]
+  filterWordsByCategory: (categoryName: string) => Word[];
+  searchWords: (query: string) => Word[];
+  getWordBySerial: (serial: number) => Word | undefined;
+  getCategoryById: (catId: number) => Category | undefined;
+  getWordsBySerialRange: (start: number, end: number) => Word[];
 }
 
-const DictionaryContext = createContext<DictionaryContextType | undefined>(undefined)
+const DictionaryContext = createContext<DictionaryContextType | undefined>(
+  undefined
+);
 
 // Fetcher function for SWR
 const fetcher = async (url: string): Promise<DictionaryResponse> => {
-  const response = await fetch(url)
-  
+  const response = await fetch(url);
+
   if (!response.ok) {
-    throw new Error(`Failed to fetch dictionary: ${response.statusText}`)
+    throw new Error(`Failed to fetch dictionary: ${response.statusText}`);
   }
-  
-  return response.json()
-}
+
+  return response.json();
+};
 
 export function DictionaryProvider({ children }: { children: ReactNode }) {
   // SWR hook for data fetching
   const { data, error, isLoading, mutate } = useSWR<DictionaryResponse>(
-    '/api/dict',
+    "/api/dict",
     fetcher,
     {
       // SWR configuration for optimal performance
@@ -59,95 +61,96 @@ export function DictionaryProvider({ children }: { children: ReactNode }) {
       // Keep data cached
       keepPreviousData: true,
     }
-  )
+  );
 
   // Extract data with defaults
-  const words = data?.words || []
-  const categories = data?.categories || []
-  const total = data?.total || 0
+  const words = data?.words || [];
+  const categories = data?.categories || [];
+  const total = data?.total || 0;
 
   // Create indexed maps for O(1) lookups
   const wordsBySerial = useMemo(() => {
-    return new Map(words.map(word => [word.serial, word]))
-  }, [words])
+    return new Map(words.map((word) => [word.serial, word]));
+  }, [words]);
 
   const wordsByCategory = useMemo(() => {
-    const map = new Map<string, Word[]>()
-    words.forEach(word => {
-      const existing = map.get(word.category_name) || []
-      map.set(word.category_name, [...existing, word])
-    })
-    return map
-  }, [words])
+    const map = new Map<string, Word[]>();
+    words.forEach((word) => {
+      const existing = map.get(word.category_name) || [];
+      map.set(word.category_name, [...existing, word]);
+    });
+    return map;
+  }, [words]);
 
   const categoriesById = useMemo(() => {
-    return new Map(categories.map(cat => [cat.cat_id, cat]))
-  }, [categories])
+    return new Map(categories.map((cat) => [cat.cat_id, cat]));
+  }, [categories]);
 
   // Helper function: Filter words by category
   const filterWordsByCategory = (categoryName: string): Word[] => {
-    return wordsByCategory.get(categoryName) || []
-  }
+    return wordsByCategory.get(categoryName) || [];
+  };
 
   // Helper function: Search words (searches across multiple fields)
   const searchWords = (query: string): Word[] => {
-    if (!query.trim()) return words
+    if (!query.trim()) return words;
 
-    const lowerQuery = query.toLowerCase().trim()
-    
-    return words.filter(word => 
-      word.urdu.toLowerCase().includes(lowerQuery) ||
-      word.english.toLowerCase().includes(lowerQuery) ||
-      word.arabic.includes(lowerQuery) ||
-      word.transliteration?.toLowerCase().includes(lowerQuery) ||
-      word.category_name.toLowerCase().includes(lowerQuery) ||
-      word.example_urdu?.toLowerCase().includes(lowerQuery) ||
-      word.example_english?.toLowerCase().includes(lowerQuery)
-    )
-  }
+    const lowerQuery = query.toLowerCase().trim();
+
+    return words.filter(
+      (word) =>
+        word.urdu.toLowerCase().includes(lowerQuery) ||
+        word.english.toLowerCase().includes(lowerQuery) ||
+        word.arabic.includes(lowerQuery) ||
+        word.transliteration?.toLowerCase().includes(lowerQuery) ||
+        word.category_name.toLowerCase().includes(lowerQuery) ||
+        word.example_urdu?.toLowerCase().includes(lowerQuery) ||
+        word.example_english?.toLowerCase().includes(lowerQuery)
+    );
+  };
 
   // Helper function: Get word by serial number
   const getWordBySerial = (serial: number): Word | undefined => {
-    return wordsBySerial.get(serial)
-  }
+    return wordsBySerial.get(serial);
+  };
 
   // Helper function: Get category by ID
   const getCategoryById = (catId: number): Category | undefined => {
-    return categoriesById.get(catId)
-  }
+    return categoriesById.get(catId);
+  };
 
   // Helper function: Get words by serial range (useful for pagination)
   const getWordsBySerialRange = (start: number, end: number): Word[] => {
-    return words.filter(word => word.serial >= start && word.serial <= end)
-  }
+    return words.filter((word) => word.serial >= start && word.serial <= end);
+  };
 
   return (
-    <DictionaryContext.Provider 
-      value={{ 
+    <DictionaryContext.Provider
+      value={{
         words,
         categories,
         total,
-        isLoading, 
-        error, 
+        isLoading,
+        error,
         mutate,
         filterWordsByCategory,
         searchWords,
         getWordBySerial,
         getCategoryById,
-        getWordsBySerialRange
+        getWordsBySerialRange,
       }}
     >
       {children}
     </DictionaryContext.Provider>
-  )
+  );
 }
 
 export function useDictionary() {
-  const context = useContext(DictionaryContext)
+  const context = useContext(DictionaryContext);
   if (context === undefined) {
-    throw new Error('useDictionary must be used within a DictionaryProvider')
+    throw new Error("useDictionary must be used within a DictionaryProvider");
   }
-  return context
+  return context;
 }
 ```
 
@@ -155,23 +158,23 @@ export function useDictionary() {
 
 ```typescript
 // src/app/providers.tsx
-'use client'
+"use client";
 
-import { SWRConfig } from 'swr'
-import { DictionaryProvider } from '@/contexts/DictionaryContext'
-import { ReactNode } from 'react'
+import { SWRConfig } from "swr";
+import { DictionaryProvider } from "@/contexts/DictionaryContext";
+import { ReactNode } from "react";
 
 const fetcher = async (url: string) => {
-  const response = await fetch(url)
+  const response = await fetch(url);
   if (!response.ok) {
-    throw new Error('An error occurred while fetching the data.')
+    throw new Error("An error occurred while fetching the data.");
   }
-  return response.json()
-}
+  return response.json();
+};
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <SWRConfig 
+    <SWRConfig
       value={{
         fetcher,
         revalidateOnFocus: false,
@@ -181,20 +184,18 @@ export function Providers({ children }: { children: ReactNode }) {
         dedupingInterval: 300000, // 5 minutes
         // Use localStorage for persistence across sessions
         provider: () => {
-          if (typeof window !== 'undefined') {
-            const cacheKey = 'dictionary-app-cache'
-            const cached = localStorage.getItem(cacheKey)
-            return new Map(cached ? JSON.parse(cached) : [])
+          if (typeof window !== "undefined") {
+            const cacheKey = "dictionary-app-cache";
+            const cached = localStorage.getItem(cacheKey);
+            return new Map(cached ? JSON.parse(cached) : []);
           }
-          return new Map()
+          return new Map();
         },
       }}
     >
-      <DictionaryProvider>
-        {children}
-      </DictionaryProvider>
+      <DictionaryProvider>{children}</DictionaryProvider>
     </SWRConfig>
-  )
+  );
 }
 ```
 
@@ -202,30 +203,28 @@ export function Providers({ children }: { children: ReactNode }) {
 
 ```typescript
 // src/app/layout.tsx
-import { Providers } from '@/app/providers'
-import { Toaster } from '@/components/ui/toaster'
-import './globals.css'
+import { Providers } from "@/app/providers";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 export const metadata = {
-  title: 'Dictionary App',
-  description: 'Core 2000 Words Dictionary',
-}
+  title: "Dictionary App",
+  description: "Core 2000 Words Dictionary",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -233,22 +232,25 @@ export default function RootLayout({
 
 ```typescript
 // src/components/DictionaryLoader.tsx
-'use client'
+"use client";
 
-import { useDictionary } from '@/contexts/DictionaryContext'
-import { Loader2, AlertCircle, BookOpen } from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { ReactNode } from 'react'
-import { Progress } from '@/components/ui/progress'
+import { useDictionary } from "@/contexts/DictionaryContext";
+import { Loader2, AlertCircle, BookOpen } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
+import { Progress } from "@/components/ui/progress";
 
 interface DictionaryLoaderProps {
-  children: ReactNode
-  fallback?: ReactNode
+  children: ReactNode;
+  fallback?: ReactNode;
 }
 
-export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) {
-  const { isLoading, error, mutate, total } = useDictionary()
+export function DictionaryLoader({
+  children,
+  fallback,
+}: DictionaryLoaderProps) {
+  const { isLoading, error, mutate, total } = useDictionary();
 
   if (isLoading) {
     return (
@@ -260,14 +262,14 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
               <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
               <h2 className="text-2xl font-semibold">Loading Dictionary</h2>
               <p className="text-muted-foreground">
-                Loading {total > 0 ? total : '~2000'} words...
+                Loading {total > 0 ? total : "~2000"} words...
               </p>
             </div>
             <Progress value={33} className="w-full" />
           </div>
         </div>
       )
-    )
+    );
   }
 
   if (error) {
@@ -277,10 +279,13 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error Loading Dictionary</AlertTitle>
           <AlertDescription className="mt-2 space-y-4">
-            <p>{error.message || 'An error occurred while loading the dictionary data.'}</p>
-            <Button 
-              onClick={() => mutate()} 
-              variant="outline" 
+            <p>
+              {error.message ||
+                "An error occurred while loading the dictionary data."}
+            </p>
+            <Button
+              onClick={() => mutate()}
+              variant="outline"
               className="w-full"
             >
               Retry Loading
@@ -288,10 +293,10 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
           </AlertDescription>
         </Alert>
       </div>
-    )
+    );
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 ```
 
@@ -299,15 +304,15 @@ export function DictionaryLoader({ children, fallback }: DictionaryLoaderProps) 
 
 ```typescript
 // src/app/page.tsx
-import { DictionaryLoader } from '@/components/DictionaryLoader'
-import { DictionaryDashboard } from '@/components/DictionaryDashboard'
+import { DictionaryLoader } from "@/components/DictionaryLoader";
+import { DictionaryDashboard } from "@/components/DictionaryDashboard";
 
 export default function Home() {
   return (
     <DictionaryLoader>
       <DictionaryDashboard />
     </DictionaryLoader>
-  )
+  );
 }
 ```
 
@@ -315,58 +320,59 @@ export default function Home() {
 
 ```typescript
 // src/components/DictionaryDashboard.tsx
-'use client'
+"use client";
 
-import { useDictionary } from '@/contexts/DictionaryContext'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select'
-import { RefreshCw, Search } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useDictionary } from "@/contexts/DictionaryContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RefreshCw, Search } from "lucide-react";
+import { useState, useMemo } from "react";
 
 export function DictionaryDashboard() {
-  const { 
-    words, 
-    categories, 
-    total, 
-    mutate, 
+  const {
+    words,
+    categories,
+    total,
+    mutate,
     isLoading,
     filterWordsByCategory,
-    searchWords 
-  } = useDictionary()
-  
-  const [search, setSearch] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+    searchWords,
+  } = useDictionary();
+
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
   // Filter and search words
   const filteredWords = useMemo(() => {
-    let result = words
+    let result = words;
 
     // Apply category filter
-    if (selectedCategory !== 'all') {
-      result = filterWordsByCategory(selectedCategory)
+    if (selectedCategory !== "all") {
+      result = filterWordsByCategory(selectedCategory);
     }
 
     // Apply search
     if (search.trim()) {
-      result = result.filter(word => 
-        word.urdu.toLowerCase().includes(search.toLowerCase()) ||
-        word.english.toLowerCase().includes(search.toLowerCase()) ||
-        word.arabic.includes(search) ||
-        word.transliteration?.toLowerCase().includes(search.toLowerCase())
-      )
+      result = result.filter(
+        (word) =>
+          word.urdu.toLowerCase().includes(search.toLowerCase()) ||
+          word.english.toLowerCase().includes(search.toLowerCase()) ||
+          word.arabic.includes(search) ||
+          word.transliteration?.toLowerCase().includes(search.toLowerCase())
+      );
     }
 
-    return result
-  }, [words, selectedCategory, search, filterWordsByCategory])
+    return result;
+  }, [words, selectedCategory, search, filterWordsByCategory]);
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -375,15 +381,14 @@ export function DictionaryDashboard() {
         <div>
           <h1 className="text-3xl font-bold">Dictionary</h1>
           <p className="text-muted-foreground">
-            {total.toLocaleString()} total words • {categories.length} categories
+            {total.toLocaleString()} total words • {categories.length}{" "}
+            categories
           </p>
         </div>
-        <Button 
-          onClick={() => mutate()} 
-          variant="outline"
-          disabled={isLoading}
-        >
-          <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+        <Button onClick={() => mutate()} variant="outline" disabled={isLoading}>
+          <RefreshCw
+            className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+          />
           Refresh
         </Button>
       </div>
@@ -401,13 +406,16 @@ export function DictionaryDashboard() {
                 className="pl-10"
               />
             </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="w-full md:w-[200px]">
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {categories.map(cat => (
+                {categories.map((cat) => (
                   <SelectItem key={cat.cat_id} value={cat.category}>
                     {cat.category}
                   </SelectItem>
@@ -421,15 +429,13 @@ export function DictionaryDashboard() {
       {/* Results */}
       <Card>
         <CardHeader>
-          <CardTitle>
-            Words ({filteredWords.length.toLocaleString()})
-          </CardTitle>
+          <CardTitle>Words ({filteredWords.length.toLocaleString()})</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {filteredWords.map(word => (
-              <div 
-                key={word.serial} 
+            {filteredWords.map((word) => (
+              <div
+                key={word.serial}
                 className="p-4 border rounded-lg hover:bg-accent transition-colors space-y-2"
               >
                 <div className="flex items-start justify-between gap-4">
@@ -438,14 +444,14 @@ export function DictionaryDashboard() {
                       <Badge variant="outline" className="font-mono">
                         #{word.serial}
                       </Badge>
-                      <Badge variant="secondary">
-                        {word.category_name}
-                      </Badge>
+                      <Badge variant="secondary">{word.category_name}</Badge>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                       <div>
                         <p className="text-sm text-muted-foreground">Urdu</p>
-                        <p className="font-semibold text-lg" dir="rtl">{word.urdu}</p>
+                        <p className="font-semibold text-lg" dir="rtl">
+                          {word.urdu}
+                        </p>
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">English</p>
@@ -453,7 +459,9 @@ export function DictionaryDashboard() {
                       </div>
                       <div>
                         <p className="text-sm text-muted-foreground">Arabic</p>
-                        <p className="font-semibold text-lg" dir="rtl">{word.arabic}</p>
+                        <p className="font-semibold text-lg" dir="rtl">
+                          {word.arabic}
+                        </p>
                       </div>
                     </div>
                     {word.transliteration && (
@@ -465,9 +473,13 @@ export function DictionaryDashboard() {
                 </div>
 
                 {/* Examples */}
-                {(word.example_english || word.example_urdu || word.example_arabic) && (
+                {(word.example_english ||
+                  word.example_urdu ||
+                  word.example_arabic) && (
                   <div className="pt-2 border-t space-y-1">
-                    <p className="text-xs font-semibold text-muted-foreground">Examples:</p>
+                    <p className="text-xs font-semibold text-muted-foreground">
+                      Examples:
+                    </p>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
                       {word.example_urdu && (
                         <p dir="rtl" className="text-muted-foreground">
@@ -475,7 +487,9 @@ export function DictionaryDashboard() {
                         </p>
                       )}
                       {word.example_english && (
-                        <p className="text-muted-foreground">{word.example_english}</p>
+                        <p className="text-muted-foreground">
+                          {word.example_english}
+                        </p>
                       )}
                     </div>
                     {word.example_transliteration && (
@@ -499,7 +513,7 @@ export function DictionaryDashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 ```
 
@@ -516,9 +530,9 @@ import { Separator } from '@/components/ui/separator'
 
 export function WordDetail({ serial }: { serial: number }) {
   const { getWordBySerial } = useDictionary()
-  
+
   const word = getWordBySerial(serial)
-  
+
   if (!word) {
     return (
       <Card>
@@ -577,7 +591,7 @@ export function WordDetail({ serial }: { serial: number }) {
               <Separator />
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold">Examples</h3>
-                
+
                 {word.example_urdu && (
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">Urdu</p>
@@ -618,14 +632,14 @@ export function WordDetail({ serial }: { serial: number }) {
 
 ```typescript
 // src/components/CategoryStats.tsx
-'use client'
+"use client";
 
-import { useDictionary } from '@/contexts/DictionaryContext'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { useDictionary } from "@/contexts/DictionaryContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export function CategoryStats() {
-  const { categories, filterWordsByCategory, total } = useDictionary()
+  const { categories, filterWordsByCategory, total } = useDictionary();
 
   return (
     <Card>
@@ -634,12 +648,12 @@ export function CategoryStats() {
       </CardHeader>
       <CardContent>
         <div className="space-y-2">
-          {categories.map(category => {
-            const count = filterWordsByCategory(category.category).length
-            const percentage = ((count / total) * 100).toFixed(1)
-            
+          {categories.map((category) => {
+            const count = filterWordsByCategory(category.category).length;
+            const percentage = ((count / total) * 100).toFixed(1);
+
             return (
-              <div 
+              <div
                 key={category.cat_id}
                 className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent transition-colors"
               >
@@ -651,12 +665,12 @@ export function CategoryStats() {
                 </div>
                 <Badge variant="secondary">{count}</Badge>
               </div>
-            )
+            );
           })}
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 ```
 

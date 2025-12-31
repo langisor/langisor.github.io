@@ -12,46 +12,46 @@ npm install swr
 
 ```typescript
 // src/contexts/DataContext.tsx
-'use client'
+"use client";
 
-import { createContext, useContext, ReactNode, useMemo } from 'react'
-import useSWR from 'swr'
+import { createContext, useContext, ReactNode, useMemo } from "react";
+import useSWR from "swr";
 
 // Define your record type
 interface Record {
-  id: string
-  name: string
-  category?: string
+  id: string;
+  name: string;
+  category?: string;
 }
 
 interface DataContextType {
-  records: Record[]
-  isLoading: boolean
-  error: any
-  mutate: () => void
+  records: Record[];
+  isLoading: boolean;
+  error: any;
+  mutate: () => void;
   // Helper methods
-  getRecordById: (id: string) => Record | undefined
-  getRecordsByCategory: (category: string) => Record[]
-  searchRecords: (query: string) => Record[]
+  getRecordById: (id: string) => Record | undefined;
+  getRecordsByCategory: (category: string) => Record[];
+  searchRecords: (query: string) => Record[];
 }
 
-const DataContext = createContext<DataContextType | undefined>(undefined)
+const DataContext = createContext<DataContextType | undefined>(undefined);
 
 // Fetcher function for SWR
 const fetcher = async (url: string) => {
-  const response = await fetch(url)
-  
+  const response = await fetch(url);
+
   if (!response.ok) {
-    throw new Error(`Failed to fetch records: ${response.statusText}`)
+    throw new Error(`Failed to fetch records: ${response.statusText}`);
   }
-  
-  return response.json()
-}
+
+  return response.json();
+};
 
 export function DataProvider({ children }: { children: ReactNode }) {
   // SWR hook for data fetching
   const { data, error, isLoading, mutate } = useSWR<Record[]>(
-    '/api/records',
+    "/api/records",
     fetcher,
     {
       // SWR configuration
@@ -64,62 +64,62 @@ export function DataProvider({ children }: { children: ReactNode }) {
       // Cache the data
       fallbackData: [], // Initial value before first fetch
     }
-  )
+  );
 
-  const records = data || []
+  const records = data || [];
 
   // Create indexed maps for fast lookups
   const recordsById = useMemo(() => {
-    return new Map(records.map(record => [record.id, record]))
-  }, [records])
+    return new Map(records.map((record) => [record.id, record]));
+  }, [records]);
 
   const recordsByCategory = useMemo(() => {
-    const map = new Map<string, Record[]>()
-    records.forEach(record => {
+    const map = new Map<string, Record[]>();
+    records.forEach((record) => {
       if (record.category) {
-        const existing = map.get(record.category) || []
-        map.set(record.category, [...existing, record])
+        const existing = map.get(record.category) || [];
+        map.set(record.category, [...existing, record]);
       }
-    })
-    return map
-  }, [records])
+    });
+    return map;
+  }, [records]);
 
   // Helper functions
-  const getRecordById = (id: string) => recordsById.get(id)
-  
-  const getRecordsByCategory = (category: string) => 
-    recordsByCategory.get(category) || []
-  
+  const getRecordById = (id: string) => recordsById.get(id);
+
+  const getRecordsByCategory = (category: string) =>
+    recordsByCategory.get(category) || [];
+
   const searchRecords = (query: string) => {
-    const lowerQuery = query.toLowerCase()
-    return records.filter(record => 
+    const lowerQuery = query.toLowerCase();
+    return records.filter((record) =>
       record.name.toLowerCase().includes(lowerQuery)
-    )
-  }
+    );
+  };
 
   return (
-    <DataContext.Provider 
-      value={{ 
-        records, 
-        isLoading, 
-        error, 
+    <DataContext.Provider
+      value={{
+        records,
+        isLoading,
+        error,
         mutate,
         getRecordById,
         getRecordsByCategory,
-        searchRecords
+        searchRecords,
       }}
     >
       {children}
     </DataContext.Provider>
-  )
+  );
 }
 
 export function useRecords() {
-  const context = useContext(DataContext)
+  const context = useContext(DataContext);
   if (context === undefined) {
-    throw new Error('useRecords must be used within a DataProvider')
+    throw new Error("useRecords must be used within a DataProvider");
   }
-  return context
+  return context;
 }
 ```
 
@@ -129,23 +129,23 @@ For better control across your app:
 
 ```ts
 // src/app/providers.tsx
-'use client'
+"use client";
 
-import { SWRConfig } from 'swr'
-import { DataProvider } from '@/contexts/DataContext'
-import { ReactNode } from 'react'
+import { SWRConfig } from "swr";
+import { DataProvider } from "@/contexts/DataContext";
+import { ReactNode } from "react";
 
 const fetcher = async (url: string) => {
-  const response = await fetch(url)
+  const response = await fetch(url);
   if (!response.ok) {
-    throw new Error('An error occurred while fetching the data.')
+    throw new Error("An error occurred while fetching the data.");
   }
-  return response.json()
-}
+  return response.json();
+};
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <SWRConfig 
+    <SWRConfig
       value={{
         fetcher,
         revalidateOnFocus: false,
@@ -155,26 +155,31 @@ export function Providers({ children }: { children: ReactNode }) {
         dedupingInterval: 60000,
         // Use localStorage for persistence
         provider: () => {
-          if (typeof window !== 'undefined') {
-            return new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
+          if (typeof window !== "undefined") {
+            return new Map(
+              JSON.parse(localStorage.getItem("app-cache") || "[]")
+            );
           }
-          return new Map()
+          return new Map();
         },
         // Persist to localStorage
         onSuccess: (data, key) => {
-          if (typeof window !== 'undefined') {
-            const cache = new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
-            cache.set(key, data)
-            localStorage.setItem('app-cache', JSON.stringify(Array.from(cache.entries())))
+          if (typeof window !== "undefined") {
+            const cache = new Map(
+              JSON.parse(localStorage.getItem("app-cache") || "[]")
+            );
+            cache.set(key, data);
+            localStorage.setItem(
+              "app-cache",
+              JSON.stringify(Array.from(cache.entries()))
+            );
           }
-        }
+        },
       }}
     >
-      <DataProvider>
-        {children}
-      </DataProvider>
+      <DataProvider>{children}</DataProvider>
     </SWRConfig>
-  )
+  );
 }
 ```
 
@@ -182,25 +187,23 @@ export function Providers({ children }: { children: ReactNode }) {
 
 ```typescript
 // src/app/layout.tsx
-import { Providers } from '@/app/providers'
-import { Toaster } from '@/components/ui/toaster'
-import './globals.css'
+import { Providers } from "@/app/providers";
+import { Toaster } from "@/components/ui/toaster";
+import "./globals.css";
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
       <body>
-        <Providers>
-          {children}
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
-  )
+  );
 }
 ```
 
@@ -208,21 +211,21 @@ export default function RootLayout({
 
 ```typescript
 // src/components/DataLoader.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Loader2, AlertCircle } from 'lucide-react'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { ReactNode } from 'react'
+import { useRecords } from "@/contexts/DataContext";
+import { Loader2, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
 interface DataLoaderProps {
-  children: ReactNode
-  fallback?: ReactNode
+  children: ReactNode;
+  fallback?: ReactNode;
 }
 
 export function DataLoader({ children, fallback }: DataLoaderProps) {
-  const { isLoading, error, mutate } = useRecords()
+  const { isLoading, error, mutate } = useRecords();
 
   if (isLoading) {
     return (
@@ -236,7 +239,7 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
           </div>
         </div>
       )
-    )
+    );
   }
 
   if (error) {
@@ -246,21 +249,17 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Error Loading Data</AlertTitle>
           <AlertDescription className="mt-2">
-            {error.message || 'An error occurred while loading data.'}
+            {error.message || "An error occurred while loading data."}
           </AlertDescription>
-          <Button 
-            onClick={() => mutate()} 
-            variant="outline" 
-            className="mt-4"
-          >
+          <Button onClick={() => mutate()} variant="outline" className="mt-4">
             Retry
           </Button>
         </Alert>
       </div>
-    )
+    );
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
 ```
 
@@ -268,15 +267,15 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 
 ```typescript
 // src/app/page.tsx
-import { DataLoader } from '@/components/DataLoader'
-import { Dashboard } from '@/components/Dashboard'
+import { DataLoader } from "@/components/DataLoader";
+import { Dashboard } from "@/components/Dashboard";
 
 export default function Home() {
   return (
     <DataLoader>
       <Dashboard />
     </DataLoader>
-  )
+  );
 }
 ```
 
@@ -284,40 +283,42 @@ export default function Home() {
 
 ```typescript
 // src/components/Dashboard.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { RefreshCw } from 'lucide-react'
-import { useState, useMemo } from 'react'
+import { useRecords } from "@/contexts/DataContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
+import { useState, useMemo } from "react";
 
 export function Dashboard() {
-  const { records, mutate, isLoading } = useRecords()
-  const [search, setSearch] = useState('')
+  const { records, mutate, isLoading } = useRecords();
+  const [search, setSearch] = useState("");
 
   // Filter records client-side
   const filteredRecords = useMemo(() => {
-    if (!search) return records
-    
-    return records.filter(record => 
+    if (!search) return records;
+
+    return records.filter((record) =>
       record.name.toLowerCase().includes(search.toLowerCase())
-    )
-  }, [records, search])
+    );
+  }, [records, search]);
 
   return (
     <div className="container mx-auto p-6">
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Records ({records.length} total)</CardTitle>
-          <Button 
-            onClick={() => mutate()} 
-            variant="outline" 
+          <Button
+            onClick={() => mutate()}
+            variant="outline"
             size="sm"
             disabled={isLoading}
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw
+              className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+            />
             Refresh
           </Button>
         </CardHeader>
@@ -328,18 +329,18 @@ export function Dashboard() {
             onChange={(e) => setSearch(e.target.value)}
             className="mb-4"
           />
-          
+
           <div className="space-y-2">
-            {filteredRecords.map(record => (
-              <div 
-                key={record.id} 
+            {filteredRecords.map((record) => (
+              <div
+                key={record.id}
                 className="p-3 border rounded-lg hover:bg-accent transition-colors"
               >
                 {record.name}
               </div>
             ))}
           </div>
-          
+
           {filteredRecords.length === 0 && (
             <p className="text-center text-muted-foreground py-8">
               No records found
@@ -348,7 +349,7 @@ export function Dashboard() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 ```
 
@@ -356,17 +357,17 @@ export function Dashboard() {
 
 ```typescript
 // src/components/RecordDetail.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
+import { useRecords } from "@/contexts/DataContext";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export function RecordDetail({ id }: { id: string }) {
-  const { getRecordById } = useRecords()
-  
-  const record = getRecordById(id)
-  
+  const { getRecordById } = useRecords();
+
+  const record = getRecordById(id);
+
   if (!record) {
     return (
       <Card>
@@ -374,7 +375,7 @@ export function RecordDetail({ id }: { id: string }) {
           Record not found
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -385,11 +386,9 @@ export function RecordDetail({ id }: { id: string }) {
           <Badge variant="secondary">{record.category}</Badge>
         )}
       </CardHeader>
-      <CardContent>
-        {/* Record details */}
-      </CardContent>
+      <CardContent>{/* Record details */}</CardContent>
     </Card>
-  )
+  );
 }
 ```
 
@@ -399,55 +398,51 @@ When you need to update records optimistically:
 
 ```typescript
 // src/components/RecordEditor.tsx
-'use client'
+"use client";
 
-import { useRecords } from '@/contexts/DataContext'
-import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useRecords } from "@/contexts/DataContext";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export function RecordEditor({ id }: { id: string }) {
-  const { getRecordById, mutate, records } = useRecords()
-  const [name, setName] = useState('')
-  
-  const record = getRecordById(id)
+  const { getRecordById, mutate, records } = useRecords();
+  const [name, setName] = useState("");
+
+  const record = getRecordById(id);
 
   const updateRecord = async () => {
     // Optimistically update the UI
     mutate(
-      records.map(r => 
-        r.id === id ? { ...r, name } : r
-      ),
+      records.map((r) => (r.id === id ? { ...r, name } : r)),
       false // Don't revalidate immediately
-    )
+    );
 
     try {
       // Make the API call
       await fetch(`/api/records/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      })
-      
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+
       // Revalidate to ensure consistency
-      mutate()
+      mutate();
     } catch (error) {
       // Revert on error
-      mutate()
+      mutate();
     }
-  }
+  };
 
   return (
     <div className="space-y-4">
-      <input 
+      <input
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="border rounded px-3 py-2 w-full"
       />
-      <Button onClick={updateRecord}>
-        Update Record
-      </Button>
+      <Button onClick={updateRecord}>Update Record</Button>
     </div>
-  )
+  );
 }
 ```
 
@@ -457,26 +452,26 @@ For even faster initial loads in Next.js:
 
 ```typescript
 // src/app/page.tsx
-import { DataLoader } from '@/components/DataLoader'
-import { Dashboard } from '@/components/Dashboard'
-import { Suspense } from 'react'
+import { DataLoader } from "@/components/DataLoader";
+import { Dashboard } from "@/components/Dashboard";
+import { Suspense } from "react";
 
 async function getRecords() {
-  const response = await fetch('https://your-api.com/records', {
-    cache: 'no-store' // or next: { revalidate: 60 }
-  })
-  return response.json()
+  const response = await fetch("https://your-api.com/records", {
+    cache: "no-store", // or next: { revalidate: 60 }
+  });
+  return response.json();
 }
 
 export default async function Home() {
   // Preload data on server
-  const initialData = await getRecords()
-  
+  const initialData = await getRecords();
+
   return (
     <DataLoader fallbackData={initialData}>
       <Dashboard />
     </DataLoader>
-  )
+  );
 }
 ```
 
