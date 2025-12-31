@@ -244,7 +244,7 @@ export function Dashboard() {
 
 For better performance with 2000 records:
 
-```typescript
+```
 // src/contexts/DataContext.tsx
 'use client'
 
