@@ -292,9 +292,3 @@ export default function RootLayout({
 4. **TypeScript safety**: Always type your context properly. Using `undefined` as the initial value and checking in the custom hook ensures type safety.
 
 5. **Mark as 'use client'**: In Next.js App Router, context providers must be client components, so always add `'use client'` at the top of your context files.
-
-## Examples
-
-- [Example-1](./ex1.md)
-- [Example-2](./ex2.md)
-- [Example-3](./ex3.md)
