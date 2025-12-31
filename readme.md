@@ -23,4 +23,4 @@
   - [📄 Shopping Cart Management](./docs/react-nextjs/examples/shopping-cart-management.md)
   - [📄 Smart Table Component](./docs/react-nextjs/examples/smart-table-component.md)
   - [📄 React Context Examples](./docs/react-nextjs/examples/context-examples.md)
-- [📂 React State Management Systems/](./docs/react-states-management-systems/)
+- [📂 React State Management Systems/](./docs/react-states-management-systems/index.md)
