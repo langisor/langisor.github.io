@@ -1,4 +1,4 @@
-# [📂 Articles](./readme.md)
+# [📂 Articles-updated](./readme.md)
 
 - [📂 AI/](./docs/ai/ai-intro-with-vercel-ai-sdk.md)
   - [📄 AI Intro With `Vercel AI SDK - Gemini response`](./docs/ai/ai-intro-with-vercel-ai-sdk-gemini.md)
