@@ -127,7 +127,7 @@ export function useRecords() {
 
 For better control across your app:
 
-```
+```ts
 // src/app/providers.tsx
 'use client'
 
