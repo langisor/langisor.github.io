@@ -6,6 +6,7 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 ### Step 1: Create the Data Context
 
+<!--  
 ```typescript
 // src/contexts/DataContext.tsx
 'use client'
@@ -1600,3 +1601,4 @@ export function CategoryStats() {
 10. **Right-to-left support**: Proper RTL for Urdu and Arabic text
 
 This implementation is production-ready and handles your 2000+ word dictionary efficiently!
+-->
