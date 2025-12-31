@@ -248,7 +248,10 @@ function todoReducer(state: TodoState, action: TodoAction): TodoState {
 
 #### Step 4: Use `useReducer` in your Component
 
-```typescript jsx
+{% raw %}
+
+```typescript
+
 // TodoApp.tsx
 import React, { useReducer, useState } from 'react';
 import { Todo, TodoState, TodoAction } from './types'; // Assuming types.ts
@@ -300,6 +303,7 @@ function TodoApp() {
 
 export default TodoApp;
 ```
+{% endraw %}
 
 ## Benefits of using `useReducer` with TypeScript
 

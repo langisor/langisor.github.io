@@ -47,6 +47,8 @@ yarn add @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities
 
 Let's create a basic example where you can drag a box and drop it into a designated area.
 
+{% raw %}
+
 ```tsx
 import React, { useState } from "react";
 import {
@@ -169,6 +171,8 @@ function App(): JSX.Element {
 export default App;
 ```
 
+{% endraw %}
+
 **Explanation:**
 
 - **`DraggableProps` and `DroppableProps` interfaces**: We define explicit types for the props of our reusable components, ensuring type safety. Notice the use of `UniqueIdentifier` for `id`, which is `dnd-kit`'s recommended type for element IDs.
@@ -180,6 +184,8 @@ export default App;
 ### 4\. Sortable List Example
 
 For sortable lists, `dnd-kit` provides specific hooks and utilities in `@dnd-kit/sortable`.
+
+{% raw %}
 
 ```tsx
 import React, { useState } from "react";
@@ -295,6 +301,8 @@ function SortableList(): JSX.Element {
 export default SortableList;
 ```
 
+{% endraw %}
+
 **Explanation:**
 
 - **`SortableItemProps`**: Again, type-safe props for the sortable item.
@@ -310,6 +318,8 @@ export default SortableList;
 ### 5\. Dragging Between Multiple Containers
 
 This is a common and slightly more complex use case. We'll enable dragging items from one list to another.
+
+{% raw %}
 
 ```tsx
 import React, { useState } from "react";
@@ -537,6 +547,8 @@ export default MultiContainerApp;
 
 ---
 
+{% raw %}
+
 ### 7\. Further Exploration
 
 - **Sensors**: Dive deeper into different `sensors` (`PointerSensor`, `KeyboardSensor`, `MouseSensor`, `TouchSensor`, `Activator`). They control how drag operations are initiated and are crucial for specific interaction patterns.
@@ -549,6 +561,8 @@ export default MultiContainerApp;
 ---
 
 ## **Example**: English Sentence Reorder Game with dnd
+
+{% raw %}
 
 ```tsx
 import React, { useState, useCallback, useMemo, useEffect } from "react";
@@ -1301,3 +1315,5 @@ const App: React.FC = () => {
 
 export default App;
 ```
+
+{% endraw %}

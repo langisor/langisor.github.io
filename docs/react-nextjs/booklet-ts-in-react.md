@@ -630,7 +630,9 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
 - **`Partial<T>`:** Makes all properties in `T` optional. Useful for default props or draft objects.
 
-  ```tsx
+{% raw %}
+
+```tsx
   interface UserProfile {
     name: string;
     email: string;
@@ -645,7 +647,9 @@ TypeScript provides several built-in utility types that are incredibly useful wh
   };
 
   // Usage: <UserForm initialData={{ name: 'Jane' }} />
-  ```
+```
+
+{% endraw %}
 
 - **`Pick<T, K>`:** Constructs a type by picking the set of properties `K` from `T`.
 
@@ -740,6 +744,8 @@ TypeScript provides several built-in utility types that are incredibly useful wh
 
 Polymorphic components are components that can render as different HTML elements or React components based on a prop (commonly named `as` or `component`). Typing these requires a good understanding of generics and utility types.
 
+{% raw %}
+
 ```tsx
 // src/components/PolymorphicButton.tsx
 
@@ -796,6 +802,8 @@ export default PolymorphicButton;
 //   Custom Link Button
 // </PolymorphicButton>
 ```
+
+{% endraw %}
 
 **Explanation of Polymorphic Component Typing:**
 
