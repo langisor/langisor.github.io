@@ -8,8 +8,8 @@
 
 **Memoization** is a technique where the result of an expensive function call is cached, and the cached result is returned when the same inputs occur again.
 
-  * **`useMemo`**: Memoizes a **value**.
-  * **`useCallback`**: Memoizes a **function** definition.
+* **`useMemo`**: Memoizes a **value**.
+* **`useCallback`**: Memoizes a **function** definition.
 
 -----
 
@@ -17,7 +17,7 @@
 
 The `useMemo` hook is used to **memoize a calculated value**. It only re-calculates the value when one of its **dependencies** changes.
 
-### ➡️ Syntax (TypeScript):
+### ➡️ Syntax (TypeScript)
 
 ```typescript
 const memoizedValue = useMemo<TResult>(
@@ -99,7 +99,7 @@ const App: React.FC = () => {
 
 The `useCallback` hook is used to **memoize a function definition**. It returns a memoized version of the function that only changes if one of its **dependencies** has changed.
 
-### ➡️ Syntax (TypeScript):
+## Syntax (TypeScript)
 
 ```typescript
 const memoizedFunction = useCallback<TFunction>(
@@ -179,6 +179,6 @@ const ParentComponent: React.FC = () => {
 
 Avoid using `useMemo` or `useCallback` in these situations:
 
-1.  **Trivial Calculations**: If the computation is simple (e.g., `a + b`, a simple string concatenation, or filtering a small array), the overhead of the hook itself often outweighs the performance gain.
-2.  **Every Function/Value**: Don't wrap every function or value in your component. This adds complexity and memory overhead. **Only use them for performance-critical scenarios** (heavy computations or passing props to memoized child components).
-3.  **No Dependencies**: If your function or value doesn't rely on state or props, you can often define it *outside* the component function entirely, which is the ultimate form of memoization.
+1. **Trivial Calculations**: If the computation is simple (e.g., `a + b`, a simple string concatenation, or filtering a small array), the overhead of the hook itself often outweighs the performance gain.
+2. **Every Function/Value**: Don't wrap every function or value in your component. This adds complexity and memory overhead. **Only use them for performance-critical scenarios** (heavy computations or passing props to memoized child components).
+3. **No Dependencies**: If your function or value doesn't rely on state or props, you can often define it *outside* the component function entirely, which is the ultimate form of memoization.

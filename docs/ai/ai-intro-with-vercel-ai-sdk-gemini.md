@@ -10,11 +10,11 @@ Here are the basic foundations you requested, followed by a guide to getting sta
 
 Think of these as the "Engine," the "Gas Station," and the "Blueprint" for your application.
 
-| Term | Analogy | Description | Examples |
-| --- | --- | --- | --- |
-| **Model** | The Brain | The actual Large Language Model (LLM) that processes text and generates logic. | `gpt-4o`, `claude-3-5-sonnet`, `gemini-1.5-pro` |
-| **Provider** | The Host | The service that provides an API to access those models. They handle the billing and infrastructure. | OpenAI, Anthropic, Google, AWS Bedrock |
-| **Template** | The Blueprint | Pre-built starter kits provided by Vercel to help you skip the "boilerplate" setup (auth, DB, styling). | Chatbot Starter, RAG (Knowledge Base) Template |
+| Term         | Analogy       | Description                                                                                             | Examples                                        |
+| ------------ | ------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **Model**    | The Brain     | The actual Large Language Model (LLM) that processes text and generates logic.                          | `gpt-4o`, `claude-3-5-sonnet`, `gemini-1.5-pro` |
+| **Provider** | The Host      | The service that provides an API to access those models. They handle the billing and infrastructure.    | OpenAI, Anthropic, Google, AWS Bedrock          |
+| **Template** | The Blueprint | Pre-built starter kits provided by Vercel to help you skip the "boilerplate" setup (auth, DB, styling). | Chatbot Starter, RAG (Knowledge Base) Template  |
 
 ---
 
@@ -119,8 +119,7 @@ Would you like me to show you how to implement **Tools** (so the AI can actually
 
 **Summarize the video:**
 
-This comprehensive tutorial by Matt Pocock provides a complete guide to Vercel's AI SDK, an essential tool for building and shipping AI applications (0:00). The video covers a wide range of functionalities offered by the SDK, including:
-
+This comprehensive tutorial by Matt Pocock provides a complete guide to Vercel's AI SDK, an  
     Understanding the AI SDK: The AI SDK simplifies interactions with large language models (LLMs) by providing a unified API, reducing the need for extensive glue code when switching between different LLM providers like OpenAI or Anthropic (1:20). It offers helpful features for common use cases such as streaming text, structured outputs, tool calling, and agents (2:00).
     Core Functionalities:
         Generating Text: Demonstrates how to use generateText for simple text generation (3:23).
@@ -138,4 +137,3 @@ This comprehensive tutorial by Matt Pocock provides a complete guide to Vercel's
         Embeddings & Vector Databases: Introduces how to create and use embeddings for semantic similarity comparisons, useful for search and categorization (26:04).
         Tool Calling: Explores how LLMs can interact with external tools by describing the tools they want to call, allowing for more powerful applications (30:08).
         Building an Agent: Demonstrates creating an agentic loop where tool results are fed back into the LLM, enabling it to take multiple steps and ground itself in real-world information, reducing hallucinations (33:46).
-
