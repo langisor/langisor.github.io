@@ -6,7 +6,7 @@ For preloading ~2000 records at app startup, here's a robust pattern that handle
 
 ### Step 1: Create the Data Context
 
-```ts
+```typescript
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -87,7 +87,7 @@ export function useRecords() {
 
 ### Step 2: Add Provider to Layout with Loading UI
 
-```ts
+```typescript
 // src/app/layout.tsx
 import { DataProvider } from '@/contexts/DataContext'
 import { Toaster } from '@/components/ui/toaster'
@@ -114,7 +114,7 @@ export default function RootLayout({
 
 To show a loading screen until data is ready:
 
-```ts
+```typescript
 // src/components/DataLoader.tsx
 'use client'
 
@@ -173,7 +173,7 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 
 ### Step 4: Wrap Your App Content
 
-```ts
+```typescript
 // src/app/page.tsx
 import { DataLoader } from '@/components/DataLoader'
 import { Dashboard } from '@/components/Dashboard'
@@ -189,7 +189,7 @@ export default function Home() {
 
 ### Step 5: Use the Data in Components
 
-```ts
+```typescript
 // src/components/Dashboard.tsx
 'use client'
 
@@ -246,7 +246,7 @@ export function Dashboard() {
 
 For better performance with 2000 records:
 
-```ts
+```typescript
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -388,7 +388,7 @@ export function useRecords() {
 
 ### Step 7: Using the Helper Methods
 
-```ts
+```typescript
 // src/components/RecordDetail.tsx
 'use client'
 
@@ -441,7 +441,7 @@ npm install swr
 
 ### Step 2: Create the Data Context with SWR
 
-```ts
+```typescript
 // src/contexts/DataContext.tsx
 'use client'
 
@@ -558,7 +558,7 @@ export function useRecords() {
 
 For better control across your app:
 
-```ts
+```typescript
 // src/app/providers.tsx
 'use client'
 
@@ -611,7 +611,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 ### Step 4: Update Layout
 
-```ts
+```typescript
 // src/app/layout.tsx
 import { Providers } from '@/app/providers'
 import { Toaster } from '@/components/ui/toaster'
@@ -637,7 +637,7 @@ export default function RootLayout({
 
 ### Step 5: Create Loading Wrapper Component
 
-```ts
+```typescript
 // src/components/DataLoader.tsx
 'use client'
 
@@ -697,7 +697,7 @@ export function DataLoader({ children, fallback }: DataLoaderProps) {
 
 ### Step 6: Use in Your App
 
-```ts
+```typescript
 // src/app/page.tsx
 import { DataLoader } from '@/components/DataLoader'
 import { Dashboard } from '@/components/Dashboard'
@@ -713,7 +713,7 @@ export default function Home() {
 
 ### Step 7: Use the Data in Components
 
-```ts
+```typescript
 // src/components/Dashboard.tsx
 'use client'
 
@@ -785,7 +785,7 @@ export function Dashboard() {
 
 ### Step 8: Using Helper Methods
 
-```tsx
+```typescriptx
 // src/components/RecordDetail.tsx
 "use client";
 
@@ -826,7 +826,7 @@ export function RecordDetail({ id }: { id: string }) {
 
 When you need to update records optimistically:
 
-```tsx
+```typescriptx
 // src/components/RecordEditor.tsx
 "use client";
 
@@ -880,7 +880,7 @@ export function RecordEditor({ id }: { id: string }) {
 
 For even faster initial loads in Next.js:
 
-```tsx
+```typescriptx
 // src/app/page.tsx
 import { DataLoader } from "@/components/DataLoader";
 import { Dashboard } from "@/components/Dashboard";
@@ -924,7 +924,7 @@ This approach is production-ready and handles all edge cases like network failur
 
 ### Step 1: Create the Dictionary Context with SWR
 
-```ts
+```typescript
 // src/contexts/DictionaryContext.tsx
 'use client'
 
@@ -1073,7 +1073,7 @@ export function useDictionary() {
 
 ### Step 2: Configure SWR Globally with Persistence
 
-```ts
+```typescript
 // src/app/providers.tsx
 'use client'
 
@@ -1120,7 +1120,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
 ### Step 3: Update Layout
 
-```ts
+```typescript
 // src/app/layout.tsx
 import { Providers } from '@/app/providers'
 import { Toaster } from '@/components/ui/toaster'
@@ -1151,7 +1151,7 @@ export default function RootLayout({
 
 ### Step 4: Create Loading Wrapper Component
 
-```tsx
+```typescriptx
 // src/components/DictionaryLoader.tsx
 "use client";
 
@@ -1223,7 +1223,7 @@ export function DictionaryLoader({
 
 ### Step 5: Use in Your App
 
-```ts
+```typescript
 // src/app/page.tsx
 import { DictionaryLoader } from '@/components/DictionaryLoader'
 import { DictionaryDashboard } from '@/components/DictionaryDashboard'
@@ -1239,7 +1239,7 @@ export default function Home() {
 
 ### Step 6: Create Dashboard Component
 
-```ts
+```typescript
 // src/components/DictionaryDashboard.tsx
 'use client'
 
@@ -1431,7 +1431,7 @@ export function DictionaryDashboard() {
 
 ### Step 7: Word Detail Component Example
 
-```ts
+```typescript
 // src/components/WordDetail.tsx
 'use client'
 
@@ -1542,7 +1542,7 @@ export function WordDetail({ serial }: { serial: number }) {
 
 ### Step 8: Category Statistics Component
 
-```ts
+```typescript
 // src/components/CategoryStats.tsx
 'use client'
 
