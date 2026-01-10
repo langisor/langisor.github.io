@@ -13,7 +13,7 @@
     }
   },
   "markdownlint.config": {
-    "no-inline-html": false,
+    "no-inline-html": true,
   },
   "git.enableSmartCommit": true,
   "git.postCommitCommand": "sync",
